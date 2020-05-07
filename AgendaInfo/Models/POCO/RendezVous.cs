@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Agenda.Models.POCO
+{
+    public class RendezVous
+    {
+        /***************************PROPRIETES*******************************/
+        public int ID { get; set; }                 // ID du rendez-vous
+        public Customer Customer { get; set; }      // L'auteur du rendez-vous
+        public Service Service { get; set; }        // Le service choisis
+        public string Comment { get; set; }         // Un commentaire supplémentaire de la part du client
+        public DateTime BeginDate { get; set; }     // Date/heure de début du rendez-vous
+
+        /***************************Constructeur*******************************/
+        public RendezVous (Customer _customer, Service _service, string _comment, DateTime _beginDate)
+	    {
+            Customer = _customer;
+            Service = _service;
+            Comment= _comment;
+            BeginDate= _beginDate;
+	    }
+
+        /***************************METHODES*******************************/
+        public void PrendreRdv()
+        {
+        }
+        public void DureeRdv()
+        {
+        }
+    }
+    
+}
