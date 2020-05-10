@@ -36,7 +36,10 @@ namespace Agenda.Models.POCO
         /*=========================================
          * LoadUser: Charge l'utilisateur depuis la BDD
          *=========================================*/
-        public User LoadUser(User user) { return user; } // TODO: A compléter
+        public void LoadUserByEmail(IUser userDAL) { 
+            return user; 
+            } 
+        // public User LoadUserByID(IUser userDAL) { return 0; } // TODO: A compléter
 
     }
 }

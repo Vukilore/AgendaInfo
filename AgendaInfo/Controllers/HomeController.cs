@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AgendaInfo.Models;
+using Agenda.Models.POCO;
 
 namespace AgendaInfo.Controllers
 {
@@ -18,7 +20,10 @@ namespace AgendaInfo.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        /////////////////////////////////////////////////////////////////////////////////
+        ///                               INDEX                                       ///
+        /////////////////////////////////////////////////////////////////////////////////
+        public ActionResult Index() // Arrivée sur la page d'index
         {
             return View();
         }
