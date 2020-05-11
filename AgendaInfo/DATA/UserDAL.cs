@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AgendaInfo.Models.DAL
-{
+namespace AgendaInfo.DATA
+{b
     public class UserDAL : IUserDAL
     {
         private BDDContext bdd;

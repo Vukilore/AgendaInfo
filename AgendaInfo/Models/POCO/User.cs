@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgendaInfo.DATA;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -36,9 +37,9 @@ namespace Agenda.Models.POCO
         /*=========================================
          * LoadUser: Charge l'utilisateur depuis la BDD
          *=========================================*/
-        public void LoadUserByEmail(IUser userDAL) { 
-            return user; 
-            } 
+        public void LoadUserByEmail(IUserDAL userDAL) { 
+                this = userDAL.Get(Email);
+        } 
         // public User LoadUserByID(IUser userDAL) { return 0; } // TODO: A compléter
 
     }
