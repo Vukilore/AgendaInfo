@@ -21,6 +21,7 @@ namespace AgendaInfo.DATA
         }
         public Evaluation Get(RendezVous rdv)
         {
+            return bdd.ContextEvaluation.Where(p => p.RendezVous == rdv).SingleOrDefault();
         }
 
         public List<Evaluation> GetAll()

@@ -20,5 +20,6 @@ namespace AgendaInfo.DATA
         public DbSet<Customer>  ContextCustomer;
         public DbSet<Admin>     ContextAdmin;
         public DbSet<Evaluation> ContextEvaluation;
+        public DbSet<Service> ContextService;
     }
 }

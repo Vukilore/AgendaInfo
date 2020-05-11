@@ -25,7 +25,7 @@ namespace AgendaInfo
             services.AddDbContext<BDDContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BDDContext")).UseLazyLoadingProxies());
             services.AddTransient<IUserDAL, UserDAL>();
             services.AddTransient<IEvalDAL,EvalDAL>();
-
+            services.AddTransient<IServicesDAL, ServicesDAL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
