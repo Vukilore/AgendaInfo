@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace AgendaInfo.DATA
-{b
+{
     public class UserDAL : IUserDAL
     {
         private BDDContext bdd;
