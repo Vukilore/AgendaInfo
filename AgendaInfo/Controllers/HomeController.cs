@@ -20,11 +20,9 @@ namespace AgendaInfo.Controllers
             _logger = logger;
         }
 
-        /////////////////////////////////////////////////////////////////////////////////
-        ///                               INDEX                                       ///
-        /////////////////////////////////////////////////////////////////////////////////
-        public ActionResult Index() // Arrivée sur la page d'index
+        public IActionResult Index() 
         {
+            ViewBag.Message = ""; // On reset le message d'erreur de la connexion
             return View();
         }
 

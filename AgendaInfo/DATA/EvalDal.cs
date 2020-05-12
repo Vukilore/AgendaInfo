@@ -12,7 +12,6 @@ namespace AgendaInfo.DATA
         public EvalDAL(BDDContext context)
         {
             bdd = context;
-
         }
         public Evaluation Get(int id)
         {
@@ -23,7 +22,7 @@ namespace AgendaInfo.DATA
         {
             return bdd.ContextEvaluation.Where(p => p.RendezVous == rdv).SingleOrDefault();
         }
-
+        
         public List<Evaluation> GetAll()
         {
             return bdd.ContextEvaluation.ToList();
