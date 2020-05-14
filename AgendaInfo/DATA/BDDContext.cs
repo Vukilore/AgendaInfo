@@ -14,7 +14,6 @@ namespace AgendaInfo.DATA
 
         }
 
-
         // Création des tables.
         public DbSet<User>       User { get; set; }
         public DbSet<Customer>   Customer { get; set; }
@@ -30,5 +29,8 @@ namespace AgendaInfo.DATA
                         .HasValue<Admin>("Admin")
                         .HasValue<Customer>("Customer");
         }
+
+        // Configuration du discriminator
+        public DbSet<Agenda.Models.POCO.RendezVous> RendezVous { get; set; }
     }
 }
