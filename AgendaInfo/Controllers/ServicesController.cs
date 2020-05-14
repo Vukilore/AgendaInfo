@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Agenda.Models.POCO;
 using AgendaInfo.DATA;
+using SQLitePCL;
+using Microsoft.AspNetCore.Http;
 
 namespace AgendaInfo.Controllers
 {
     public class ServicesController : Controller
     {
         private readonly BDDContext _context;
+        private readonly IUserDAL userDAL;
 
-        public ServicesController(BDDContext context)
+        public ServicesController(BDDContext context, IUserDAL _userDAL)
         {
             _context = context;
+            userDAL = _userDAL;
         }
 
         // GET: Services
@@ -46,6 +50,7 @@ namespace AgendaInfo.Controllers
         // GET: Services/Create
         public IActionResult Create()
         {
+            if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
             return View();
         }
 
@@ -56,6 +61,7 @@ namespace AgendaInfo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,Price,Duration")] Service service)
         {
+            if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
             if (ModelState.IsValid)
             {
                 _context.Add(service);
@@ -68,6 +74,7 @@ namespace AgendaInfo.Controllers
         // GET: Services/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
             if (id == null)
             {
                 return NotFound();
@@ -88,6 +95,7 @@ namespace AgendaInfo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Price,Duration")] Service service)
         {
+            if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
             if (id != service.ID)
             {
                 return NotFound();
@@ -119,6 +127,7 @@ namespace AgendaInfo.Controllers
         // GET: Services/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
             if (id == null)
             {
                 return NotFound();
@@ -139,6 +148,7 @@ namespace AgendaInfo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
             var service = await _context.Service.FindAsync(id);
             _context.Service.Remove(service);
             await _context.SaveChangesAsync();
@@ -148,6 +158,15 @@ namespace AgendaInfo.Controllers
         private bool ServiceExists(int id)
         {
             return _context.Service.Any(e => e.ID == id);
+        }
+
+        private bool IsAdmin(string email)
+        {
+            // 1. Création de l'utilisateur temporaire
+            User tmpUser = new User(email);
+            // 2. Chargement de l'utilisateur grâce à son email
+            tmpUser = tmpUser.LoadUserByEmail(userDAL);
+            return tmpUser is Admin;
         }
     }
 }

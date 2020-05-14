@@ -40,7 +40,7 @@ namespace AgendaInfo.Controllers
         /////////////////////////////////////////////////////////////////////////////////
         public IActionResult Login()
         {
-            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail"))) Redirect("Index");
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
             return View();
         }
 
