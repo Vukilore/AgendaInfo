@@ -16,6 +16,7 @@ namespace AgendaInfo.DATA
             {
                 if (!context.User.Any())
                 {
+                    // Création de l'administrateur
                     context.User.Add(new Admin {
                         Name = "Doe",
                         FirstName = "John",
@@ -28,6 +29,7 @@ namespace AgendaInfo.DATA
                     context.SaveChanges();
                 }
             }
+            Agenda.Models.POCO.Agenda.GetInstance();
         }
     }
 }

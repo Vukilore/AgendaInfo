@@ -14,24 +14,26 @@ namespace AgendaInfo.Controllers
     public class CustomersController : Controller
     {
         private readonly IUserDAL userDAL;
+        private readonly BDDContext _context;
 
-        public CustomersController(IUserDAL _userDAL)
+        public CustomersController(IUserDAL _userDAL, BDDContext context)
         {
             userDAL = _userDAL;
+            _context = context;
         }
 
         // GET: Customers
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail")))
             {
                 // 1. Création de l'utilisateur temporaire
-                Customer tmpUser = new Customer(HttpContext.Session.GetString("userEmail"));
+                User tmpUser = new User(HttpContext.Session.GetString("userEmail"));
                 tmpUser.LoadUserByEmail(userDAL);
-                return View();
+                if (IsAdmin(tmpUser.Email)) return View("Indexf", await _context.User.ToListAsync() as IEnumerable<User>);
+                else return View();
             }
-            return Redirect("../Home/Index");
-            
+            return Redirect("../Home/Index");            
         }
 
         // GET: Customers/Details/5
@@ -88,6 +90,11 @@ namespace AgendaInfo.Controllers
 
             //3. Si le client (id) n'existe pas dans la bdd on retourne non trouvé (404)
             if (customer == null) return NotFound();
+            //4. On check si l'utilisateur est admin pour ne pas lui proposer d'editer le mdp
+            ViewBag.IsAdmin = false;
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail")))
+                if (IsAdmin(HttpContext.Session.GetString("userEmail")))
+                    ViewBag.IsAdmin = true;
             return View(customer);
         }
 
@@ -131,5 +138,13 @@ namespace AgendaInfo.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }*/
+        private bool IsAdmin(string email)
+        {
+            // 1. Création de l'utilisateur temporaire
+            User tmpUser = new User(email);
+            // 2. Chargement de l'utilisateur grâce à son email
+            tmpUser = tmpUser.LoadUserByEmail(userDAL);
+            return tmpUser is Admin;
+        }
     }
 }

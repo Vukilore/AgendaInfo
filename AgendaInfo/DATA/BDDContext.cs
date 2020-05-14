@@ -20,6 +20,7 @@ namespace AgendaInfo.DATA
         public DbSet<Admin>      Admin { get; set; }
         public DbSet<Evaluation> Evaluation { get; set; }
         public DbSet<Service>    Service { get; set; }
+        public DbSet<Agenda.Models.POCO.Agenda>     Agenda { get; set; }
 
         // Configuration du discriminator
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,6 +29,8 @@ namespace AgendaInfo.DATA
                         .HasDiscriminator<string>("Type")
                         .HasValue<Admin>("Admin")
                         .HasValue<Customer>("Customer");
+            modelBuilder.Entity<Agenda.Models.POCO.Agenda>()
+                        .HasNoKey();
         }
 
         // Configuration du discriminator

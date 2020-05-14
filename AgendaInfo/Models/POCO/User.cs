@@ -23,6 +23,7 @@ namespace Agenda.Models.POCO
 
         [Required(ErrorMessage = "Veuillez entrer votre date de naissance.")]
         [Display(Name = "Date de naissance : ")]
+        [DataType(DataType.Date)]
         public DateTime Birthday { get; set; }      // Date de naissance de l'utilisateur
 
         [Required(ErrorMessage = "Veuillez entrer votre adresse d'habitation.")]
@@ -31,10 +32,12 @@ namespace Agenda.Models.POCO
 
         [Required(ErrorMessage = "Veuillez entrer votre numéro de téléphone.")]
         [Display(Name = "Numero de téléphone : ")]
+        [DataType(DataType.PhoneNumber)]
         public int PhoneNumber { get; set; }        // Numéro de téléphone de l'utilisateur
 
         [Required(ErrorMessage = "Veuillez entrer votre email.")]
         [Display(Name = "Email : ")]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }           // Adresse email de l'utilisateur
 
         [Required(ErrorMessage = "Veuillez entrer votre mot de passe.")]
@@ -57,17 +60,6 @@ namespace Agenda.Models.POCO
         {
             Email = _email;
         }
-        //public User (int i, string n, string l, DateTime b, string a, int ph, string e, string pa)
-        //{
-        //    i = ID;
-        //    n = Name;
-        //    l = FirstName;
-        //    b = Birthday;
-        //    a = Address;
-        //    ph = PhoneNumber;
-        //    e = Email;
-        //    pa = Password;
-        //}
 
         /***************************METHODES*******************************/
 
@@ -76,6 +68,11 @@ namespace Agenda.Models.POCO
          *=========================================*/
         public User LoadUserByEmail(IUserDAL userDAL) { 
             return userDAL.Get(Email);
+        }
+
+        public Task<List<User>> ToListAsync(IUserDAL userDAL)
+        {
+            return userDAL.ToListAsync();
         }
 
         // public User LoadUserByID(IUser userDAL) { return 0; } // TODO: A compléter

@@ -25,7 +25,7 @@ namespace AgendaInfo
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(20);
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
                 options.Cookie.HttpOnly = true; // server-side only
                 options.Cookie.IsEssential = true;
             });

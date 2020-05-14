@@ -29,7 +29,7 @@ namespace AgendaInfo.Controllers
             {// L'utilisateur est connecté
                 User user = new User(HttpContext.Session.GetString("userEmail"));
                 user.LoadUserByEmail(userDAL);
-                if (user is Admin) return Redirect("../Admin/Index");
+                if (user is Admin) return Redirect("../Admins/Index");
                 else return Redirect("../Customers/Index");
             }
             return View("Index");
@@ -65,7 +65,7 @@ namespace AgendaInfo.Controllers
                 if (user.Password == tmpUser.Password) // Le mot de passe correspond bien à celui de la BDD
                 {
                     HttpContext.Session.SetString("userEmail", tmpUser.Email);
-                    if (tmpUser is Admin) return Redirect("../Admin/Index"); 
+                    if (tmpUser is Admin) return Redirect("../Admins/Index"); 
                     else return Redirect("../Customers/Index/");
                 }
                 else

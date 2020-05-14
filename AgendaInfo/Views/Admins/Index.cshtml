@@ -6,5 +6,10 @@
     <h1 class="display-4">Bienvenue Administrateur</h1>
 </div>
 
-
-<button onclick="location.href='@Url.Action("Disconnect", "Home")'" style="background-color:transparent; border-color:transparent;"><img src="~/Content/image/deco.png" /><br />Se déconnecter</button>
+<!-- Button choix de l'utilisateur -->
+<a asp-controller="Services" asp-action="Index">Gérer la liste des services proposés</a>
+<a asp-controller="Customers" asp-action="Index">Gérer la liste des utilisateurs</a>
+<a asp-controller="Agenda" asp-action="Index">Prendre un congé ou un rendez-vous pour un utilisateur</a>
+<a asp-controller="RendezVous" asp-action="Index">Liste de vos rendez-vous</a>
+<a asp-controller="Evaluations" asp-action="Index">Liste des évaluation</a>
+<a asp-controller="Home" asp-action="Disconnect">Se déconnecter</a>

@@ -1,4 +1,5 @@
 ﻿using Agenda.Models.POCO;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,10 @@ namespace AgendaInfo.DATA
             bdd.User.Add(user);
             bdd.SaveChanges();
         }
-        
+        public Task<List<User>> ToListAsync()
+        {
+            return bdd.User.ToListAsync();
+        }
         public void Update(User user)
         {
             bdd.User.Update(user);

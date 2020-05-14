@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,13 +8,26 @@ namespace Agenda.Models.POCO
 {
     public class Agenda
     {
+
         /***************************PROPRIETES*******************************/
         public virtual List<DayOff> ListDaysOff { get; set; }                   // Liste des jours de congés du technicien
         public virtual List<Service> ListTarifService { get; set; }             // Liste des services proposés par le technicien
         public virtual List<RendezVous> ListScheduledRendezVous { get; set; }   // Liste des rendez-vous programmés
         public virtual List<Evaluation> ListEvaluations { get; set; }           // Liste des évaluations 
-                                                                         
+        private static Agenda instance = null;
+
         /***************************Constructeur*******************************/
+        private Agenda()
+        {
+            
+        }
+
+        public static Agenda GetInstance()
+        {
+            if (instance == null)
+                instance = new Agenda();
+            return instance;
+        }
 
         /***************************METHODES*******************************/
 
@@ -54,7 +68,7 @@ namespace Agenda.Models.POCO
         }
 
         /*=========================================
-         * AddService: Ajoute un rdv à la Liste
+         * AddRendezVous: Ajoute un rdv à la Liste
          *=========================================*/
         public void AddRendezVous(RendezVous rendezvous)
         {
@@ -63,7 +77,7 @@ namespace Agenda.Models.POCO
         }
 
         /*=========================================
-         * DeleteService: Supprime un rdv à la Liste
+         * DeleteRendezVous: Supprime un rdv à la Liste
          *=========================================*/
         public void DeleteRendezVous(RendezVous rendezvous)
         {
@@ -72,7 +86,7 @@ namespace Agenda.Models.POCO
         }
 
         /*=========================================
-         * AddService: Ajoute une évaluation à la Liste
+         * AddEvaluation: Ajoute une évaluation à la Liste
          *=========================================*/
         public void AddEvaluation(Evaluation evaluation)
         {
@@ -81,9 +95,9 @@ namespace Agenda.Models.POCO
         }
 
         /*=========================================
-         * DeleteService: Supprime une évaluation  à la Liste
+         * DeleteEvaluation: Supprime une évaluation  à la Liste
          *=========================================*/
-        public void DeleteREvaluation(Evaluation evaluation)
+        public void DeleteEvaluation(Evaluation evaluation)
         {
             ListEvaluations.Remove(evaluation);
             // TODO: appel de la DAL

@@ -20,9 +20,9 @@ namespace AgendaInfo.Controllers
         }
 
         // GET: Admins
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Admin.ToListAsync());
+            return View();
         }
 
         // GET: Admins/Details/5

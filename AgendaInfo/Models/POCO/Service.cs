@@ -15,10 +15,12 @@ namespace Agenda.Models.POCO
         public string Name { get; set; }    // Nom du service (ce qu'il représente (ex: formatage, réparation clavier, etc..))
         [Required]
         [Range(1,float.MaxValue,ErrorMessage ="Veuillez entrez un prix au-dessus de 0 €")]
+        [DataType(DataType.Currency)]
         [Display(Name = "Prix (en euro) du service :")]
         public double Price { get; set; }   // Prix du service
         [Required]
         [Display(Name = "Durée (en minute) service :")]
+        [DataType(DataType.Duration)]
         public int Duration { get; set; }   // Durée du service en minute
         /***************************Constructeur*******************************/
         public Service() { }
