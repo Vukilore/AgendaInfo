@@ -15,6 +15,7 @@ namespace Agenda.Models.POCO
 
 
         /***************************Constructeur*******************************/
+        public Service() { }
         public Service(string n, double p, int d)
         {
             n = Name;

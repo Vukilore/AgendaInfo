@@ -18,9 +18,10 @@ namespace Agenda.Models.POCO
         [MaxLength(244,ErrorMessage ="Votre commentaire ne doit pas dépasser 244 caractères")]
         [Display(Name ="Commentaire 244 caractère")]
         public string Comment { get; set; }             // Commentaire sur l'évaluation
-        public RendezVous RendezVous { get; set; }      // Rendez-vous concerné par l'évaluation
+        public virtual RendezVous RendezVous { get; set; }      // Rendez-vous concerné par l'évaluation
 
         /***************************Constructeur*******************************/
+        public Evaluation() { }
         public Evaluation (float _rate, string _comment)
 	    {
             Rate = _rate;

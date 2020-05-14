@@ -16,29 +16,29 @@ namespace AgendaInfo.DATA
         }
         public void Add(Service srv)
         {
-            bdd.ContextService.Add(srv);
+            bdd.Service.Add(srv);
             bdd.SaveChanges();
         }
 
         public void Delete(Service srv)
         {
-            bdd.ContextService.Remove(srv);
+            bdd.Service.Remove(srv);
             bdd.SaveChanges();
         }
 
         public Service Get(int id)
         {
-            return bdd.ContextService.Where(p => p.ID == id).SingleOrDefault();
+            return bdd.Service.Where(p => p.ID == id).SingleOrDefault();
         }
 
         public List<Service> GetAll()
         {
-            return bdd.ContextService.ToList();
+            return bdd.Service.ToList();
         }
 
         public void Update(Service srv)
         {
-            bdd.ContextService.Update(srv);
+            bdd.Service.Update(srv);
             bdd.SaveChanges();
         }
     }

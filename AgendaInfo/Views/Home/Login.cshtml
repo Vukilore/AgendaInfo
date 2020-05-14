@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h2>Connexion</h2>
+@ViewBag.Message
+<form action="/Home/Login" method="POST">
+    <input type="text" name="Email" placeholder="Email" />
+    <input type="password" name="Password" placeholder="Mot de passe" />
+    <input type="submit" value="Se connecter" />
+</form>
+<input type="button" value="S'inscrire" onclick="location.href='@Url.Action("Register", "Home")'" />

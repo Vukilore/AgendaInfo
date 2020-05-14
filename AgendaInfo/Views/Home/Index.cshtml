@@ -3,6 +3,8 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Bienvenue</h1>
 </div>
+
+<input type="button" value="S'inscrire" onclick="location.href='@Url.Action("Create", "Customers")'" />
+<input type="button" value="Se connecter" onclick="location.href='@Url.Action("Login", "Home")'" />

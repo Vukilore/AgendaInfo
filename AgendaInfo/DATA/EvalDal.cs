@@ -15,31 +15,31 @@ namespace AgendaInfo.DATA
         }
         public Evaluation Get(int id)
         {
-            return bdd.ContextEvaluation.Where(p => p.ID == id).SingleOrDefault();
+            return bdd.Evaluation.Where(p => p.ID == id).SingleOrDefault();
 
         }
         public Evaluation Get(RendezVous rdv)
         {
-            return bdd.ContextEvaluation.Where(p => p.RendezVous == rdv).SingleOrDefault();
+            return bdd.Evaluation.Where(p => p.RendezVous == rdv).SingleOrDefault();
         }
         
         public List<Evaluation> GetAll()
         {
-            return bdd.ContextEvaluation.ToList();
+            return bdd.Evaluation.ToList();
         }
         public void Add(Evaluation eval)
         {
-            bdd.ContextEvaluation.Add(eval);
+            bdd.Evaluation.Add(eval);
             bdd.SaveChanges();
         }
         public void Delete(Evaluation eval)
         {
-            bdd.ContextEvaluation.Remove(eval);
+            bdd.Evaluation.Remove(eval);
             bdd.SaveChanges();
         }
         public void Update(Evaluation eval)
         {
-            bdd.ContextEvaluation.Update(eval);
+            bdd.Evaluation.Update(eval);
             bdd.SaveChanges();
         }
     }

@@ -30,7 +30,7 @@ namespace AgendaInfo
                 options.Cookie.IsEssential = true;
             });
             services.AddControllersWithViews();
-            services.AddDbContext<BDDContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BDDContext")).UseLazyLoadingProxies());
+            services.AddDbContext<BDDContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).UseLazyLoadingProxies());
             services.AddTransient<IUserDAL, UserDAL>();
             services.AddTransient<IEvalDAL,EvalDAL>();
             services.AddTransient<IServicesDAL, ServicesDAL>();

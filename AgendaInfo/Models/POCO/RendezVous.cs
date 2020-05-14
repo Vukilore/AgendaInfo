@@ -9,12 +9,13 @@ namespace Agenda.Models.POCO
     {
         /***************************PROPRIETES*******************************/
         public int ID { get; set; }                 // ID du rendez-vous
-        public Customer Customer { get; set; }      // L'auteur du rendez-vous
-        public Service Service { get; set; }        // Le service choisis
+        public virtual Customer Customer { get; set; }      // L'auteur du rendez-vous
+        public virtual Service Service { get; set; }        // Le service choisis
         public string Comment { get; set; }         // Un commentaire supplémentaire de la part du client
         public DateTime BeginDate { get; set; }     // Date/heure de début du rendez-vous
-
+        
         /***************************Constructeur*******************************/
+        public RendezVous() { }
         public RendezVous (Customer _customer, Service _service, string _comment, DateTime _beginDate)
 	    {
             Customer = _customer;

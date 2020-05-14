@@ -12,10 +12,13 @@ namespace Agenda.Models.POCO
         public virtual List<Customer> ListCustomers { get; set; }
 
         /***************************Constructeur*******************************/
-        public Admin(int i, string n, string l, DateTime b, string a, int ph, string e, string pa)
+        /*public Admin(int i, string n, string l, DateTime b, string a, int ph, string e, string pa)
             : base(i, n, l, b, a, ph, e, pa) { }
+*/
 
-
+        public Admin() { }
+        public Admin(string _email):base(_email) { }
+        
         /***************************METHODES*******************************/
 
         /*=========================================

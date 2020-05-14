@@ -16,10 +16,19 @@ namespace AgendaInfo.DATA
 
 
         // Création des tables.
-        public DbSet<User>          ContextUser;
-        public DbSet<Customer>      ContextCustomer;
-        public DbSet<Admin>         ContextAdmin;
-        public DbSet<Evaluation>    ContextEvaluation;
-        public DbSet<Service>       ContextService;
+        public DbSet<User>       User { get; set; }
+        public DbSet<Customer>   Customer { get; set; }
+        public DbSet<Admin>      Admin { get; set; }
+        public DbSet<Evaluation> Evaluation { get; set; }
+        public DbSet<Service>    Service { get; set; }
+
+        // Configuration du discriminator
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                        .HasDiscriminator<string>("Type")
+                        .HasValue<Admin>("Admin")
+                        .HasValue<Customer>("Customer");
+        }
     }
 }

@@ -8,10 +8,10 @@ namespace Agenda.Models.POCO
     public class Agenda
     {
         /***************************PROPRIETES*******************************/
-        public List<DayOff> ListDaysOff { get; set; }                   // Liste des jours de congés du technicien
-        public List<Service> ListTarifService { get; set; }             // Liste des services proposés par le technicien
-        public List<RendezVous> ListScheduledRendezVous { get; set; }   // Liste des rendez-vous programmés
-        public List<Evaluation> ListEvaluations { get; set; }           // Liste des évaluations 
+        public virtual List<DayOff> ListDaysOff { get; set; }                   // Liste des jours de congés du technicien
+        public virtual List<Service> ListTarifService { get; set; }             // Liste des services proposés par le technicien
+        public virtual List<RendezVous> ListScheduledRendezVous { get; set; }   // Liste des rendez-vous programmés
+        public virtual List<Evaluation> ListEvaluations { get; set; }           // Liste des évaluations 
                                                                          
         /***************************Constructeur*******************************/
 

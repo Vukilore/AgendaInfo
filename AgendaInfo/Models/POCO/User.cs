@@ -1,6 +1,7 @@
 ﻿using AgendaInfo.DATA;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,36 +12,72 @@ namespace Agenda.Models.POCO
     {
         /***************************PROPRIETES*******************************/
         public int ID { get; set; }                 // ID de l'utilisateur
+
+        [Required(ErrorMessage = "Veuillez entrer votre nom de famille.")]
+        [Display(Name = "Nom de famille : ")] 
         public string Name { get; set; }            // Nom de l'utilisateur
+
+        [Required(ErrorMessage = "Veuillez entrer votre prénom.")]
+        [Display(Name = "Prénom : ")]
         public string FirstName { get; set; }       // Prénom de l'utilisateur
+
+        [Required(ErrorMessage = "Veuillez entrer votre date de naissance.")]
+        [Display(Name = "Date de naissance : ")]
         public DateTime Birthday { get; set; }      // Date de naissance de l'utilisateur
+
+        [Required(ErrorMessage = "Veuillez entrer votre adresse d'habitation.")]
+        [Display(Name = "Adresse de location : ")]
         public string Address { get; set; }         // Adresse de l'utilisateur
+
+        [Required(ErrorMessage = "Veuillez entrer votre numéro de téléphone.")]
+        [Display(Name = "Numero de téléphone : ")]
         public int PhoneNumber { get; set; }        // Numéro de téléphone de l'utilisateur
+
+        [Required(ErrorMessage = "Veuillez entrer votre email.")]
+        [Display(Name = "Email : ")]
         public string Email { get; set; }           // Adresse email de l'utilisateur
+
+        [Required(ErrorMessage = "Veuillez entrer votre mot de passe.")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Mot de passe : ")]
         public string Password { get; set; }        // Mot de passe de l'utilisateur
 
+        [Required(ErrorMessage = "Veuillez confirmer votre mot de passe.")]
+        [DataType(DataType.Password)]
+        [Compare("Password")]
+        [Display(Name = "Confirmer mot de passe: ")]
+        [NotMapped]
+        public string ConfirmPassword { get; set; }
+
+
+
         /***************************Constructeur*******************************/
-        public User (int i, string n, string l, DateTime b, string a, int ph, string e, string pa)
+        public User() { }
+        public User(string _email)
         {
-            i = ID;
-            n = Name;
-            l = FirstName;
-            b = Birthday;
-            a = Address;
-            ph = PhoneNumber;
-            e = Email;
-            pa = Password;
+            Email = _email;
         }
+        //public User (int i, string n, string l, DateTime b, string a, int ph, string e, string pa)
+        //{
+        //    i = ID;
+        //    n = Name;
+        //    l = FirstName;
+        //    b = Birthday;
+        //    a = Address;
+        //    ph = PhoneNumber;
+        //    e = Email;
+        //    pa = Password;
+        //}
 
         /***************************METHODES*******************************/
 
         /*=========================================
          * LoadUser: Charge l'utilisateur depuis la BDD
          *=========================================*/
-        public void LoadUserByEmail(IUserDAL userDAL) { 
-                this = userDAL.Get(Email);
-        } 
-        // public User LoadUserByID(IUser userDAL) { return 0; } // TODO: A compléter
+        public User LoadUserByEmail(IUserDAL userDAL) { 
+            return userDAL.Get(Email);
+        }
 
+        // public User LoadUserByID(IUser userDAL) { return 0; } // TODO: A compléter
     }
 }
