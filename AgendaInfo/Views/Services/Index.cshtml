@@ -12,9 +12,12 @@
     <title>Index</title>
 </head>
 <body>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@{ if (ViewBag.IsAdmin == true)
+    {
+    <p>
+    <a asp-action="Create">Créer un nouveau service</a>
+</p>}
+    }
 <table class="table">
     <thead>
         <tr>
@@ -31,7 +34,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -42,10 +46,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Duration)
             </td>
+            
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                @{ if (ViewBag.IsAdmin == true)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.ID">Editer</a>
+                        <a asp-action="Delete" asp-route-id="@item.ID">Supprimer</a>
+                    }}
+                <a asp-action="Details" asp-route-id="@item.ID">Détails</a>
             </td>
         </tr>
 }

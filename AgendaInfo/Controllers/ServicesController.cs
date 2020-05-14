@@ -26,7 +26,11 @@ namespace AgendaInfo.Controllers
         // GET: Services
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Service.ToListAsync());
+            ViewBag.IsAdmin = false;
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail")))
+                if (IsAdmin(HttpContext.Session.GetString("userEmail")))
+                    ViewBag.IsAdmin = true;
+                return View(await _context.Service.ToListAsync());
         }
 
         // GET: Services/Details/5
