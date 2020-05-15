@@ -20,7 +20,9 @@ namespace AgendaInfo.DATA
         public DbSet<Admin>      Admin { get; set; }
         public DbSet<Evaluation> Evaluation { get; set; }
         public DbSet<Service>    Service { get; set; }
+        public DbSet<DayOff> DayOff { get; set; }
         public DbSet<Agenda.Models.POCO.Agenda>     Agenda { get; set; }
+        
 
         // Configuration du discriminator
         protected override void OnModelCreating(ModelBuilder modelBuilder)
