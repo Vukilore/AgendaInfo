@@ -19,7 +19,6 @@ namespace Agenda.Models.POCO
         public Customer() { }
         public Customer(string _email) : base(_email) { }
 
-        
 
         /***************************METHODES*******************************/
         /*=========================================

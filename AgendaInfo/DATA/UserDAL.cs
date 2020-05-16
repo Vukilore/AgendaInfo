@@ -24,10 +24,7 @@ namespace AgendaInfo.DATA
             bdd.User.Add(user);
             bdd.SaveChanges();
         }
-        public Task<List<User>> ToListAsync()
-        {
-            return bdd.User.ToListAsync();
-        }
+        public Task<List<User>> ToListAsync() => bdd.User.ToListAsync();
         public void Update(User user)
         {
             bdd.User.Update(user);
@@ -40,19 +37,10 @@ namespace AgendaInfo.DATA
             return (t != null) ? true : false;
         }
 
-        public User Get(int id)
-        {
-            return bdd.User.Where(p => p.ID == id).SingleOrDefault();
-        }
+        public User Get(int id) => bdd.User.Where(p => p.ID == id).SingleOrDefault();
 
-        public User Get(string email)
-        {
-            return bdd.User.Where(p => p.Email == email).SingleOrDefault();
-        }
+        public User Get(string email) => bdd.User.Where(p => p.Email == email).SingleOrDefault();
 
-        public List<User> GetAll()
-        {
-            return bdd.User.ToList();
-        }
+        public List<User> GetAll() => bdd.User.ToList();
     }
 }

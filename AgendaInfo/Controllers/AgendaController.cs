@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Agenda.Models.POCO;
+using AgendaInfo.DATA;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,33 @@ namespace AgendaInfo.Controllers
 {
     public class AgendaController : Controller
     {
-        // GET: Agenda
-        public ActionResult Index()
+        private readonly IRendezVousDAL rdvDAL;
+
+        public AgendaController(IRendezVousDAL _rdvDAL)
         {
-            return View();
+            rdvDAL = _rdvDAL;
+        }
+        public ActionResult Index(int Week = 0)
+        {
+            // 1. On défini la semaine à gérer depuis 'aujourd'hui + les semaines à regarder' 
+            DateTime WeekToShow = DateTime.Now.AddDays(7 * Week);
+
+            //2. On trouve le lundi de la semaine à gérer
+            DateTime MondayOfWeek = WeekToShow.AddDays(-(int)WeekToShow.DayOfWeek + (int)DayOfWeek.Monday);
+            ViewBag.MondayOfWeek = MondayOfWeek;
+
+            //3. On crée une liste des RDV de la semaine à gérer
+            List<RendezVous> RdvThisWeek = new List<RendezVous>();
+
+            //4. On récupère tous les rdv
+            List<RendezVous> ListRendezVous = Agenda.Models.POCO.Agenda.GetListOfRDV(rdvDAL);
+
+            //5. Pour chaque rdv dans la liste de l'agenda
+            foreach (RendezVous rdv in ListRendezVous)
+                //5.1. Si le rendez-vous se situe dans la semaine on l'ajoute à la liste
+                if (rdv.BeginDate.Day >= MondayOfWeek.Day && rdv.BeginDate <= (MondayOfWeek.AddDays(7)))
+                    RdvThisWeek.Add(rdv);
+            return View(RdvThisWeek);
         }
 
         // GET: Agenda/Details/5

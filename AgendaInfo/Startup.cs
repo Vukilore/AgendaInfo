@@ -35,6 +35,7 @@ namespace AgendaInfo
             services.AddTransient<IEvalDAL,EvalDAL>();
             services.AddTransient<IServicesDAL, ServicesDAL>();
             services.AddTransient<IDayOffDAL, DayOffDAL>();
+            services.AddTransient<IRendezVousDAL, RendezVousDAL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

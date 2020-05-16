@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace AgendaInfo.DATA
 {
-    interface IDayOffDAL
+    public interface IDayOffDAL
     {
         public DayOff Get(int id);
-        public List<DayOff> GetAll();
+        public List<DayOff> All { get; }
         public void Add(DayOff dayoff);
         public void Delete(DayOff dayoff);
         public void Update(DayOff dayoff);

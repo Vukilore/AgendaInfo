@@ -21,6 +21,7 @@ namespace AgendaInfo.DATA
         public DbSet<Evaluation> Evaluation { get; set; }
         public DbSet<Service>    Service { get; set; }
         public DbSet<DayOff> DayOff { get; set; }
+        public DbSet<RendezVous> RendezVous { get; set; }
         public DbSet<Agenda.Models.POCO.Agenda>     Agenda { get; set; }
         
 
@@ -34,8 +35,5 @@ namespace AgendaInfo.DATA
             modelBuilder.Entity<Agenda.Models.POCO.Agenda>()
                         .HasNoKey();
         }
-
-        // Configuration du discriminator
-        public DbSet<Agenda.Models.POCO.RendezVous> RendezVous { get; set; }
     }
 }

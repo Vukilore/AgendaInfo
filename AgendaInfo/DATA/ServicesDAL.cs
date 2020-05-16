@@ -26,15 +26,9 @@ namespace AgendaInfo.DATA
             bdd.SaveChanges();
         }
 
-        public Service Get(int id)
-        {
-            return bdd.Service.Where(p => p.ID == id).SingleOrDefault();
-        }
+        public Service Get(int id) => bdd.Service.Where(p => p.ID == id).SingleOrDefault();
 
-        public List<Service> GetAll()
-        {
-            return bdd.Service.ToList();
-        }
+        public List<Service> All => bdd.Service.ToList();
 
         public void Update(Service srv)
         {

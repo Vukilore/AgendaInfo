@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgendaInfo.DATA;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Agenda.Models.POCO
         /***************************PROPRIETES*******************************/
         public virtual List<DayOff> ListDaysOff { get; set; }                   // Liste des jours de congés du technicien
         public virtual List<Service> ListTarifService { get; set; }             // Liste des services proposés par le technicien
-        public virtual List<RendezVous> ListScheduledRendezVous { get; set; }   // Liste des rendez-vous programmés
+        public virtual List<RendezVous> ListRendezVous { get; set; }            // Liste des rendez-vous programmés
         public virtual List<Evaluation> ListEvaluations { get; set; }           // Liste des évaluations 
         private static Agenda instance = null;
 
@@ -22,6 +23,7 @@ namespace Agenda.Models.POCO
             
         }
 
+
         public static Agenda GetInstance()
         {
             if (instance == null)
@@ -30,6 +32,7 @@ namespace Agenda.Models.POCO
         }
 
         /***************************METHODES*******************************/
+        public static List<RendezVous> GetListOfRDV(IRendezVousDAL rdvDAL) => rdvDAL.GetAll();
 
         /*=========================================
          * AddDayOff: Ajoute un congé à la Liste
@@ -72,7 +75,7 @@ namespace Agenda.Models.POCO
          *=========================================*/
         public void AddRendezVous(RendezVous rendezvous)
         {
-            ListScheduledRendezVous.Add(rendezvous);
+            ListRendezVous.Add(rendezvous);
             // TODO: appel de la DAL
         }
 
@@ -81,7 +84,7 @@ namespace Agenda.Models.POCO
          *=========================================*/
         public void DeleteRendezVous(RendezVous rendezvous)
         {
-            ListScheduledRendezVous.Remove(rendezvous);
+            ListRendezVous.Remove(rendezvous);
             // TODO: appel de la DAL
         }
 

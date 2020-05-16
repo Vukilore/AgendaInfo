@@ -20,9 +20,9 @@ namespace AgendaInfo.Controllers
         }
 
         // GET: RendezVous
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.RendezVous.ToListAsync());
+            return View("../Agenda/Index");
         }
 
         // GET: RendezVous/Details/5
@@ -44,8 +44,15 @@ namespace AgendaInfo.Controllers
         }
 
         // GET: RendezVous/Create
-        public IActionResult Create()
+        public IActionResult Create(DateTime Date)
         {
+            // 1. Si la date est nul on redirige vers le calendrier
+            if (Date == null) Redirect(nameof(Index));
+
+            //2. On Stock la date
+            ViewBag.ReservedDate = Date;
+
+            //2. Sinon on affiche la vue de prise de rdv
             return View();
         }
 

@@ -13,14 +13,8 @@ namespace AgendaInfo.DATA
         {
             bdd = context;
         }
-        public DayOff Get(int id)
-        {
-            return bdd.DayOff.Where(p => p.ID == id).SingleOrDefault();
-        }
-        public List<DayOff> GetAll()
-        {
-            return bdd.DayOff.ToList();
-        }
+        public DayOff Get(int id) => bdd.DayOff.Where(p => p.ID == id).SingleOrDefault();
+        public List<DayOff> All => bdd.DayOff.ToList();
         public void Add(DayOff dayoff)
         {
             bdd.DayOff.Add(dayoff);

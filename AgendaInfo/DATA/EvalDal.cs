@@ -13,20 +13,9 @@ namespace AgendaInfo.DATA
         {
             bdd = context;
         }
-        public Evaluation Get(int id)
-        {
-            return bdd.Evaluation.Where(p => p.ID == id).SingleOrDefault();
-
-        }
-        public Evaluation Get(RendezVous rdv)
-        {
-            return bdd.Evaluation.Where(p => p.RendezVous == rdv).SingleOrDefault();
-        }
-        
-        public List<Evaluation> GetAll()
-        {
-            return bdd.Evaluation.ToList();
-        }
+        public Evaluation Get(int id) => bdd.Evaluation.Where(p => p.ID == id).SingleOrDefault();
+        public Evaluation Get(RendezVous rdv) => bdd.Evaluation.Where(p => p.RendezVous == rdv).SingleOrDefault();
+        public List<Evaluation> GetAll() => bdd.Evaluation.ToList();
         public void Add(Evaluation eval)
         {
             bdd.Evaluation.Add(eval);

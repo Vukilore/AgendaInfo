@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Agenda.Models.POCO.RendezVous>
+@{ DateTime MondayWeek = new DateTime(ViewBag.MondayOfWeek.Year, ViewBag.MondayOfWeek.Month, ViewBag.MondayOfWeek.Day, 8, 0, 0); }
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Prendre un rendez-vous</title>
+</head>
+<h4>Semaine n°@ViewBag.WeekNumber</h4>
+<body>
+    <table>
+        <caption>Semaine n° XX / Mois @MondayWeek.Month</caption>
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Lundi @MondayWeek.Day</th>
+                <th scope="col">Mardi @MondayWeek.AddDays(1).Day</th>
+                <th scope="col">Mercredi @MondayWeek.AddDays(2).Day</th>
+                <th scope="col">Jeudi @MondayWeek.AddDays(3).Day</th>
+                <th scope="col">Vendredi @MondayWeek.AddDays(4).Day</th>
+                <th scope="col">Samedi @MondayWeek.AddDays(5).Day</th>
+                <th scope="col">Dimanche @MondayWeek.AddDays(6).Day</th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+            @for (int hour = 0; hour <= 8; hour++)
+            {
+            <tr>
+                @{int thdate = hour + 8;}
+                <th scope="row">@thdate h </th>
+
+                @for (int day = 0; day <= 6; day++)
+                {
+                    // Compare les jours déjà passé
+                    if (DateTime.Compare(DateTime.Now, MondayWeek.AddDays(day).AddHours(hour)) < 0)
+                    {
+                        bool foundOne = false;
+                        @foreach (var item in Model)
+                        {
+                            // Si il s'agit d'une heure où on doit afficher un rendez vous
+                            if (DateTime.Compare(item.BeginDate, MondayWeek.AddDays(day).AddHours(hour)) == 0)
+                            {
+                                <td> Y A UN RDV ICI MOTHER FUCKER </td>
+                                foundOne = true;
+                            }
+                        }
+                        if (foundOne == false)
+                        {
+                            <td><a asp-controller="RendezVous" asp-action="Create" asp-route-id="@MondayWeek.AddDays(day).AddHours(hour)">Prendre rendezvous</a></td>
+                        }
+                    }
+                    else
+                    {
+                        <td style="background-color: #808080;"></td>
+                    }
+
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

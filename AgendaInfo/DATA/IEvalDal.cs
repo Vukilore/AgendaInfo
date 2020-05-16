@@ -10,7 +10,6 @@ namespace AgendaInfo.DATA
     {
         public Evaluation Get(int id);
         public Evaluation Get(RendezVous rdv);
-
         public List<Evaluation> GetAll();
         public void Add(Evaluation eval);
         public void Delete(Evaluation eval);
