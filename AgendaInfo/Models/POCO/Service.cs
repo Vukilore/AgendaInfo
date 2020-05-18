@@ -37,7 +37,7 @@ namespace Agenda.Models.POCO
          *=========================================*/
         public override string ToString()
         {
-            return $"Le service {Name} au prix de {Price} a pour durée {Duration} heures.";
+            return $"Le service {Name} au prix de {Price} € a pour durée {Duration} heures.";
         }
 
     }

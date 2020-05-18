@@ -1,0 +1,26 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Confirmation de prise de rendez-vous</title>
+</head>
+<body>
+    <p>Vous avez bien enregistré votre rendez vous !</p>
+    <p>Voici les détails du rendez vous :</p>
+    <p>@ViewBag.RendezVous.Customer</p>
+
+    <p>@ViewBag.RendezVous.Service</p>
+
+    <p>@ViewBag.RendezVous.BeginDate</p>
+
+    <p>@ViewBag.RendezVous.Comment</p>
+
+    <a asp-action="Index" asp-controller="Agenda"><< Retour au calendrier</a>
+</body>
+</html>

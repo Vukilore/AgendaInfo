@@ -75,6 +75,14 @@ namespace Agenda.Models.POCO
             return userDAL.ToListAsync();
         }
 
+        /*=========================================
+         * ToString: Redéfinition du ToString
+         *=========================================*/
+        public override string ToString()
+        {
+            return $"{Name} {FirstName}";
+        }
+
         // public User LoadUserByID(IUser userDAL) { return 0; } // TODO: A compléter
     }
 }

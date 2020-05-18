@@ -49,7 +49,7 @@
                                 // Si il s'agit d'une heure où on doit afficher un rendez vous
                                 if (DateTime.Compare(item.BeginDate, MondayWeek.AddDays(day).AddHours(hour)) == 0)
                                 {
-                                    <td> Y A UN RDV ICI MOTHER FUCKER </td>
+                                    <td><p>@item.Customer.Name</p><p>@item.Customer.FirstName</p><p>/!\ Remarque du client: @item.Comment</p></td>
                                     foundOne = true;
                                 }
                             }

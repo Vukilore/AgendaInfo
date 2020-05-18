@@ -74,10 +74,10 @@ namespace Agenda.Models.POCO
         /*=========================================
          * AddRendezVous: Ajoute un rdv à la Liste
          *=========================================*/
-        public void AddRendezVous(RendezVous rendezvous)
+        public void AddRendezVous(RendezVous rendezvous, IRendezVousDAL rdvDAl)
         {
             ListRendezVous.Add(rendezvous);
-
+            rdvDAl.Add(rendezvous);
         }
 
         /*=========================================
