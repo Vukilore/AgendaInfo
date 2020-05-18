@@ -30,6 +30,7 @@ namespace AgendaInfo.Controllers
                 // 1. Création de l'utilisateur temporaire
                 User tmpUser = new User(HttpContext.Session.GetString("userEmail"));
                 tmpUser.LoadUserByEmail(userDAL);
+                ViewBag.FirstName = tmpUser.FirstName;
                 if (IsAdmin(tmpUser.Email)) return View("Indexf", await _context.User.ToListAsync() as IEnumerable<User>);
                 else return View();
             }
