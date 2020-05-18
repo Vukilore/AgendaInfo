@@ -3,36 +3,40 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Agenda.Models.POCO
 {
     public class Agenda
     {
-
         /***************************PROPRIETES*******************************/
+        public int ID { get; set; }
         public virtual List<DayOff> ListDaysOff { get; set; }                   // Liste des jours de congés du technicien
-        public virtual List<Service> ListTarifService { get; set; }             // Liste des services proposés par le technicien
+        public virtual List<Service> ListServices { get; set; }                 // Liste des services proposés par le technicien
         public virtual List<RendezVous> ListRendezVous { get; set; }            // Liste des rendez-vous programmés
         public virtual List<Evaluation> ListEvaluations { get; set; }           // Liste des évaluations 
+
         private static Agenda instance = null;
 
         /***************************Constructeur*******************************/
-        private Agenda()
+        public Agenda()
         {
-            
-        }
 
+        }
 
         public static Agenda GetInstance()
         {
             if (instance == null)
-                instance = new Agenda();
+                instance =  new Agenda();
             return instance;
         }
 
         /***************************METHODES*******************************/
-        public static List<RendezVous> GetListOfRDV(IRendezVousDAL rdvDAL) => rdvDAL.GetAll();
+
+
+        /*=========================================
+         * UpdateRDV: Met à jour la liste des RDV
+         *=========================================*/
+        public void UpdateRDV(IRendezVousDAL rdvDAL) => ListRendezVous = rdvDAL.GetAll();
 
         /*=========================================
          * AddDayOff: Ajoute un congé à la Liste
@@ -40,7 +44,6 @@ namespace Agenda.Models.POCO
         public void AddDayOff(DayOff dayoff)
         {
             ListDaysOff.Add(dayoff);
-            // TODO: appel de la DAL
         }
 
         /*=========================================
@@ -49,7 +52,7 @@ namespace Agenda.Models.POCO
         public void DeleteDayOff(DayOff dayoff)
         {
             ListDaysOff.Remove(dayoff);
-            // TODO: appel de la DAL
+
         }
 
         /*=========================================
@@ -57,8 +60,7 @@ namespace Agenda.Models.POCO
          *=========================================*/
         public void AddService(Service service)
         {
-            ListTarifService.Add(service);
-            // TODO: appel de la DAL
+            ListServices.Add(service);
         }
 
         /*=========================================
@@ -66,8 +68,7 @@ namespace Agenda.Models.POCO
          *=========================================*/
         public void DeleteService(Service service)
         {
-            ListTarifService.Remove(service);
-            // TODO: appel de la DAL
+            ListServices.Remove(service);
         }
 
         /*=========================================
@@ -76,7 +77,7 @@ namespace Agenda.Models.POCO
         public void AddRendezVous(RendezVous rendezvous)
         {
             ListRendezVous.Add(rendezvous);
-            // TODO: appel de la DAL
+
         }
 
         /*=========================================
@@ -85,7 +86,7 @@ namespace Agenda.Models.POCO
         public void DeleteRendezVous(RendezVous rendezvous)
         {
             ListRendezVous.Remove(rendezvous);
-            // TODO: appel de la DAL
+
         }
 
         /*=========================================
@@ -94,7 +95,7 @@ namespace Agenda.Models.POCO
         public void AddEvaluation(Evaluation evaluation)
         {
             ListEvaluations.Add(evaluation);
-            // TODO: appel de la DAL
+
         }
 
         /*=========================================
@@ -103,7 +104,7 @@ namespace Agenda.Models.POCO
         public void DeleteEvaluation(Evaluation evaluation)
         {
             ListEvaluations.Remove(evaluation);
-            // TODO: appel de la DAL
+
         }
     }
 }

@@ -13,10 +13,12 @@ namespace AgendaInfo.Controllers
     public class RendezVousController : Controller
     {
         private readonly BDDContext _context;
+        private readonly IRendezVousDAL rdvDAL;
 
-        public RendezVousController(BDDContext context)
+        public RendezVousController(BDDContext context, IRendezVousDAL _rdvDAL)
         {
             _context = context;
+            rdvDAL = _rdvDAL;
         }
 
         // GET: RendezVous
@@ -44,13 +46,13 @@ namespace AgendaInfo.Controllers
         }
 
         // GET: RendezVous/Create
-        public IActionResult Create(DateTime Date)
+        public IActionResult Create(DateTime time)
         {
-            // 1. Si la date est nul on redirige vers le calendrier
-            if (Date == null) Redirect(nameof(Index));
+            //1. On Stock la date
+            ViewBag.ReservedDate = time;
 
-            //2. On Stock la date
-            ViewBag.ReservedDate = Date;
+            //2. On récupère les services
+            
 
             //2. Sinon on affiche la vue de prise de rdv
             return View();

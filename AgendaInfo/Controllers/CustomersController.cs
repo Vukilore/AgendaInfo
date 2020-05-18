@@ -53,7 +53,7 @@ namespace AgendaInfo.Controllers
 
         public IActionResult Create()
         {
-            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail"))) return Redirect("../Home/Index");/*RedirectToAction(nameof(Index));*/
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail"))) return Redirect("../Home/Index");
             return View();
         }
 

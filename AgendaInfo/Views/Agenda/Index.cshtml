@@ -15,6 +15,7 @@
 <h4>Semaine n°@ViewBag.WeekNumber</h4>
 <body>
     <table>
+        <p><a asp-controller="Agenda" asp-action="Index" asp-route-id="@ViewBag.CurrentWeek-1"><< Semaine précédante</a></p>
         <caption>Semaine n° XX / Mois @MondayWeek.Month</caption>
         <thead>
             <tr>
@@ -33,39 +34,41 @@
         <tbody>
             @for (int hour = 0; hour <= 8; hour++)
             {
-            <tr>
-                @{int thdate = hour + 8;}
-                <th scope="row">@thdate h </th>
+                <tr>
+                    @{int thdate = hour + 8;}
+                    <th scope="row">@thdate h </th>
 
-                @for (int day = 0; day <= 6; day++)
-                {
-                    // Compare les jours déjà passé
-                    if (DateTime.Compare(DateTime.Now, MondayWeek.AddDays(day).AddHours(hour)) < 0)
+                    @for (int day = 0; day <= 6; day++)
                     {
-                        bool foundOne = false;
-                        @foreach (var item in Model)
+                        // Compare les jours déjà passé
+                        if (DateTime.Compare(DateTime.Now, MondayWeek.AddDays(day).AddHours(hour)) < 0)
                         {
-                            // Si il s'agit d'une heure où on doit afficher un rendez vous
-                            if (DateTime.Compare(item.BeginDate, MondayWeek.AddDays(day).AddHours(hour)) == 0)
+                            bool foundOne = false;
+                            @foreach (var item in Model)
                             {
-                                <td> Y A UN RDV ICI MOTHER FUCKER </td>
-                                foundOne = true;
+                                // Si il s'agit d'une heure où on doit afficher un rendez vous
+                                if (DateTime.Compare(item.BeginDate, MondayWeek.AddDays(day).AddHours(hour)) == 0)
+                                {
+                                    <td> Y A UN RDV ICI MOTHER FUCKER </td>
+                                    foundOne = true;
+                                }
+                            }
+                            if (foundOne == false)
+                            {
+                                <td>@Html.ActionLink("Prendre rendez-vous", "Create", "RendezVous", new { time = MondayWeek.AddDays(day).AddHours(hour) }, null)</td>
                             }
                         }
-                        if (foundOne == false)
+                        else
                         {
-                            <td><a asp-controller="RendezVous" asp-action="Create" asp-route-id="@MondayWeek.AddDays(day).AddHours(hour)">Prendre rendezvous</a></td>
+                            <td style="background-color: #808080;"></td>
                         }
-                    }
-                    else
-                    {
-                        <td style="background-color: #808080;"></td>
-                    }
 
-                }
-            </tr>
+                    }
+                </tr>
             }
         </tbody>
+        <p><a asp-controller="Agenda" asp-action="Index" asp-route-id="@ViewBag.CurrentWeek+1">Semaine suivante >></a></p>
     </table>
+
 </body>
 </html>

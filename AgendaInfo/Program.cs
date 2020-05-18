@@ -15,12 +15,12 @@ namespace AgendaInfo
     {
         public static void Main(string[] args)
         {
+            
             var host = CreateHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                SeedData.Initialize(services);
-                /*try
+                try
                 {
                     SeedData.Initialize(services);
                 }
@@ -28,7 +28,7 @@ namespace AgendaInfo
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "Une erreur est apparue durant la phase de seed.");
-                }*/
+                }
             }
                 
             host.Run();

@@ -15,15 +15,14 @@ namespace AgendaInfo.DATA
         }
 
         // Création des tables.
-        public DbSet<User>       User { get; set; }
-        public DbSet<Customer>   Customer { get; set; }
-        public DbSet<Admin>      Admin { get; set; }
-        public DbSet<Evaluation> Evaluation { get; set; }
-        public DbSet<Service>    Service { get; set; }
-        public DbSet<DayOff> DayOff { get; set; }
-        public DbSet<RendezVous> RendezVous { get; set; }
-        public DbSet<Agenda.Models.POCO.Agenda>     Agenda { get; set; }
+        public DbSet<User>                      User { get; set; }
         
+        public DbSet<Admin>                     Admin { get; set; }
+        public DbSet<DayOff>                    DayOff { get; set; }
+        public DbSet<Service>                   Service { get; set; }
+        public DbSet<Customer>                  Customer { get; set; }
+        public DbSet<Evaluation>                Evaluation { get; set; }
+        public DbSet<RendezVous>                RendezVous { get; set; }       
 
         // Configuration du discriminator
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,8 +31,6 @@ namespace AgendaInfo.DATA
                         .HasDiscriminator<string>("Type")
                         .HasValue<Admin>("Admin")
                         .HasValue<Customer>("Customer");
-            modelBuilder.Entity<Agenda.Models.POCO.Agenda>()
-                        .HasNoKey();
         }
     }
 }

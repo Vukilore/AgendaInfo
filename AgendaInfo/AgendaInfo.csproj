@@ -5,6 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200517150722_last.cs" />
+    <Compile Remove="Migrations\20200517150722_last.Designer.cs" />
+    <Compile Remove="Migrations\20200517151303_Last2.cs" />
+    <Compile Remove="Migrations\20200517151303_Last2.Designer.cs" />
+    <Compile Remove="Migrations\20200517151531_Last3.cs" />
+    <Compile Remove="Migrations\20200517151531_Last3.Designer.cs" />
+    <Compile Remove="Migrations\20200517151721_Update2.cs" />
+    <Compile Remove="Migrations\20200517151721_Update2.Designer.cs" />
+    <Compile Remove="Migrations\20200517151838_Last2.cs" />
+    <Compile Remove="Migrations\20200517151838_Last2.Designer.cs" />
+    <Compile Remove="Migrations\20200517154337_Last2.cs" />
+    <Compile Remove="Migrations\20200517154337_Last2.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />

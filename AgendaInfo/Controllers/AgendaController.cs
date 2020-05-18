@@ -12,7 +12,6 @@ namespace AgendaInfo.Controllers
     public class AgendaController : Controller
     {
         private readonly IRendezVousDAL rdvDAL;
-
         public AgendaController(IRendezVousDAL _rdvDAL)
         {
             rdvDAL = _rdvDAL;
@@ -30,13 +29,15 @@ namespace AgendaInfo.Controllers
             List<RendezVous> RdvThisWeek = new List<RendezVous>();
 
             //4. On récupère tous les rdv
-            List<RendezVous> ListRendezVous = Agenda.Models.POCO.Agenda.GetListOfRDV(rdvDAL);
+            Agenda.Models.POCO.Agenda.GetInstance().UpdateRDV(rdvDAL);
+            List<RendezVous> ListRendezVous = Agenda.Models.POCO.Agenda.GetInstance().ListRendezVous;
 
             //5. Pour chaque rdv dans la liste de l'agenda
             foreach (RendezVous rdv in ListRendezVous)
                 //5.1. Si le rendez-vous se situe dans la semaine on l'ajoute à la liste
                 if (rdv.BeginDate.Day >= MondayOfWeek.Day && rdv.BeginDate <= (MondayOfWeek.AddDays(7)))
                     RdvThisWeek.Add(rdv);
+            ViewBag.CurrentWeek = Week;
             return View(RdvThisWeek);
         }
 

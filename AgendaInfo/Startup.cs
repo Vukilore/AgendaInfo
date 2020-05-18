@@ -32,10 +32,10 @@ namespace AgendaInfo
             services.AddControllersWithViews();
             services.AddDbContext<BDDContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).UseLazyLoadingProxies());
             services.AddTransient<IUserDAL, UserDAL>();
-            services.AddTransient<IEvalDAL,EvalDAL>();
+            services.AddTransient<IEvalDAL, EvalDAL>();
             services.AddTransient<IServicesDAL, ServicesDAL>();
-            services.AddTransient<IDayOffDAL, DayOffDAL>();
             services.AddTransient<IRendezVousDAL, RendezVousDAL>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

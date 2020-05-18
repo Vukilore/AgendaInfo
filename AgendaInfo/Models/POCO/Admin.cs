@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgendaInfo.DATA;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,13 +10,8 @@ namespace Agenda.Models.POCO
     {
         /***************************PROPRIETES*******************************/
         public virtual List<Service> ListServices { get; set; }
-        public virtual List<Customer> ListCustomers { get; set; }
 
         /***************************Constructeur*******************************/
-        /*public Admin(int i, string n, string l, DateTime b, string a, int ph, string e, string pa)
-            : base(i, n, l, b, a, ph, e, pa) { }
-*/
-
         public Admin() { }
         public Admin(string _email):base(_email) { }
         
@@ -24,38 +20,19 @@ namespace Agenda.Models.POCO
         /*=========================================
          * AddService: Ajoute un service à la Liste
          *=========================================*/
-        public void AddService(Service service)
+        public void AddService(Service service, IServicesDAL serviceDAL)
         {
             ListServices.Add(service);
-            // TODO: appel de la DAL
+            serviceDAL.Add(service); 
         }
 
         /*=========================================
          * DeleteService: Supprime un service à la Liste
          *=========================================*/
-        public void DeleteService(Service service)
+        public void DeleteService(Service service, IServicesDAL serviceDAL)
         {
             ListServices.Remove(service);
-            // TODO: appel de la DAL
+            serviceDAL.Delete(service);
         }
-
-        /*=========================================
-         * AddCustomer: Ajoute un client à la Liste
-         *=========================================*/
-        public void AddCustomer(Customer customer)
-        {
-            ListCustomers.Add(customer);
-            // TODO: appel de la DAL
-        }
-
-        /*=========================================
-         * DeleteCustimer: Supprime un client à la Liste
-         *=========================================*/
-        public void DeleteCustomer(Customer customer)
-        {
-            ListCustomers.Remove(customer);
-            // TODO: appel de la DAL
-        }
-
     }
 }

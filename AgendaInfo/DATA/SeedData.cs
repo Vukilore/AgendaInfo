@@ -12,12 +12,13 @@ namespace AgendaInfo.DATA
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using(var context = new BDDContext(serviceProvider.GetRequiredService<DbContextOptions<BDDContext>>()))
+            using (var context = new BDDContext(serviceProvider.GetRequiredService<DbContextOptions<BDDContext>>()))
             {
                 if (!context.User.Any())
                 {
                     // Création de l'administrateur
-                    context.User.Add(new Admin {
+                    context.User.Add(new Admin
+                    {
                         Name = "Doe",
                         FirstName = "John",
                         Email = "johndoe@condorcet.be",
@@ -29,7 +30,6 @@ namespace AgendaInfo.DATA
                     context.SaveChanges();
                 }
             }
-            Agenda.Models.POCO.Agenda.GetInstance();
         }
     }
 }
