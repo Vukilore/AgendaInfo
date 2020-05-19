@@ -39,9 +39,6 @@ namespace Agenda.Models.POCO
         public void PrendreRdv()
         {
         }
-        public void DureeRdv()
-        {
-        }
     }
     
 }

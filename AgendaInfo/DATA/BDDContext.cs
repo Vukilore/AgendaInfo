@@ -16,7 +16,6 @@ namespace AgendaInfo.DATA
 
         // Création des tables.
         public DbSet<User>                      User { get; set; }
-        
         public DbSet<Admin>                     Admin { get; set; }
         public DbSet<DayOff>                    DayOff { get; set; }
         public DbSet<Service>                   Service { get; set; }

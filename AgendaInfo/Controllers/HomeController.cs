@@ -83,6 +83,9 @@ namespace AgendaInfo.Controllers
         }
         public IActionResult Privacy()
         {
+            /*
+             * TODO: Count des evalutations !
+             * */
             return View();
         }
 

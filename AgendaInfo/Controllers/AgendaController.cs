@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Agenda.Models.POCO;
@@ -12,9 +13,11 @@ namespace AgendaInfo.Controllers
     public class AgendaController : Controller
     {
         private readonly IRendezVousDAL rdvDAL;
-        public AgendaController(IRendezVousDAL _rdvDAL)
+        private readonly IUserDAL userDAL;
+        public AgendaController(IRendezVousDAL _rdvDAL, IUserDAL _userDAL)
         {
             rdvDAL = _rdvDAL;
+            userDAL = _userDAL;
         }
         public ActionResult Index(int Week = 0)
         {
@@ -37,83 +40,28 @@ namespace AgendaInfo.Controllers
                 //5.1. Si le rendez-vous se situe dans la semaine on l'ajoute à la liste
                 if (rdv.BeginDate.Day >= MondayOfWeek.Day && rdv.BeginDate <= (MondayOfWeek.AddDays(7)))
                     RdvThisWeek.Add(rdv);
+            //6. On défini la semaine courrante et le numéro de la semaine dans l'année
             ViewBag.CurrentWeek = Week;
+            ViewBag.WeekNumber = GetWeekNumber(MondayOfWeek);
+            //7. On défini si l'utilisateur est l'admin ou non
+            ViewBag.IsAdmin = IsAdmin(HttpContext.Session.GetString("userEmail"));
             return View(RdvThisWeek);
         }
 
-        // GET: Agenda/Details/5
-        public ActionResult Details(int id)
+        private bool IsAdmin(string email)
         {
-            return View();
+            // 1. Création de l'utilisateur temporaire
+            User tmpUser = new User(email);
+            // 2. Chargement de l'utilisateur grâce à son email
+            tmpUser = tmpUser.LoadUserByEmail(userDAL);
+            return tmpUser is Admin;
         }
 
-        // GET: Agenda/Create
-        public ActionResult Create()
+        public static int GetWeekNumber(DateTime dtPassed)
         {
-            return View();
-        }
-
-        // POST: Agenda/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Agenda/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Agenda/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Agenda/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Agenda/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            CultureInfo ciCurr = CultureInfo.CurrentCulture;
+            int weekNum = ciCurr.Calendar.GetWeekOfYear(dtPassed, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+            return weekNum;
         }
     }
 }

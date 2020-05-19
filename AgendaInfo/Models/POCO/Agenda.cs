@@ -41,9 +41,10 @@ namespace Agenda.Models.POCO
         /*=========================================
          * AddDayOff: Ajoute un congé à la Liste
          *=========================================*/
-        public void AddDayOff(DayOff dayoff)
+        public void AddDayOff(DayOff dayoff, IDayOffDAL dayOffDAL)
         {
             ListDaysOff.Add(dayoff);
+            dayOffDAL.Add(dayoff);
         }
 
         /*=========================================
@@ -104,7 +105,6 @@ namespace Agenda.Models.POCO
         public void DeleteEvaluation(Evaluation evaluation)
         {
             ListEvaluations.Remove(evaluation);
-
         }
     }
 }

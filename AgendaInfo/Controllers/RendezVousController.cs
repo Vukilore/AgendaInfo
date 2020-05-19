@@ -16,7 +16,7 @@ namespace AgendaInfo.Controllers
         private readonly BDDContext _context;
         private readonly IRendezVousDAL rdvDAL;
         private readonly IUserDAL userDAL;
-
+        
         public RendezVousController(BDDContext context, IRendezVousDAL _rdvDAL, IUserDAL _userDAL)
         {
             _context = context;

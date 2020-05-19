@@ -2,7 +2,7 @@
 @{ DateTime MondayWeek = new DateTime(ViewBag.MondayOfWeek.Year, ViewBag.MondayOfWeek.Month, ViewBag.MondayOfWeek.Day, 8, 0, 0); }
 
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -12,63 +12,67 @@
     <meta name="viewport" content="width=device-width" />
     <title>Prendre un rendez-vous</title>
 </head>
-<h4>Semaine n°@ViewBag.WeekNumber</h4>
 <body>
-    <table>
-        <p><a asp-controller="Agenda" asp-action="Index" asp-route-id="@ViewBag.CurrentWeek-1"><< Semaine précédante</a></p>
-        <caption>Semaine n° XX / Mois @MondayWeek.Month</caption>
-        <thead>
-            <tr>
-                <th scope="col"></th>
-                <th scope="col">Lundi @MondayWeek.Day</th>
-                <th scope="col">Mardi @MondayWeek.AddDays(1).Day</th>
-                <th scope="col">Mercredi @MondayWeek.AddDays(2).Day</th>
-                <th scope="col">Jeudi @MondayWeek.AddDays(3).Day</th>
-                <th scope="col">Vendredi @MondayWeek.AddDays(4).Day</th>
-                <th scope="col">Samedi @MondayWeek.AddDays(5).Day</th>
-                <th scope="col">Dimanche @MondayWeek.AddDays(6).Day</th>
-            </tr>
-        </thead>
+    <div class='calendar'>
+        <table border='0' cellpadding='0' cellspacing='0'>
+            <p><a @Html.ActionLink("<< Semaine précédente", "Index", "Agenda", new { week = ViewBag.CurrentWeek - 1 }, null)</p>
+            <caption>Semaine n° @ViewBag.WeekNumber / mois de @MondayWeek.ToString("MMMM")</caption>
+            <thead>
+                <tr class='calendar-th-days'>
+                    <th></th>
+                    <th>Lundi @MondayWeek.Day</th>
+                    <th>Mardi @MondayWeek.AddDays(1).Day</th>
+                    <th>Mercredi @MondayWeek.AddDays(2).Day</th>
+                    <th>Jeudi @MondayWeek.AddDays(3).Day</th>
+                    <th>Vendredi @MondayWeek.AddDays(4).Day</th>
+                    <th>Samedi @MondayWeek.AddDays(5).Day</th>
+                    <th>Dimanche @MondayWeek.AddDays(6).Day</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int hour = 0; hour <= 8; hour++)
+                {
+                    <tr>
+                        @{int thdate = hour + 8;}
+                        <th class="calendar-th-time">@thdate h </th>
 
-
-        <tbody>
-            @for (int hour = 0; hour <= 8; hour++)
-            {
-                <tr>
-                    @{int thdate = hour + 8;}
-                    <th scope="row">@thdate h </th>
-
-                    @for (int day = 0; day <= 6; day++)
-                    {
-                        // Compare les jours déjà passé
-                        if (DateTime.Compare(DateTime.Now, MondayWeek.AddDays(day).AddHours(hour)) < 0)
+                        @for (int day = 0; day <= 6; day++)
                         {
-                            bool foundOne = false;
-                            @foreach (var item in Model)
+                            // Compare les jours déjà passé
+                            if (DateTime.Compare(DateTime.Now, MondayWeek.AddDays(day).AddHours(hour)) < 0)
                             {
-                                // Si il s'agit d'une heure où on doit afficher un rendez vous
-                                if (DateTime.Compare(item.BeginDate, MondayWeek.AddDays(day).AddHours(hour)) == 0)
+                                bool foundOne = false;
+                                @foreach (var item in Model)
                                 {
-                                    <td><p>@item.Customer.Name</p><p>@item.Customer.FirstName</p><p>/!\ Remarque du client: @item.Comment</p></td>
-                                    foundOne = true;
+                                    // Si il s'agit d'une heure où on doit afficher un rendez vous
+                                    if (DateTime.Compare(item.BeginDate, MondayWeek.AddDays(day).AddHours(hour)) == 0)
+                                    {
+                                        <td class="calrender calendar-td-blue" tooltip="Remarque du client: @item.Comment">@item.Customer.Name @item.Customer.FirstName @item.Service.Name</td>
+                                        foundOne = true;
+                                    }
+                                }
+                                if (foundOne == false)
+                                {
+                                    <td>
+                                        <p>@Html.ActionLink("Prendre rendez-vous", "Create", "RendezVous", new { time = MondayWeek.AddDays(day).AddHours(hour) }, null)</p>
+                                        @if (ViewBag.IsAdmin == true)
+                                        {
+                                            <p>@Html.ActionLink("Prendre congé", "Create", "DayOff", new { time = MondayWeek.AddDays(day).AddHours(hour) }, null)</p>
+                                        }
+
+                                    </td>
                                 }
                             }
-                            if (foundOne == false)
+                            else
                             {
-                                <td>@Html.ActionLink("Prendre rendez-vous", "Create", "RendezVous", new { time = MondayWeek.AddDays(day).AddHours(hour) }, null)</td>
+                                <td class="calrender calendar-td-red"></td>
                             }
                         }
-                        else
-                        {
-                            <td style="background-color: #808080;"></td>
-                        }
-
-                    }
-                </tr>
-            }
-        </tbody>
-        <p><a asp-controller="Agenda" asp-action="Index" asp-route-id="@ViewBag.CurrentWeek+1">Semaine suivante >></a></p>
-    </table>
+                    </tr>
+                }
+            </tbody>
+            <p><a @Html.ActionLink("Semaine suivante >>", "Index", "Agenda", new { week = ViewBag.CurrentWeek + 1 }, null)
+        </table>
 
 </body>
 </html>

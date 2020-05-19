@@ -54,7 +54,7 @@ namespace AgendaInfo.Controllers
         // GET: Services/Create
         public IActionResult Create()
         {
-            if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
+            if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) Redirect("../Customer/Index");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace AgendaInfo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,Price,Duration")] Service service)
         {
-            if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
+            if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) Redirect("../Customer/Index");
             if (ModelState.IsValid)
             {
                 _context.Add(service);

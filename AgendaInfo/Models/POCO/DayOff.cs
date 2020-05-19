@@ -13,12 +13,11 @@ namespace Agenda.Models.POCO
         public int ID { get; set; }                 // ID du congé
         [Required]
         [DataType(DataType.DateTime)]
+        [Display(Name ="Date et heure de la pause")]
         public DateTime StartDate { get; set; }     // Date/Heure du début du congé
-        [Required]
-        [DataType(DataType.DateTime)]
-        public DateTime EndDate { get; set; }       // Date/Heure de fin du congé
 
         [MaxLength(244, ErrorMessage = "244 caractère maximum")]
+        [Display(Name = "Raison de la pause")]
         public string Reason { get; set; }          // Raison personel du congé
 
         /***************************Constructeur*******************************/
@@ -26,7 +25,6 @@ namespace Agenda.Models.POCO
         public DayOff (DateTime start, DateTime end, string r)
         {
             StartDate = start;
-            EndDate = end;
             Reason = r;
         }
 
