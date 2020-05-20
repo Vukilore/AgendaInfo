@@ -7,6 +7,7 @@ using Agenda.Models.POCO;
 using AgendaInfo.DATA;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AgendaInfo.Controllers
 {
@@ -48,6 +49,11 @@ namespace AgendaInfo.Controllers
             return View(RdvThisWeek);
         }
 
+
+
+
+
+        [NonAction]
         private bool IsAdmin(string email)
         {
             // 1. Création de l'utilisateur temporaire
@@ -56,12 +62,13 @@ namespace AgendaInfo.Controllers
             tmpUser = tmpUser.LoadUserByEmail(userDAL);
             return tmpUser is Admin;
         }
-
+        [NonAction]
         public static int GetWeekNumber(DateTime dtPassed)
         {
             CultureInfo ciCurr = CultureInfo.CurrentCulture;
             int weekNum = ciCurr.Calendar.GetWeekOfYear(dtPassed, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
             return weekNum;
         }
+        
     }
 }

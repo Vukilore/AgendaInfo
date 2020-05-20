@@ -80,9 +80,9 @@ namespace Agenda.Models.POCO
          *=========================================*/
         public override string ToString()
         {
-            return $"{Name} {FirstName}";
+            return $"{Name} {FirstName} | {Email}";
         }
-
+        
         // public User LoadUserByID(IUser userDAL) { return 0; } // TODO: A compléter
     }
 }

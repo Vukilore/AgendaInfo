@@ -16,12 +16,14 @@ namespace AgendaInfo.Controllers
         private readonly BDDContext _context;
         private readonly IRendezVousDAL rdvDAL;
         private readonly IUserDAL userDAL;
+        private readonly IServicesDAL serviceDAL;
         
-        public RendezVousController(BDDContext context, IRendezVousDAL _rdvDAL, IUserDAL _userDAL)
+        public RendezVousController(BDDContext context, IRendezVousDAL _rdvDAL, IUserDAL _userDAL, IServicesDAL _servicesDAL)
         {
             _context = context;
             rdvDAL = _rdvDAL;
             userDAL = _userDAL;
+            serviceDAL = _servicesDAL;
         }
 
         // GET: RendezVous
@@ -73,10 +75,10 @@ namespace AgendaInfo.Controllers
             //3. Si il est admin on stock la liste
             if (currentUser is Admin)
             {
-                // 3.1 On stock la liste des utilisateurs dans un Viewbag
+                // 3.1 On enlève l'admin de la liste (forcément currentUser dans ce cas)
+                listUser.Remove(currentUser);
+                // 3.2 On stock la liste des utilisateurs dans un Viewbag sous forme de SelectList
                 ViewBag.ListCustomers = listUser;
-                // 3.2 On y retire l'admin
-                ViewBag.ListCustomers.Remove(currentUser);
                 // 3.3 On déclarera qu'il s'agit d'une vue pour l'admin (todo vue partiel)
                 ViewBag.IsAdmin = true;
             }
@@ -88,17 +90,27 @@ namespace AgendaInfo.Controllers
             return View();
         }
 
-        // POST: RendezVous/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("ID,Comment,BeginDate, Customer, Service")] RendezVous rendezVous)
         {
             if (ModelState.IsValid)
             {
-                /*_context.Add(rendezVous);
-                await _context.SaveChangesAsync();*/
+                // HACK: Vu que le binding ne fonctionne pas on utilise un petit hack pour contourner ceci:
+                // On utilise la méthode Request.Form pour rechercher la value Customer du formulaire
+                // Au lieu d'obtenir l'objet en lui même, on va chercher son ToString
+                // On va couper le string pour ne garder que l'email de l'utilisateur (qui se situe après le mark  '|' )
+                // Et charger dans la bdd le client correspondant à l'email
+                // TODO: Fixer le bind pour être plus optimisé
+                User tmpCustomer = new User(Request.Form["Customer"].ToString().Remove(0, Request.Form["Customer"].ToString().IndexOf("|") + 2));
+                rendezVous.Customer = (Customer)tmpCustomer.LoadUserByEmail(userDAL);
+
+                // HACK: on utilise le même hack pour les services :
+                Service tmpService = new Service(Convert.ToInt32(Request.Form["Service"].ToString().Remove(0, Request.Form["Service"].ToString().IndexOf("|") + 2)));
+                rendezVous.Service = tmpService.LoadServiceByID(serviceDAL);
+
+                // On sauvegarde le rendez-vous
                 Agenda.Models.POCO.Agenda.GetInstance().AddRendezVous(rendezVous, rdvDAL);
                 ViewBag.rendezvous = rendezVous;
                 return View("Succeed");

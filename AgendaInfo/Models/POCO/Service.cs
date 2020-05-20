@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgendaInfo.DATA;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -24,20 +25,26 @@ namespace Agenda.Models.POCO
         public int Duration { get; set; }   // Durée du service en minute
         /***************************Constructeur*******************************/
         public Service() { }
-        public Service(string n, double p, int d)
+        public Service(int _ID)
         {
-            n = Name;
-            p = Price;
-            d = Duration;
+            ID = _ID;
         }
         /***************************METHODES*******************************/
+
+        /*=========================================
+        * LoadServiceByID: Charge un service depuis la BDD
+        *=========================================*/
+        public Service LoadServiceByID(IServicesDAL serviceDAL)
+        {
+           return serviceDAL.Get(this.ID);
+        }
 
         /*=========================================
          * ToString: Redéfinition du ToString
          *=========================================*/
         public override string ToString()
         {
-            return $"Le service {Name} au prix de {Price} € a pour durée {Duration} heures.";
+            return $"Le service {Name} au prix de {Price} € a pour durée {Duration} heures. | {ID}";
         }
 
     }

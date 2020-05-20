@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -13,6 +14,7 @@ namespace Agenda.Models.POCO
         public int ID { get; set; }                         // ID du rendez-vous
 
         [Display(Name = "Auteur du rendez-vous")]
+        [BindProperty(Name = "Customer")]
         public virtual Customer Customer { get; set; }      // L'auteur du rendez-vous
         public virtual Service Service { get; set; }        // Le service choisis
 

@@ -64,9 +64,6 @@ namespace AgendaInfo.Controllers
         {
             if (ModelState.IsValid)
             {
-                /* _context.Add(dayOff);
-                 await _context.SaveChangesAsync();
-                 +succeed*/
                 Agenda.Models.POCO.Agenda.GetInstance().AddDayOff(dayOff, dayOffDAL);
                 return RedirectToAction();
             }
