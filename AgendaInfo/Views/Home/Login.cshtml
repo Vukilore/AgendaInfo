@@ -1,7 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
+ <header>
+    <img src="~/image/banniere.svg" style="max-width:100%;" />
+ </header>
 <h2>Connexion</h2>
 @ViewBag.Message
 <form action="/Home/Login" method="POST">
@@ -10,4 +12,4 @@
     <input type="submit" value="Se connecter" />
 </form>
 Pas encore de compte client ? Inscrivez-vous rapidement<br />
-<button value="S'inscrire" asp-action="Create" asp-controller="Customers"/>
+<a asp-action="Create" asp-controller="Customers" style="text-decoration:none; color:black;">S'inscrire<img src="~/image/add.png"  style="width:32px; height:32px;" /></a>
