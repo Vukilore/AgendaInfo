@@ -65,12 +65,8 @@ namespace AgendaInfo.Controllers
             listUser = userDAL.GetAll();
 
             //3. On récupère les services
-            foreach (User user in listUser)
-                if (user is Admin) // Si on a trouvé l'admin dans la liste des utilisateurs todo : get directe l'admin
-                {
-                    Admin tmpUser = (Admin)user;
-                    ViewBag.ListServices = tmpUser.ListServices;
-                }
+            Admin tmpUser = (Admin)listUser.Find(s => s is Admin);
+            ViewBag.ListServices = tmpUser.ListServices;
 
             //3. Si il est admin on stock la liste
             if (currentUser is Admin)
@@ -97,7 +93,7 @@ namespace AgendaInfo.Controllers
         {
             if (ModelState.IsValid && !string.IsNullOrEmpty(Request.Form["Customer"]) && !string.IsNullOrEmpty(Request.Form["Service"]))
             {
-                // HACK: Vu que le binding ne fonctionne pas on utilise un petit hack pour contourner ceci:
+                // HACK: Vu que le binding ne fonctionne pas pour le moment, on utilise un petit hack pour contourner ceci:
                 // On utilise la méthode Request.Form pour rechercher la value Customer du formulaire
                 // Au lieu d'obtenir l'objet en lui même, on va chercher son ToString
                 // On va couper le string pour ne garder que l'email de l'utilisateur (qui se situe après le mark  '|' )
@@ -114,57 +110,6 @@ namespace AgendaInfo.Controllers
                 Agenda.Models.POCO.Agenda.GetInstance().AddRendezVous(rendezVous, rdvDAL);
                 ViewBag.rendezvous = rendezVous;
                 return View("Succeed");
-            }
-            return View(rendezVous);
-        }
-
-        // GET: RendezVous/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var rendezVous = await _context.RendezVous.FindAsync(id);
-            if (rendezVous == null)
-            {
-                return NotFound();
-            }
-            return View(rendezVous);
-        }
-
-        // POST: RendezVous/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Comment,BeginDate")] RendezVous rendezVous)
-        {
-            if (id != rendezVous.ID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(rendezVous);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RendezVousExists(rendezVous.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
             }
             return View(rendezVous);
         }
