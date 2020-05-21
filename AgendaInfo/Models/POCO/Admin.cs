@@ -14,8 +14,12 @@ namespace Agenda.Models.POCO
         /***************************Constructeur*******************************/
         public Admin() { }
         public Admin(string _email):base(_email) { }
-        
+
         /***************************METHODES*******************************/
+        /*=========================================
+         * GetAdmin: Retourne l'admin présent dans la BDD
+         *=========================================*/
+        public Admin GetAdmin(IUserDAL userDAL) => (Admin)userDAL.GetAdmin();
 
         /*=========================================
          * AddService: Ajoute un service à la Liste
@@ -25,7 +29,7 @@ namespace Agenda.Models.POCO
             ListServices.Add(service);
             userDAL.Update(this);
         }
-        public Admin GetAdmin(IUserDAL userDAL) => (Admin)userDAL.GetAdmin();
+
         /*=========================================
          * DeleteService: Supprime un service à la Liste
          *=========================================*/

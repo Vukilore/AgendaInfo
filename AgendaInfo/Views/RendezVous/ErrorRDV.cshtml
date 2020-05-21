@@ -1,0 +1,19 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Erreur lors de la prise de rendez-vous</title>
+</head>
+<body>
+    <p>Il semblerait qu'il y ait eu une erreure lors de la prise de rendez-vous !</p>
+    <p>Le service que vous avez choisis n'est pas adaptable dans l'horaire à l'heure selectionnée. (conflit avec un autre rendez-vous ? préferez le matin pour les services qui durent plus longtemps.)</p>
+    <p>Trouvez une plage d'horaire disponible pour la durée du service choisie.</p>
+    <a asp-action="Index" asp-controller="Agenda"><< Retour au calendrier</a>
+</body>
+</html>

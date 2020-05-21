@@ -22,7 +22,7 @@ namespace AgendaInfo.Controllers
             userDAL = _userDAL;
             dayOffDAL = _dayOffDAL;
         }
-        // GET: DayOff/Details/5
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -40,7 +40,6 @@ namespace AgendaInfo.Controllers
             return View(dayOff);
         }
 
-        // GET: DayOff/Create
         public IActionResult Create(DateTime time)
         {
             if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) Redirect("../Customer/Index");
@@ -48,22 +47,21 @@ namespace AgendaInfo.Controllers
             return View();
         }
 
-        // POST: DayOff/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("ID,StartDate, Reason")] DayOff dayOff)
         {
             if (ModelState.IsValid)
             {
+                if (dayOff.Reason == null) dayOff.Reason = "Aucune";
                 Agenda.Models.POCO.Agenda.GetInstance().AddDayOff(dayOff, dayOffDAL);
                 return RedirectToAction("Details",dayOff.ID);
             }
             return View(dayOff);
         }
 
-        // GET: DayOff/Delete/5
+
         public IActionResult Delete(int? id)
         {
             if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) Redirect("../Customer/Index");
@@ -81,7 +79,7 @@ namespace AgendaInfo.Controllers
 
             return View(tmpDayOff);
         }
-        // POST: DayOff/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -91,14 +89,13 @@ namespace AgendaInfo.Controllers
             DayOff tmpDayOff = new DayOff();
             tmpDayOff = Agenda.Models.POCO.Agenda.GetInstance().ListDaysOff.Find(d => d.ID == id);
             Agenda.Models.POCO.Agenda.GetInstance().DeleteDayOff(tmpDayOff, dayOffDAL);
-
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Agenda");
         }
 
-        private bool DayOffExists(int id)
-        {
-            return _context.DayOff.Any(e => e.ID == id);
-        }
+        /*=========================================
+        * IsAdmin: Retourne true si l'email fourni est celui de l'admin
+        *=========================================*/
+        [NonAction]
         private bool IsAdmin(string email)
         {
             // 1. Création de l'utilisateur temporaire

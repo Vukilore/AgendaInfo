@@ -1,7 +1,7 @@
 ﻿@model Agenda.Models.POCO.RendezVous
 
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -13,30 +13,41 @@
 </head>
 <body>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>RendezVous</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Comment)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Comment)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BeginDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BeginDate)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
-</div>
-</body>
+    <h3>Êtes-vous sur de vouloir supprimer ce rendez-vous ?</h3>
+    <div>
+        <h4>RendezVous</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Comment)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Comment)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.BeginDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.BeginDate)
+            </dd>
+        </dl>
+        @{ /* Si le rendez-vous est d'aujourd'hui ou avant ajourd'hui */}
+            @if (Model.BeginDate.Day <= DateTime.Now.Day)
+            {
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="ID" />
+                    <input type="submit" value="Supprimer" class="btn btn-danger" disabled="disabled" alt="Il est trop tard pour annuler le rendez-vous !"/> |
+                    <a asp-action="Index" asp-controller="Agenda">Retour au calendrier</a>
+                </form>
+            }
+            else
+            {
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="ID" />
+                    <input type="submit" value="Supprimer" class="btn btn-danger" /> 
+                    <a asp-action="Index" asp-controller="Agenda">Retour au calendrier</a>
+                </form>
+            }
+        </div>
+    </body>
 </html>

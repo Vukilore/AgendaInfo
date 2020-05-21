@@ -158,5 +158,18 @@ namespace AgendaInfo.Controllers
         {
             return _context.Evaluation.Any(e => e.ID == id);
         }
+
+        /*=========================================
+        * IsAdmin: Retourne true si l'email fourni est celui de l'admin
+        *=========================================*/
+        [NonAction]
+        private bool IsAdmin(string email)
+        {
+            // 1. Création de l'utilisateur temporaire
+            User tmpUser = new User(email);
+            // 2. Chargement de l'utilisateur grâce à son email
+            tmpUser = tmpUser.LoadUserByEmail(userDAL);
+            return tmpUser is Admin;
+        }
     }
 }

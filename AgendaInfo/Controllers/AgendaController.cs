@@ -8,7 +8,7 @@ using AgendaInfo.DATA;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+                     
 namespace AgendaInfo.Controllers
 {
     public class AgendaController : Controller
@@ -48,10 +48,9 @@ namespace AgendaInfo.Controllers
             return View(RdvThisWeek);
         }
 
-
-
-
-
+        /*=========================================
+        * IsAdmin: Retourne true si l'email fourni est celui de l'admin
+        *=========================================*/
         [NonAction]
         private bool IsAdmin(string email)
         {
@@ -61,6 +60,10 @@ namespace AgendaInfo.Controllers
             tmpUser = tmpUser.LoadUserByEmail(userDAL);
             return tmpUser is Admin;
         }
+
+        /*=========================================
+        * GetWeekNumber: Retourne le nombre de semaine de l'année écoulée à la date indiquée
+        *=========================================*/
         [NonAction]
         public static int GetWeekNumber(DateTime dtPassed)
         {

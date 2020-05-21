@@ -15,7 +15,7 @@ namespace AgendaInfo.Controllers
     {
         private readonly IUserDAL userDAL;
         private readonly BDDContext _context;
-
+        
         public CustomersController(IUserDAL _userDAL, BDDContext context)
         {
             userDAL = _userDAL;
@@ -54,7 +54,10 @@ namespace AgendaInfo.Controllers
 
         public IActionResult Create()
         {
-            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail"))) return Redirect("../Home/Index");
+            // Si l'utilisateur est déjà connecté que ce n'est pas un admin on lui interdit la création de compte
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail"))) 
+                if(!IsAdmin(HttpContext.Session.GetString("userEmail"))) 
+                    return RedirectToAction("Index", "Home");
             return View();
         }
 
@@ -66,15 +69,15 @@ namespace AgendaInfo.Controllers
             if (ModelState.IsValid)
             {
                 if (!customer.Exist(userDAL))
-                { // Si il n'a pas trouvé le pseudo dans la BDD, on en crée un
-                    customer.Register(userDAL);   // On enregistre le client TODO: exception utilisateur déjà créé
-                    HttpContext.Session.SetString("userEmail", customer.Email);  // On ajoute l'email  de l'utilisateur dans la session
+                { // Si il n'a pas trouvé l'email dans la BDD, on en crée un
+                    customer.Register(userDAL);   // On enregistre le client
+                    if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) HttpContext.Session.SetString("userEmail", customer.Email);  // On ajoute l'email  de l'utilisateur dans la session
                     return RedirectToAction(nameof(Index));
                 }
                 else
                 {
                     ViewBag.Message = "Ce pseudo existe déjà dans notre base de donnée !";
-                    return View("Create");
+                    return View(customer);
                 }             
             }
             return View(customer);
@@ -139,6 +142,11 @@ namespace AgendaInfo.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }*/
+
+        /*=========================================
+        * IsAdmin: Retourne true si l'email fourni est celui de l'admin
+        *=========================================*/
+        [NonAction]
         private bool IsAdmin(string email)
         {
             // 1. Création de l'utilisateur temporaire

@@ -93,6 +93,11 @@ namespace AgendaInfo.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        /*=========================================
+        * IsAdmin: Retourne true si l'email fourni est celui de l'admin
+        *=========================================*/
+        [NonAction]
         private bool IsAdmin(string email)
         {
             // 1. Création de l'utilisateur temporaire

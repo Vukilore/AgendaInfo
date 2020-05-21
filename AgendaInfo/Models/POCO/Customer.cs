@@ -68,7 +68,7 @@ namespace Agenda.Models.POCO
         public void DeleteRendezVous(RendezVous rendezvous)
         {
             ListRendezVous.Remove(rendezvous);
-            // TODO: appel de la DAL
+            
         }
 
         /*=========================================
@@ -77,13 +77,13 @@ namespace Agenda.Models.POCO
         public void AddEvaluation(Evaluation evaluation)
         {
             ListEvaluation.Add(evaluation);
-            // TODO: appel de la DAL
+            
         }
 
         /*=========================================
          * DeleteService: Supprime une évaluation  à la Liste
          *=========================================*/
-        public void DeleteREvaluation(Evaluation evaluation)
+        public void DeleteEvaluation(Evaluation evaluation)
         {
             ListEvaluation.Remove(evaluation);
             // TODO: appel de la DAL

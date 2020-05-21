@@ -15,18 +15,15 @@ namespace AgendaInfo.Controllers
 {
     public class ServicesController : Controller
     {
-        private readonly BDDContext _context;
         private readonly IUserDAL userDAL;
         private readonly IServicesDAL serviceDAL;
 
-        public ServicesController(BDDContext context, IUserDAL _userDAL, IServicesDAL _serviceDAL)
+        public ServicesController(IUserDAL _userDAL, IServicesDAL _serviceDAL)
         {
-            _context = context;
             userDAL = _userDAL;
             serviceDAL = _serviceDAL;
         }
 
-        // GET: Services
         public IActionResult Index()
         {
             // 1. Chargement de l'administrateur
@@ -42,26 +39,32 @@ namespace AgendaInfo.Controllers
         }
 
         // GET: Services/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            // 1. Si l'ID fourni est null, on retourne NotFound
+            if (id == null) return NotFound();
 
-            var service = await _context.Service
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (service == null)
-            {
-                return NotFound();
-            }
+            //2. On charge l'admin pour avoir sa liste de service
+            Admin tmpadmin = new Admin();
+            tmpadmin = tmpadmin.GetAdmin(userDAL);
 
-            return View(service);
+            //3. On vérifie si l'ID fourni existe bien dans la liste
+            Service tmpservice = new Service();
+            tmpservice = tmpadmin.ListServices.Find(s => s.ID == id);
+
+            //4. Si l'ID n'existe pas on retourne NotFound
+            if (tmpservice == null) return NotFound();
+
+            // 5. Si c'est un admin, on le déclare à la vue
+            if (IsAdmin(HttpContext.Session.GetString("userEmail"))) ViewBag.IsAdmin = true;
+
+            return View(tmpservice);
         }
 
         // GET: Services/Create
         public IActionResult Create()
         {
+            // 1. Si l'utilisateur courant est pas admin, on le redirige
             if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) Redirect("../Customer/Index");
             return View();
         }
@@ -73,31 +76,45 @@ namespace AgendaInfo.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("ID,Name,Price,Duration")] Service service)
         {
+            // 1. Si l'utilisateur courant est pas admin, on le redirige
             if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) Redirect("../Customer/Index");
+
+            // 2. Si le model est valide
             if (ModelState.IsValid)
             {
+                // 2.1. On charge l'admin pour avoir sa liste de service
                 Admin tmpadmin = new Admin();
                 tmpadmin = tmpadmin.GetAdmin(userDAL);
+                // 2.2. On ajoute le service à sa liste
                 tmpadmin.AddService(service, userDAL);
+                // 2.3 On redirige
                 return RedirectToAction(nameof(Index));
             }
+            // 3. Modèle pas valide on le ré-affiche
             return View(service);
         }
 
         // GET: Services/Delete/5
         public IActionResult Delete(int? id)
         {
+            // 1. Si l'utilisateur courant est pas admin, on le redirige
             if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
-            if (id == null)
-            {
-                return NotFound();
-            }
+
+            // 2. Si l'ID fourni est null, on retourne NotFound
+            if (id == null) return NotFound();
+
+            //3. On charge l'admin pour avoir sa liste de service
             Admin tmpadmin = new Admin();
             tmpadmin = tmpadmin.GetAdmin(userDAL);
+
+            //4. On vérifie si l'ID fourni existe bien dans la liste
             Service tmpservice = new Service();
             tmpservice = tmpadmin.ListServices.Find(s => s.ID == id);
-            if (tmpservice == null)
-                return NotFound();
+
+            //5. Si l'ID n'existe pas on retourne NotFound
+            if (tmpservice == null) return NotFound();
+            
+            //6. Sinon on affiche la vue Delete
             return View(tmpservice);
         }
 
@@ -106,20 +123,28 @@ namespace AgendaInfo.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
+            // 1. Si l'utilisateur courant est pas admin, on le redirige
             if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
+
+            // 2. On charge l'admin pour avoir sa liste de service
             Admin tmpadmin = new Admin();
             tmpadmin = tmpadmin.GetAdmin(userDAL);
+
+            // 3. On obtient l'objet 'service' dans la liste depuis son ID
             Service tmpservice = new Service();
             tmpservice = tmpadmin.ListServices.Find(s => s.ID == id);
+
+            // 4. On supprime le service de la liste
             tmpadmin.DeleteService(tmpservice, userDAL);
+
+            // 5. On redirige vers la liste des services
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ServiceExists(int id)
-        {
-            return _context.Service.Any(e => e.ID == id);
-        }
-
+        /*=========================================
+        * IsAdmin: Retourne true si l'email fourni est celui de l'admin
+        *=========================================*/
+        [NonAction]
         private bool IsAdmin(string email)
         {
             // 1. Création de l'utilisateur temporaire

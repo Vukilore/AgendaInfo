@@ -1,7 +1,7 @@
 ﻿@model Agenda.Models.POCO.Service
 
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -38,7 +38,10 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Editer</a> |
+    @if (ViewBag.IsAdmin == true)
+    {
+        <a asp-action="Delete" asp-route-id="@Model.ID">Supprimer</a>
+    }
     <a asp-action="Index">Retour à la liste</a>
 </div>
 </body>

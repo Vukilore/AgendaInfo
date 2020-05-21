@@ -1,15 +1,16 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+
 }
 
 
-    <p>Veuillez niquer hardemment votre maman car j'ai réussi à créer l'inscription malgré ce cours de MERDE.</p>
+    <p>Bienvenue @ViewBag.FirstName !</p>
 
 
 
 <!-- Button choix de l'utilisateur -->
 <a asp-controller="Services" asp-action="Index">Liste des services proposés<img src="~/image/service.png" style="width:32px; height:32px;" /></a>
-<a asp-controller="RendezVous" asp-action="Index">Prendre un rendez-vous<img src="~/image/rdv.png" style="width:32px; height:32px;" /></a>
-<a asp-controller="Customers" asp-action="Index">Liste de vos rendez-vous<img src="~/image/listrdv.png"  style="width:32px; height:32px;" /> </a>
+<a asp-controller="Agenda" asp-action="Index">Prendre un rendez-vous<img src="~/image/rdv.png" style="width:32px; height:32px;" /></a>
+<a asp-controller="RendezVous" asp-action="Index">Liste de vos rendez-vous<img src="~/image/listrdv.png"  style="width:32px; height:32px;" /> </a>
 <a asp-controller="Evaluations" asp-action="Index">Liste de vos évaluation<img src="~/image/eval.png" style="width:32px; height:32px;" /></a>
 <a asp-controller="Home" asp-action="Disconnect">Se déconnecter<img src="~/image/deco.png" style="width:32px; height:32px;" /></a>

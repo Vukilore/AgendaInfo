@@ -56,15 +56,15 @@ namespace Agenda.Models.POCO
          *=========================================*/
         public List<DayOff> ThisWeekDayOff(DateTime MondayOfWeek, IDayOffDAL dayOffDAL)
         {
-            //1. On récupère tous les rdv
+            //1. On récupère tous les congés
             Agenda.GetInstance().UpdateDayOff(dayOffDAL);
 
             // 2. On crée la liste de retour
             List<DayOff> daysOffThisWeek = new List<DayOff>();
 
-            //3. Pour chaque rdv dans la liste de l'agenda
+            //3. Pour chaque congés dans la liste de l'agenda
             foreach (DayOff dayOff in ListDaysOff)
-                //5.1. Si le rendez-vous se situe dans la semaine indiqué on l'ajoute à la liste
+                //3.1. Si le congé se situe dans la semaine indiqué on l'ajoute à la liste
                 if (dayOff.StartDate.Day >= MondayOfWeek.Day && dayOff.StartDate <= (MondayOfWeek.AddDays(7)))
                     daysOffThisWeek.Add(dayOff);
             return daysOffThisWeek;
@@ -89,6 +89,34 @@ namespace Agenda.Models.POCO
             dayOffDAL.Add(dayoff);
         }
 
+        public bool FreeOfRendezVous(DateTime startDate, DateTime endDateTime, IRendezVousDAL rdvDAL)
+        {
+            // 1. Mise à jour de la liste de rendez-vous
+            UpdateRDV(rdvDAL);
+            //2. Pour chaque rendez vous dans la liste
+            foreach (RendezVous rdv in ListRendezVous)
+                // 2.1 Si le rendez vous est le même jour qu'un rdv de la liste
+                if (startDate.Date == rdv.BeginDate.Date)
+                    //2.2. Si le rdv se situe dans un autre rdv de la liste 
+                    if (rdv.BeginDate.Hour >= startDate.Hour && rdv.BeginDate.Hour < endDateTime.Hour)
+                        return false;
+            return true;
+        }
+
+        public bool FreeOfDayOff(DateTime beginDate, DateTime endDateTime, IDayOffDAL dayOffDAL)
+        {
+            // 1. Mise à jour de la liste de congés
+            UpdateDayOff(dayOffDAL);
+            //2. Pour chaque congés dans la liste
+            foreach (DayOff dayOff in ListDaysOff)
+                // 2.1 Si le congé est le même jour qu'un rdv de la liste
+                if (beginDate.Date == dayOff.StartDate.Date)
+                    //2.2. Si le rdv se situe dans un autre congé de la liste 
+                    if (dayOff.StartDate.Hour >= beginDate.Hour && dayOff.StartDate.Hour < endDateTime.Hour)
+                        return false;
+            return true;
+        }
+
         /*=========================================
          * DeleteDayOff: Supprime un congé à la Liste
          *=========================================*/
@@ -96,22 +124,6 @@ namespace Agenda.Models.POCO
         {
             ListDaysOff.Remove(dayoff);
             dayOffDAL.Delete(dayoff);
-        }
-
-        /*=========================================
-         * AddService: Ajoute un service à la Liste
-         *=========================================*/
-        public void AddService(Service service)
-        {
-            ListServices.Add(service);
-        }
-
-        /*=========================================
-         * DeleteService: Supprime un congé à la Liste
-         *=========================================*/
-        public void DeleteService(Service service)
-        {
-            ListServices.Remove(service);
         }
 
         /*=========================================
@@ -126,10 +138,10 @@ namespace Agenda.Models.POCO
         /*=========================================
          * DeleteRendezVous: Supprime un rdv à la Liste
          *=========================================*/
-        public void DeleteRendezVous(RendezVous rendezvous)
+        public void DeleteRendezVous(RendezVous rendezvous, IRendezVousDAL rdvDAL)
         {
             ListRendezVous.Remove(rendezvous);
-
+            rdvDAL.Delete(rendezvous);
         }
 
         /*=========================================

@@ -87,7 +87,7 @@
                                                             @Html.ActionLink("Annuler le rendez-vous", "Delete", "RendezVous", new { id = item.ID }, null)
                                                         </td>
                                                     }
-                                                }
+                                                }                                             
                                                 else
                                                 {
                                                     <td rowspan="@item.Service.Duration" class="calendar-td-red"></td>
@@ -126,10 +126,10 @@
                                         if (foundOne == false)
                                         {
                                             <td>
-                                                <p>@Html.ActionLink("Prendre rendez-vous", "Create", "RendezVous", new { time = MondayWeek.AddDays(day).AddHours(hour) }, null)</p>
+                                                @Html.ActionLink("Prendre rendez-vous", "Create", "RendezVous", new { time = MondayWeek.AddDays(day).AddHours(hour) }, null)
                                                 @if (ViewBag.IsAdmin == true)
                                                 {
-                                                    <p>@Html.ActionLink("Prendre congé", "Create", "DayOff", new { time = MondayWeek.AddDays(day).AddHours(hour) }, null)</p>
+                                                    @Html.ActionLink("Prendre congé", "Create", "DayOff", new { time = MondayWeek.AddDays(day).AddHours(hour) }, null)
                                                 }
                                             </td>
                                         }
