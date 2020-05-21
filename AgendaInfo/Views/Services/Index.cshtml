@@ -50,7 +50,6 @@
             <td>
                 @{ if (ViewBag.IsAdmin == true)
                     {
-                        <a asp-action="Edit" asp-route-id="@item.ID">Editer</a>
                         <a asp-action="Delete" asp-route-id="@item.ID">Supprimer</a>
                     }}
                 <a asp-action="Details" asp-route-id="@item.ID">Détails</a>

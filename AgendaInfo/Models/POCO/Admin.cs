@@ -20,19 +20,19 @@ namespace Agenda.Models.POCO
         /*=========================================
          * AddService: Ajoute un service à la Liste
          *=========================================*/
-        public void AddService(Service service, IServicesDAL serviceDAL)
+        public void AddService(Service service, IUserDAL userDAL)
         {
             ListServices.Add(service);
-            serviceDAL.Add(service); 
+            userDAL.Update(this);
         }
-
+        public Admin GetAdmin(IUserDAL userDAL) => (Admin)userDAL.GetAdmin();
         /*=========================================
          * DeleteService: Supprime un service à la Liste
          *=========================================*/
-        public void DeleteService(Service service, IServicesDAL serviceDAL)
+        public void DeleteService(Service service, IUserDAL userDAL)
         {
             ListServices.Remove(service);
-            serviceDAL.Delete(service);
+            userDAL.Update(this);
         }
     }
 }

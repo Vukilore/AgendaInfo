@@ -20,7 +20,7 @@ namespace Agenda.Models.POCO
         [Display(Name = "Prix (en euro) du service :")]
         public double Price { get; set; }   // Prix du service
         [Required]
-        [Display(Name = "Durée (en minute) service :")]
+        [Display(Name = "Durée (en heure) service :")]
         [DataType(DataType.Duration)]
         public int Duration { get; set; }   // Durée du service en minute
         /***************************Constructeur*******************************/

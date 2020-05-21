@@ -16,5 +16,6 @@ namespace AgendaInfo.DATA
         public void Update(User user);
         public void Add(User user);
         public Task<List<User>> ToListAsync();
+        public User GetAdmin();
     }
 }

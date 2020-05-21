@@ -42,5 +42,6 @@ namespace AgendaInfo.DATA
         public User Get(string email) => bdd.User.Where(p => p.Email == email).SingleOrDefault();
 
         public List<User> GetAll() => bdd.User.ToList();
+        public User GetAdmin() => bdd.User.Where(p => p is Admin).SingleOrDefault();
     }
 }

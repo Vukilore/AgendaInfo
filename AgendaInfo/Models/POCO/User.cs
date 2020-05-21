@@ -75,6 +75,7 @@ namespace Agenda.Models.POCO
             return userDAL.ToListAsync();
         }
 
+        
         /*=========================================
          * ToString: Redéfinition du ToString
          *=========================================*/

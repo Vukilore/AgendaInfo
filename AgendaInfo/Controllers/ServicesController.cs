@@ -9,6 +9,7 @@ using Agenda.Models.POCO;
 using AgendaInfo.DATA;
 using SQLitePCL;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Immutable;
 
 namespace AgendaInfo.Controllers
 {
@@ -16,21 +17,28 @@ namespace AgendaInfo.Controllers
     {
         private readonly BDDContext _context;
         private readonly IUserDAL userDAL;
+        private readonly IServicesDAL serviceDAL;
 
-        public ServicesController(BDDContext context, IUserDAL _userDAL)
+        public ServicesController(BDDContext context, IUserDAL _userDAL, IServicesDAL _serviceDAL)
         {
             _context = context;
             userDAL = _userDAL;
+            serviceDAL = _serviceDAL;
         }
 
         // GET: Services
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            ViewBag.IsAdmin = false;
-            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail")))
-                if (IsAdmin(HttpContext.Session.GetString("userEmail")))
-                    ViewBag.IsAdmin = true;
-                return View(await _context.Service.ToListAsync());
+            // 1. Chargement de l'administrateur
+            Admin tmpadmin = new Admin();
+            tmpadmin = tmpadmin.GetAdmin(userDAL);
+
+            // 2. Vérifier si l'utilisateur courant est administrateur
+            if (IsAdmin(HttpContext.Session.GetString("userEmail")))
+                ViewBag.IsAdmin = true;
+
+            // 3. Retourne la vue des services
+            return View(tmpadmin.ListServices);
         }
 
         // GET: Services/Details/5
@@ -63,88 +71,34 @@ namespace AgendaInfo.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Price,Duration")] Service service)
+        public IActionResult Create([Bind("ID,Name,Price,Duration")] Service service)
         {
             if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) Redirect("../Customer/Index");
             if (ModelState.IsValid)
             {
-                _context.Add(service);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(service);
-        }
-
-        // GET: Services/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var service = await _context.Service.FindAsync(id);
-            if (service == null)
-            {
-                return NotFound();
-            }
-            return View(service);
-        }
-
-        // POST: Services/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Price,Duration")] Service service)
-        {
-            if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
-            if (id != service.ID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(service);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ServiceExists(service.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                Admin tmpadmin = new Admin();
+                tmpadmin = tmpadmin.GetAdmin(userDAL);
+                tmpadmin.AddService(service, userDAL);
                 return RedirectToAction(nameof(Index));
             }
             return View(service);
         }
 
         // GET: Services/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
             if (id == null)
             {
                 return NotFound();
             }
-
-            var service = await _context.Service
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (service == null)
-            {
+            Admin tmpadmin = new Admin();
+            tmpadmin = tmpadmin.GetAdmin(userDAL);
+            Service tmpservice = new Service();
+            tmpservice = tmpadmin.ListServices.Find(s => s.ID == id);
+            if (tmpservice == null)
                 return NotFound();
-            }
-
-            return View(service);
+            return View(tmpservice);
         }
 
         // POST: Services/Delete/5
@@ -153,9 +107,11 @@ namespace AgendaInfo.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) RedirectToAction(nameof(Index));
-            var service = await _context.Service.FindAsync(id);
-            _context.Service.Remove(service);
-            await _context.SaveChangesAsync();
+            Admin tmpadmin = new Admin();
+            tmpadmin = tmpadmin.GetAdmin(userDAL);
+            Service tmpservice = new Service();
+            tmpservice = tmpadmin.ListServices.Find(s => s.ID == id);
+            tmpadmin.DeleteService(tmpservice, userDAL);
             return RedirectToAction(nameof(Index));
         }
 
