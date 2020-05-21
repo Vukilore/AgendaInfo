@@ -32,6 +32,48 @@ namespace Agenda.Models.POCO
 
         /***************************METHODES*******************************/
 
+        /*=========================================
+        * ThisWeekRDV: Retourne une liste de RDV pour la semaine indiqué
+        *=========================================*/
+        public List<RendezVous> ThisWeekRDV(DateTime MondayOfWeek, IRendezVousDAL rdvDAL)
+        {
+            //1. On récupère tous les rdv
+            Agenda.GetInstance().UpdateRDV(rdvDAL);
+
+            // 2. On crée la liste de retour
+            List<RendezVous> RdvThisWeek = new List<RendezVous>();
+
+            //3. Pour chaque rdv dans la liste de l'agenda
+            foreach (RendezVous rdv in ListRendezVous)
+                //5.1. Si le rendez-vous se situe dans la semaine indiqué on l'ajoute à la liste
+                if (rdv.BeginDate.Day >= MondayOfWeek.Day && rdv.BeginDate <= (MondayOfWeek.AddDays(7)))
+                    RdvThisWeek.Add(rdv);
+            return RdvThisWeek;
+        }
+
+        /*=========================================
+         * ThisWeekDayOff: Retourne une liste de congés pour la semaine indiqué
+         *=========================================*/
+        public List<DayOff> ThisWeekDayOff(DateTime MondayOfWeek, IDayOffDAL dayOffDAL)
+        {
+            //1. On récupère tous les rdv
+            Agenda.GetInstance().UpdateDayOff(dayOffDAL);
+
+            // 2. On crée la liste de retour
+            List<DayOff> daysOffThisWeek = new List<DayOff>();
+
+            //3. Pour chaque rdv dans la liste de l'agenda
+            foreach (DayOff dayOff in ListDaysOff)
+                //5.1. Si le rendez-vous se situe dans la semaine indiqué on l'ajoute à la liste
+                if (dayOff.StartDate.Day >= MondayOfWeek.Day && dayOff.StartDate <= (MondayOfWeek.AddDays(7)))
+                    daysOffThisWeek.Add(dayOff);
+            return daysOffThisWeek;
+        }
+
+        /*=========================================
+         * UpdateDayOff: Met à jour la liste des RDV
+         *=========================================*/
+        public void UpdateDayOff(IDayOffDAL dayOffDAL) => ListDaysOff = dayOffDAL.GetAll();
 
         /*=========================================
          * UpdateRDV: Met à jour la liste des RDV

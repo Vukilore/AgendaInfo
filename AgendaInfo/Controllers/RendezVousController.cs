@@ -95,7 +95,7 @@ namespace AgendaInfo.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("ID,Comment,BeginDate, Customer, Service")] RendezVous rendezVous)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !string.IsNullOrEmpty(Request.Form["Customer"]) && !string.IsNullOrEmpty(Request.Form["Service"]))
             {
                 // HACK: Vu que le binding ne fonctionne pas on utilise un petit hack pour contourner ceci:
                 // On utilise la méthode Request.Form pour rechercher la value Customer du formulaire

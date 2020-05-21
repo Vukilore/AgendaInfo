@@ -1,18 +1,25 @@
-﻿.calendar-td-blue {
-    background: #3498db;
+﻿.calendar-td-blue:nth-child(2n) {
+    background: #4A9EAA;
+}
+.calendar-td-blue:nth-child(2n+3) {
+    background: #4196A8;
 }
 .calendar-td-purple {
     background: #9b59b6;
 }
+
 .calendar-td-red {
-    background: #e74c3c;
+    background: #f25f5c;
+    cursor: not-allowed;
 }
 .calrender {
     font-weight: 300;
-    cursor: pointer;
+    cursor: grab;
+    border: 1px solid black;
+    margin: auto;
 }
 
-, *:before, *:after {
+*:before, *:after {
     margin : 0;
     padding : 0;
     border: 0;
@@ -36,8 +43,10 @@ table {
 
     table th, table td {
         padding: 1em;
-        width: 10em;
+        width: 9em;
         font-size: 0.8em;
+        border: 1px solid black;
+        margin: auto;
     }
 
 .calendar-th-days, .calendar-th-time {
@@ -55,10 +64,8 @@ table {
 [tooltip] {
     position: relative;
     z-index: 2;
-    cursor: pointer;
 }
 
-    /* Hide the tooltip content by default */
     [tooltip]:before,
     [tooltip]:after {
         visibility: hidden;
@@ -70,8 +77,6 @@ table {
         -webkit-transition: ease 0.5s all;
         transition: ease 0.5s all;
     }
-
-    /* Position tooltip above the element */
     [tooltip]:before {
         position: absolute;
         bottom: 110%;
@@ -90,8 +95,6 @@ table {
         font-size: 14px;
         line-height: 1.2;
     }
-
-    /* Triangle hack to make tooltip look like a speech bubble */
     [tooltip]:after {
         position: absolute;
         bottom: 110%;
@@ -105,8 +108,6 @@ table {
         font-size: 0;
         line-height: 0;
     }
-
-    /* Show tooltip content on hover */
     [tooltip]:hover:before,
     [tooltip]:hover:after {
         visibility: visible;

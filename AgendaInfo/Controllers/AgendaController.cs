@@ -15,10 +15,12 @@ namespace AgendaInfo.Controllers
     {
         private readonly IRendezVousDAL rdvDAL;
         private readonly IUserDAL userDAL;
-        public AgendaController(IRendezVousDAL _rdvDAL, IUserDAL _userDAL)
+        private readonly IDayOffDAL dayOffDAL;
+        public AgendaController(IRendezVousDAL _rdvDAL, IUserDAL _userDAL, IDayOffDAL _dayOffDAL)
         {
             rdvDAL = _rdvDAL;
             userDAL = _userDAL;
+            dayOffDAL = _dayOffDAL;
         }
         public ActionResult Index(int Week = 0)
         {
@@ -30,22 +32,19 @@ namespace AgendaInfo.Controllers
             ViewBag.MondayOfWeek = MondayOfWeek;
 
             //3. On crée une liste des RDV de la semaine à gérer
-            List<RendezVous> RdvThisWeek = new List<RendezVous>();
+            List<RendezVous> RdvThisWeek = Agenda.Models.POCO.Agenda.GetInstance().ThisWeekRDV(MondayOfWeek, rdvDAL);
 
-            //4. On récupère tous les rdv
-            Agenda.Models.POCO.Agenda.GetInstance().UpdateRDV(rdvDAL);
-            List<RendezVous> ListRendezVous = Agenda.Models.POCO.Agenda.GetInstance().ListRendezVous;
+            //4. On crée une liste des congés de la semaine à gérer
+            ViewBag.DaysOffThisWeek = Agenda.Models.POCO.Agenda.GetInstance().ThisWeekDayOff(MondayOfWeek, dayOffDAL);
 
-            //5. Pour chaque rdv dans la liste de l'agenda
-            foreach (RendezVous rdv in ListRendezVous)
-                //5.1. Si le rendez-vous se situe dans la semaine on l'ajoute à la liste
-                if (rdv.BeginDate.Day >= MondayOfWeek.Day && rdv.BeginDate <= (MondayOfWeek.AddDays(7)))
-                    RdvThisWeek.Add(rdv);
-            //6. On défini la semaine courrante et le numéro de la semaine dans l'année
+            //5. On défini la semaine courrante et le numéro de la semaine dans l'année
             ViewBag.CurrentWeek = Week;
             ViewBag.WeekNumber = GetWeekNumber(MondayOfWeek);
-            //7. On défini si l'utilisateur est l'admin ou non
+
+            //6. On défini si l'utilisateur est l'admin ou non et on le stock dans une Viewbag
             ViewBag.IsAdmin = IsAdmin(HttpContext.Session.GetString("userEmail"));
+            User tmpCustomer = new User(HttpContext.Session.GetString("userEmail"));
+            ViewBag.Customer = (User)tmpCustomer.LoadUserByEmail(userDAL);
             return View(RdvThisWeek);
         }
 
