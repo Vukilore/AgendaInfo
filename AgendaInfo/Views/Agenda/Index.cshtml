@@ -30,115 +30,118 @@
                 </tr>
             </thead>
             <tbody>
-                @{ int[] iterateHourRDV = { 0, 0, 0, 0, 0, 0, 0}; }
+                @{ int[] iterateHourRDV = { 0, 0, 0, 0, 0, 0, 0 }; }
                 @for (int hour = 0; hour <= 8; hour++)
                 {
-                <tr>
-                    @{int thdate = hour + 8;}
-                    <th class="calendar-th-time">@thdate h 00 </th>
+                    <tr>
+                        @{int thdate = hour + 8;}
+                        <th class="calendar-th-time">@thdate h 00 </th>
 
-                    @for (int day = 0; day <= 6; day++)
-                    {
-                        // Si il y a un RDB déjà prévu à cette heure, on ne fait rien
-                        if (iterateHourRDV[day] > 0)
+                        @for (int day = 0; day <= 6; day++)
                         {
-                            iterateHourRDV[day]--;
-                        }
-                        else
-                        {
-                            // On vérifie si ce rendez vous n'est pas déjà passé 
-                            if (DateTime.Compare(DateTime.Now, MondayWeek.AddDays(day).AddHours(hour)) < 0)
+                            // Si il y a un RDB déjà prévu à cette heure, on ne fait rien
+                            if (iterateHourRDV[day] > 0)
                             {
-                                bool foundOne = false;
-                                @foreach (var item in Model)
+                                iterateHourRDV[day]--;
+                            }
+                            else
+                            {
+                                // On vérifie si ce rendez vous n'est pas déjà passé
+                                if (DateTime.Compare(DateTime.Now, MondayWeek.AddDays(day).AddHours(hour)) < 0)
                                 {
-                                    // Si il s'agit d'une heure où on doit afficher un rendez vous
-                                    if (DateTime.Compare(item.BeginDate, MondayWeek.AddDays(day).AddHours(hour)) == 0)
+                                    bool foundOne = false;
+                                    @foreach (var item in Model)
                                     {
-                                        if (ViewBag.IsAdmin == true)
+                                        // Si il s'agit d'une heure où on doit afficher un rendez vous
+                                        if (DateTime.Compare(item.BeginDate, MondayWeek.AddDays(day).AddHours(hour)) == 0)
                                         {
-                                            // Si le rendez vous est d'aujourd'hui, on empêche de le supprimer :
-                                            if (DateTime.Compare(DateTime.Now, MondayWeek) == 0)
-                                            {
-                                                <td rowspan="@item.Service.Duration" class="calrender calendar-td-blue" tooltip="Remarque du client: @item.Comment">@item.Customer.Name @item.Customer.FirstName @item.Service.Name</td>
-                                            }
-                                            else
-                                            {
-                                                <td rowspan="@item.Service.Duration" class="calrender calendar-td-blue" tooltip="Remarque du client: @item.Comment">
-                                                    @item.Customer.Name @item.Customer.FirstName @item.Service.Name
-                                                    @Html.ActionLink("Annuler le rendez-vous", "Delete", "RendezVous", new { id = item.ID }, null)
-                                                </td>
-                                            }
-                                        }
-                                        else // Si il n'est pas admin mais qu'il y a un rdv
-                                        {
-                                            // Si il sagit du rdv de l'utilisateur courant
-                                            if (item.Customer == ViewBag.Customer)
+                                            if (ViewBag.IsAdmin == true)
                                             {
                                                 // Si le rendez vous est d'aujourd'hui, on empêche de le supprimer :
                                                 if (DateTime.Compare(DateTime.Now, MondayWeek) == 0)
                                                 {
-                                                    <td rowspan="@item.Service.Duration" class="calrender calendar-td-blue" tooltip="Remarque du client: @item.Comment">Service commandé : @item.Service.Name</td>
+                                                    <td rowspan="@item.Service.Duration" class="calrender calendar-td-blue" tooltip="Remarque du client: @item.Comment">@item.Customer.Name @item.Customer.FirstName @item.Service.Name</td>
                                                 }
                                                 else
                                                 {
                                                     <td rowspan="@item.Service.Duration" class="calrender calendar-td-blue" tooltip="Remarque du client: @item.Comment">
-                                                        Service commandé : @item.Service.Name
+                                                        @item.Customer.Name @item.Customer.FirstName @item.Service.Name
                                                         @Html.ActionLink("Annuler le rendez-vous", "Delete", "RendezVous", new { id = item.ID }, null)
                                                     </td>
                                                 }
                                             }
-                                            else
+                                            else // Si il n'est pas admin mais qu'il y a un rdv
                                             {
-                                                <td rowspan="@item.Service.Duration" class="calendar-td-red"></td>
+                                                // Si il sagit du rdv de l'utilisateur courant
+                                                if (item.Customer == ViewBag.Customer)
+                                                {
+                                                    // Si le rendez vous est d'aujourd'hui, on empêche de le supprimer :
+                                                    if (DateTime.Compare(DateTime.Now, MondayWeek) == 0)
+                                                    {
+                                                        <td rowspan="@item.Service.Duration" class="calrender calendar-td-blue" tooltip="Remarque du client: @item.Comment">Service commandé : @item.Service.Name</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td rowspan="@item.Service.Duration" class="calrender calendar-td-blue" tooltip="Remarque du client: @item.Comment">
+                                                            Service commandé : @item.Service.Name
+                                                            @Html.ActionLink("Annuler le rendez-vous", "Delete", "RendezVous", new { id = item.ID }, null)
+                                                        </td>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <td rowspan="@item.Service.Duration" class="calendar-td-red"></td>
+                                                }
                                             }
-                                        }
 
-                                        foundOne = true;
-                                        iterateHourRDV[day] = item.Service.Duration;
-                                        iterateHourRDV[day]--;
-                                        break;
-                                    }
-                                }
-                                // Si il n'a trouvé aucun rendez-vous, alors il va vérifier si il y a des congés
-                                if (foundOne == false)
-                                {
-                                    foreach (var item in ViewBag.DaysOffThisWeek)
-                                    {
-                                        if (DateTime.Compare(item.StartDate, MondayWeek.AddDays(day).AddHours(hour)) == 0)
-                                        {
-                                            if (ViewBag.IsAdmin == true)
-                                            {
-                                                <td class="calrender calendar-td-purple">Pause ! <br /> Raison du congé :<br /> @item.Reason</td>
-                                            }
-                                            else
-                                            {
-                                                <td class="calendar-td-red"></td>
-                                            }
                                             foundOne = true;
+                                            iterateHourRDV[day] = item.Service.Duration;
+                                            iterateHourRDV[day]--;
                                             break;
                                         }
                                     }
-                                    // Si il n'a trouvé ni congé, ni rendez-vous, alors on propose d'en prendre un
+                                    // Si il n'a trouvé aucun rendez-vous, alors il va vérifier si il y a des congés
                                     if (foundOne == false)
                                     {
-                                        <td>
-                                            <p>@Html.ActionLink("Prendre rendez-vous", "Create", "RendezVous", new { time = MondayWeek.AddDays(day).AddHours(hour) }, null)</p>
-                                            @if (ViewBag.IsAdmin == true)
+                                        foreach (var item in ViewBag.DaysOffThisWeek)
+                                        {
+                                            if (DateTime.Compare(item.StartDate, MondayWeek.AddDays(day).AddHours(hour)) == 0)
                                             {
-                                                <p>@Html.ActionLink("Prendre congé", "Create", "DayOff", new { time = MondayWeek.AddDays(day).AddHours(hour) }, null)</p>
+                                                if (ViewBag.IsAdmin == true)
+                                                {
+                                                    <td class="calrender calendar-td-purple">
+                                                        Pause ! <br /> Raison du congé :<br /> @item.Reason
+                                                        @Html.ActionLink("Annuler le congé", "Delete", "DayOff", new { id = item.ID }, null)
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="calendar-td-red"></td>
+                                                }
+                                                foundOne = true;
+                                                break;
                                             }
-                                        </td>
+                                        }
+                                        // Si il n'a trouvé ni congé, ni rendez-vous, alors on propose d'en prendre un
+                                        if (foundOne == false)
+                                        {
+                                            <td>
+                                                <p>@Html.ActionLink("Prendre rendez-vous", "Create", "RendezVous", new { time = MondayWeek.AddDays(day).AddHours(hour) }, null)</p>
+                                                @if (ViewBag.IsAdmin == true)
+                                                {
+                                                    <p>@Html.ActionLink("Prendre congé", "Create", "DayOff", new { time = MondayWeek.AddDays(day).AddHours(hour) }, null)</p>
+                                                }
+                                            </td>
+                                        }
                                     }
                                 }
-                            }
-                            else // L'heure est déjà passé (antérieur à l'heure actuel)
-                            {
-                                <td class="calendar-td-red"></td>
+                                else // L'heure est déjà passé (antérieur à l'heure actuel)
+                                {
+                                    <td class="calendar-td-red"></td>
+                                }
                             }
                         }
-                    }
-                </tr>
+                    </tr>
                 }
             </tbody>
         </table>

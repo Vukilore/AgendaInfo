@@ -22,13 +22,6 @@ namespace AgendaInfo.Controllers
             userDAL = _userDAL;
             dayOffDAL = _dayOffDAL;
         }
-
-        // GET: DayOff
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.DayOff.ToListAsync());
-        }
-
         // GET: DayOff/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -60,44 +53,45 @@ namespace AgendaInfo.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,StartDate, Reason")] DayOff dayOff)
+        public IActionResult Create([Bind("ID,StartDate, Reason")] DayOff dayOff)
         {
             if (ModelState.IsValid)
             {
                 Agenda.Models.POCO.Agenda.GetInstance().AddDayOff(dayOff, dayOffDAL);
-                return RedirectToAction();
+                return RedirectToAction("Details",dayOff.ID);
             }
             return View(dayOff);
         }
 
         // GET: DayOff/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) Redirect("../Customer/Index");
             if (id == null)
             {
                 return NotFound();
             }
-
-            var dayOff = await _context.DayOff
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (dayOff == null)
+            Agenda.Models.POCO.Agenda.GetInstance().UpdateDayOff(dayOffDAL);
+            DayOff tmpDayOff = new DayOff();
+            tmpDayOff= Agenda.Models.POCO.Agenda.GetInstance().ListDaysOff.Find(d => d.ID == id);
+            if (tmpDayOff == null)
             {
                 return NotFound();
             }
 
-            return View(dayOff);
+            return View(tmpDayOff);
         }
-
         // POST: DayOff/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
             if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) Redirect("../Customer/Index");
-            var dayOff = await _context.DayOff.FindAsync(id);
-            _context.DayOff.Remove(dayOff);
-            await _context.SaveChangesAsync();
+            Agenda.Models.POCO.Agenda.GetInstance().UpdateDayOff(dayOffDAL);
+            DayOff tmpDayOff = new DayOff();
+            tmpDayOff = Agenda.Models.POCO.Agenda.GetInstance().ListDaysOff.Find(d => d.ID == id);
+            Agenda.Models.POCO.Agenda.GetInstance().DeleteDayOff(tmpDayOff, dayOffDAL);
+
             return RedirectToAction(nameof(Index));
         }
 

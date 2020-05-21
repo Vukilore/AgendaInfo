@@ -27,9 +27,8 @@ namespace AgendaInfo.Controllers
         {
             if(!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail")))
             {// L'utilisateur est connecté
-                User user = new User(HttpContext.Session.GetString("userEmail"));
-                user.LoadUserByEmail(userDAL);
-                if (user is Admin) return Redirect("../Admins/Index");
+                if(IsAdmin(HttpContext.Session.GetString("userEmail")))
+                    return Redirect("../Admins/Index");
                 else return Redirect("../Customers/Index");
             }
             return View("Index");
@@ -93,6 +92,14 @@ namespace AgendaInfo.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        private bool IsAdmin(string email)
+        {
+            // 1. Création de l'utilisateur temporaire
+            User tmpUser = new User(email);
+            // 2. Chargement de l'utilisateur grâce à son email
+            tmpUser = tmpUser.LoadUserByEmail(userDAL);
+            return tmpUser is Admin;
         }
     }
 }

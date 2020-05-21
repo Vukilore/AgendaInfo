@@ -92,10 +92,10 @@ namespace Agenda.Models.POCO
         /*=========================================
          * DeleteDayOff: Supprime un congé à la Liste
          *=========================================*/
-        public void DeleteDayOff(DayOff dayoff)
+        public void DeleteDayOff(DayOff dayoff, IDayOffDAL dayOffDAL)
         {
             ListDaysOff.Remove(dayoff);
-
+            dayOffDAL.Delete(dayoff);
         }
 
         /*=========================================
