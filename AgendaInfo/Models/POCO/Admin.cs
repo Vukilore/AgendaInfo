@@ -9,13 +9,15 @@ namespace Agenda.Models.POCO
     public class Admin : User
     {
         /***************************PROPRIETES*******************************/
-        public virtual List<Service> ListServices { get; set; }
+        public virtual List<Service> ListServices { get; set; } // Contient la liste des services que propose le technicien
+
 
         /***************************Constructeur*******************************/
         public Admin() { }
         public Admin(string _email):base(_email) { }
 
         /***************************METHODES*******************************/
+
         /*=========================================
          * GetAdmin: Retourne l'admin présent dans la BDD
          *=========================================*/

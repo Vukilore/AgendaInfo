@@ -22,7 +22,6 @@ namespace AgendaInfo.Controllers
             _context = context;
         }
 
-        // GET: Customers
         public async Task<IActionResult> Index()
         {
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail")))
@@ -30,14 +29,20 @@ namespace AgendaInfo.Controllers
                 // 1. Création de l'utilisateur temporaire
                 User tmpUser = new User(HttpContext.Session.GetString("userEmail"));
                 tmpUser.LoadUserByEmail(userDAL);
-                ViewBag.FirstName = tmpUser.FirstName;
-                if (IsAdmin(tmpUser.Email)) return View("Indexf", await _context.User.ToListAsync() as IEnumerable<User>);
-                else return View();
+                
+                // 2. Si c'est l'admin on le renvoit vers la liste des utilisateurs
+                if (IsAdmin(tmpUser.Email)) return View("ListCustomers", await _context.User.ToListAsync() as IEnumerable<User>);
+
+                // 3. Viewbag pour afficher son prénom sur l'index du client
+                else
+                {
+                    ViewBag.FirstName = tmpUser.FirstName;
+                    return View(); 
+                }
             }
-            return Redirect("../Home/Index");            
+            return RedirectToAction("Index", "Home");            
         }
 
-        // GET: Customers/Details/5
         public IActionResult Details(int? id)
         {
             // 1. Si l'ID fourni est null on retourne non trouvé (404)
@@ -59,7 +64,7 @@ namespace AgendaInfo.Controllers
                 if(!IsAdmin(HttpContext.Session.GetString("userEmail"))) 
                     return RedirectToAction("Index", "Home");
             return View();
-        }
+        }                        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -119,29 +124,7 @@ namespace AgendaInfo.Controllers
             }
             return View(customer);
         }
-        /*
-        public async Task<IActionResult> Delete(int? id)
-        {
-            // TODO: if session user is admin
-            if (id == null) return NotFound();
 
-            var customer = await _context.Customer
-                .FirstOrDefaultAsync(m => m.ID == id);
-
-            if (customer == null) return NotFound();
-
-            return View(customer);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var customer = await _context.Customer.FindAsync(id);
-            _context.Customer.Remove(customer);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }*/
 
         /*=========================================
         * IsAdmin: Retourne true si l'email fourni est celui de l'admin

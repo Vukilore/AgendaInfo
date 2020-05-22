@@ -56,34 +56,21 @@ namespace Agenda.Models.POCO
 
         /***************************Constructeur*******************************/
         public User() { }
-        public User(string _email)
-        {
-            Email = _email;
-        }
+        public User(string _email) => Email = _email;
 
         /***************************METHODES*******************************/
 
         /*=========================================
          * LoadUser: Charge l'utilisateur depuis la BDD
          *=========================================*/
-        public User LoadUserByEmail(IUserDAL userDAL) { 
-            return userDAL.Get(Email);
-        }
+        public User LoadUserByEmail(IUserDAL userDAL) => userDAL.Get(Email);
 
-        public Task<List<User>> ToListAsync(IUserDAL userDAL)
-        {
-            return userDAL.ToListAsync();
-        }
+        public Task<List<User>> ToListAsync(IUserDAL userDAL) => userDAL.ToListAsync();
 
-        
+
         /*=========================================
          * ToString: Redéfinition du ToString
          *=========================================*/
-        public override string ToString()
-        {
-            return $"{Name} {FirstName} | {Email}";
-        }
-        
-        // public User LoadUserByID(IUser userDAL) { return 0; } // TODO: A compléter
+        public override string ToString() => $"{Name} {FirstName} | {Email}";
     }
 }

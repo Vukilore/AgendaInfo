@@ -36,11 +36,6 @@ namespace Agenda.Models.POCO
             Comment= _comment;
             BeginDate= _beginDate;
 	    }
-
-        /***************************METHODES*******************************/
-        public void PrendreRdv()
-        {
-        }
     }
     
 }

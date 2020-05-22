@@ -13,14 +13,12 @@ namespace Agenda.Models.POCO
         public virtual List<Evaluation> ListEvaluation { get; set; }    // Liste des évaluations du client
 
         /***************************Constructeur*******************************/
-        /* public Customer(int i, string n, string l, DateTime b, string a, int ph, string e, string pa)
-             : base(i, n, l, b, a, ph, e, pa) { }
- */
         public Customer() { }
         public Customer(string _email) : base(_email) { }
 
 
         /***************************METHODES*******************************/
+
         /*=========================================
          * Update: Met à jour le client dans la bdd
          * *=========================================*/
@@ -38,14 +36,6 @@ namespace Agenda.Models.POCO
         }
 
         /*=========================================
-         * GetByID: Retourne l'utilisateur en suivant son ID
-         *=========================================*/
-        public Customer GetByID(IUserDAL userDAL, int ID)
-        {
-            return (Customer)userDAL.Get(ID);
-        }
-
-        /*=========================================
          * Exist: Vérifie si l'email de l'user existe dans la BDD
          *=========================================*/
         public bool Exist(IUserDAL userDAL)
@@ -54,30 +44,11 @@ namespace Agenda.Models.POCO
         }
 
         /*=========================================
-         * AddService: Ajoute un rdv à la Liste
-         *=========================================*/
-        public void AddRendezVous(RendezVous rendezvous)
-        {
-            ListRendezVous.Add(rendezvous);
-            // TODO: appel de la DAL
-        }
-
-        /*=========================================
-         * DeleteService: Supprime un rdv à la Liste
-         *=========================================*/
-        public void DeleteRendezVous(RendezVous rendezvous)
-        {
-            ListRendezVous.Remove(rendezvous);
-            
-        }
-
-        /*=========================================
          * AddService: Ajoute une évaluation à la Liste
          *=========================================*/
         public void AddEvaluation(Evaluation evaluation)
         {
-            ListEvaluation.Add(evaluation);
-            
+            ListEvaluation.Add(evaluation);              
         }
 
         /*=========================================
@@ -86,7 +57,7 @@ namespace Agenda.Models.POCO
         public void DeleteEvaluation(Evaluation evaluation)
         {
             ListEvaluation.Remove(evaluation);
-            // TODO: appel de la DAL
+            
         }
     }
 }

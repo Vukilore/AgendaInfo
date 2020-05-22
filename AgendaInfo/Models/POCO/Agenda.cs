@@ -11,7 +11,6 @@ namespace Agenda.Models.POCO
         /***************************PROPRIETES*******************************/
         public int ID { get; set; }
         public virtual List<DayOff> ListDaysOff { get; set; }                   // Liste des jours de congés du technicien
-        public virtual List<Service> ListServices { get; set; }                 // Liste des services proposés par le technicien
         public virtual List<RendezVous> ListRendezVous { get; set; }            // Liste des rendez-vous programmés
         public virtual List<Evaluation> ListEvaluations { get; set; }           // Liste des évaluations 
 
