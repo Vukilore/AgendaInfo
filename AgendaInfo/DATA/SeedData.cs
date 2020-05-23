@@ -27,29 +27,29 @@ namespace AgendaInfo.DATA
                         Birthday = DateTime.Now,
                         PhoneNumber = 6546546
                     });
-                    // Création des utilisateurs
-                    context.User.Add(new Customer
-                    {
+                    //// Création des utilisateurs
+                    //context.User.Add(new Customer
+                    //{
 
-                    });
+                    //});
                 }
 
-                if (!context.Service.Any())
+                //if (!context.Service.Any())
 
-                if(!context.RendezVous.Any())
-                {
-                        context.RendezVous.Add(new RendezVous
-                        {
-                            // atributs
-                        });
+                //    if (!context.RendezVous.Any())
+                //    {
+                //        context.RendezVous.Add(new RendezVous
+                //        {
+                //            // atributs
+                //        });
 
-                }
+                    }
 
-                /* EVALUTATIONS, DAY OFF */
-                
-                    context.SaveChanges();
-                }
+                ///* EVALUTATIONS, DAY OFF */
+
+                //context.SaveChanges();
             }
         }
-    }
-}
+        }
+//    }
+//}
