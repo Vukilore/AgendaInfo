@@ -20,7 +20,6 @@ namespace Agenda.Models.POCO
         /***************************Constructeur*******************************/
         public Agenda()
         {
-
         }
 
         public static Agenda GetInstance()
@@ -30,6 +29,8 @@ namespace Agenda.Models.POCO
             return instance;
         }
 
+        
+
         /***************************METHODES*******************************/
 
         /*=========================================
@@ -38,7 +39,7 @@ namespace Agenda.Models.POCO
         public List<RendezVous> ThisWeekRDV(DateTime MondayOfWeek, IRendezVousDAL rdvDAL)
         {
             //1. On récupère tous les rdv
-            Agenda.GetInstance().Update(rdvDAL);
+            Update(rdvDAL);
 
             // 2. On crée la liste de retour
             List<RendezVous> RdvThisWeek = new List<RendezVous>();
@@ -51,6 +52,13 @@ namespace Agenda.Models.POCO
             return RdvThisWeek;
         }
 
+        /*=========================================
+         * GetEvaluation: Retourne une evaluation depuis la liste des evaluations
+         *=========================================*/
+        public Evaluation GetEvaluation(int id)
+        {
+            return ListEvaluations.Find(e => e.ID == id);
+        }
 
         /*=========================================
          * GetCustomer: Retourne un client depuis la liste des clients
@@ -66,7 +74,7 @@ namespace Agenda.Models.POCO
         public List<DayOff> ThisWeekDayOff(DateTime MondayOfWeek, IDayOffDAL dayOffDAL)
         {
             //1. On récupère tous les congés
-            Agenda.GetInstance().Update(dayOffDAL);
+            Update(dayOffDAL);
 
             // 2. On crée la liste de retour
             List<DayOff> daysOffThisWeek = new List<DayOff>();
@@ -79,6 +87,7 @@ namespace Agenda.Models.POCO
             return daysOffThisWeek;
         }
 
+        
         /*=========================================
          * Update: Met à jour la liste des clients
          *=========================================*/
@@ -86,22 +95,22 @@ namespace Agenda.Models.POCO
 
         /*=========================================
          * Update: Met à jour la liste des évaluations
-         *=========================================*/
+         *=========================================  */
         public void Update(IEvalDAL evalDAL) => ListEvaluations = evalDAL.GetAll();
 
         /*=========================================
          * Update: Met à jour la liste des RDV
-         *=========================================*/
+         *========================================= */
         public void Update(IDayOffDAL dayOffDAL) => ListDaysOff = dayOffDAL.GetAll();
 
         /*=========================================
          * Update: Met à jour la liste des RDV
-         *=========================================*/
-        public void Update(IRendezVousDAL rdvDAL) => ListRendezVous = rdvDAL.GetAll();
+         *========================================= */
+        public void Update(IRendezVousDAL rdvDAL) => ListRendezVous = rdvDAL.GetAll();    
 
         /*=========================================
          * AddDayOff: Ajoute un congé à la Liste
-         *=========================================*/
+         *=========================================  */
         public void AddDayOff(DayOff dayoff, IDayOffDAL dayOffDAL)
         {
             ListDaysOff.Add(dayoff);

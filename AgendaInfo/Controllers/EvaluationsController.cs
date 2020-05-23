@@ -13,7 +13,6 @@ namespace AgendaInfo.Controllers
 {
     public class EvaluationsController : Controller
     {
-        private readonly BDDContext _context;
         private readonly IUserDAL userDAL;
         private readonly IEvalDAL evalDAL;
 
@@ -23,66 +22,86 @@ namespace AgendaInfo.Controllers
             evalDAL = _evalDAL;
         }
 
-        // GET: Evaluations
         public IActionResult Index()
         {
+            if (IsAdmin(HttpContext.Session.GetString("userEmail")))
+                ViewBag.IsAdmin = true;
+
             Agenda.Models.POCO.Agenda.GetInstance().Update(evalDAL);
             return View(Agenda.Models.POCO.Agenda.GetInstance().ListEvaluations);
         }
 
-        // GET: Evaluations/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var evaluation = await _context.Evaluation
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (evaluation == null)
-            {
-                return NotFound();
-            }
-
-            return View(evaluation);
-        }
-
-        // GET: Evaluations/Create
-        public IActionResult Create()
+        public IActionResult ListEvaluations()
         {
             return View();
         }
 
-        // POST: Evaluations/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        public IActionResult Details(int? id)
+        {
+            if (id == null) return NotFound();
+
+            Evaluation evaluation;
+            Agenda.Models.POCO.Agenda.GetInstance().Update(evalDAL);
+            evaluation = Agenda.Models.POCO.Agenda.GetInstance().GetEvaluation((int)id);
+
+            if (evaluation == null)return NotFound();
+            return View(evaluation);
+        }
+
+        public IActionResult Create(int idRendezVous)
+        {
+            // 1. Si l'utilisateur est connecté 
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail")))
+            {
+                //1.1 L'admin ne peut pas ajouter d'evaluation, on affiche donc la vue cheat 
+                if (IsAdmin(HttpContext.Session.GetString("userEmail"))) return View("Cheat");
+                else
+                {
+                    // 1.2 Création de l'utilisateur temporaire
+                    User currentUser = new User(HttpContext.Session.GetString("userEmail"));
+                    currentUser.LoadUserByEmail(userDAL);
+                    Customer tmpCustomer = (Customer)currentUser;
+
+                    // 1.3 Création du rendez-vous temportaire
+                    RendezVous tmpRDV = tmpCustomer.ListRendezVous.Find(r => r.ID == idRendezVous);
+                    
+                    // 1.4 Si l'utilisateur n'a pas l'ID dans sa liste, ce n'est pas son rdv ou il n'existe pas
+                    if(tmpRDV == null)   return NotFound();
+
+                    // 1.5 On insert le rendez-vous dans le ViewData
+                    ViewData["RendezVous"] = tmpRDV;
+     
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Rate,Comment")] Evaluation evaluation)
+        public IActionResult Create([Bind("ID,Rate,Comment, RendezVous")] Evaluation evaluation)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(evaluation);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["Evaluation"] = evaluation;
+                View("Succeed");
             }
             return View(evaluation);
         }
 
-        // GET: Evaluations/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var evaluation = await _context.Evaluation.FindAsync(id);
-            if (evaluation == null)
-            {
-                return NotFound();
-            }
+            Evaluation evaluation;
+            Agenda.Models.POCO.Agenda.GetInstance().Update(evalDAL);
+            evaluation = Agenda.Models.POCO.Agenda.GetInstance().GetEvaluation((int)id);
+
+            if (evaluation == null)   return NotFound();
+
             return View(evaluation);
         }
-
+   /*
         // POST: Evaluations/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -119,7 +138,7 @@ namespace AgendaInfo.Controllers
         }
 
         // GET: Evaluations/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -139,7 +158,7 @@ namespace AgendaInfo.Controllers
         // POST: Evaluations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
             var evaluation = await _context.Evaluation.FindAsync(id);
             _context.Evaluation.Remove(evaluation);
