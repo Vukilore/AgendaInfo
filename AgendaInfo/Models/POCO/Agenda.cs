@@ -82,7 +82,7 @@ namespace Agenda.Models.POCO
         /*=========================================
          * Update: Met à jour la liste des clients
          *=========================================*/
-        public void Update(IUserDAL userDAL) => ListCustomers = (Customer)userDAL.GetAllCustomers();
+        public void Update(IUserDAL userDAL) => ListCustomers = userDAL.GetAllCustomers();
 
         /*=========================================
          * Update: Met à jour la liste des RDV

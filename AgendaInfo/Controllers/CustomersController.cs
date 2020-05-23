@@ -14,12 +14,10 @@ namespace AgendaInfo.Controllers
     public class CustomersController : Controller
     {
         private readonly IUserDAL userDAL;
-        private readonly BDDContext _context;
         
-        public CustomersController(IUserDAL _userDAL, BDDContext context)
+        public CustomersController(IUserDAL _userDAL)
         {
             userDAL = _userDAL;
-            _context = context;
         }
 
         public IActionResult Index()
