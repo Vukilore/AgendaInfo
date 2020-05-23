@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgendaInfo.DATA
 {
-    interface IEvalDAL
+    public interface IEvalDAL
     {
         public Evaluation Get(int id);
         public Evaluation Get(RendezVous rdv);

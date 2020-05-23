@@ -117,15 +117,8 @@ namespace AgendaInfo.Controllers
         public IActionResult Edit(int id, [Bind("ID,Name,FirstName,Birthday,Address,PhoneNumber,Email,Password")] Customer customer)
         {
             if (id != customer.ID) return NotFound();
-            if (ModelState.IsValid)  {
-                try { customer.Update(userDAL); }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (customer.Exist(userDAL)) return NotFound();
-                    else throw;
-                }
-                return RedirectToAction(nameof(Index));
-            }
+            if (ModelState.IsValid) customer.Update(userDAL);
+            else ViewBag.Message = "Erreur de validation";
             return View(customer);
         }
 

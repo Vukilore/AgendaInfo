@@ -15,32 +15,25 @@ namespace AgendaInfo.Controllers
     {
         private readonly BDDContext _context;
         private readonly IUserDAL userDAL;
+        private readonly IEvalDAL evalDAL;
 
-        public EvaluationsController(BDDContext context,IUserDAL _userDAL)
+        public EvaluationsController(IUserDAL _userDAL, IEvalDAL _evalDAL)
         {
-            _context = context;
             userDAL = _userDAL;
+            evalDAL = _evalDAL;
         }
 
         // GET: Evaluations
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail")))
-            {
-                Customer tmpUser = new Customer(HttpContext.Session.GetString("userEmail"));
-                tmpUser.LoadUserByEmail(userDAL);
-                return View(tmpUser.ListRendezVous);
-            }
-                return View(await _context.Evaluation.ToListAsync());
+            Agenda.Models.POCO.Agenda.GetInstance().Update(evalDAL);
+            return View(Agenda.Models.POCO.Agenda.GetInstance().ListEvaluations);
         }
 
         // GET: Evaluations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var evaluation = await _context.Evaluation
                 .FirstOrDefaultAsync(m => m.ID == id);

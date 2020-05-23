@@ -22,7 +22,10 @@ namespace AgendaInfo.Controllers
             userDAL = _userDAL;
             dayOffDAL = _dayOffDAL;
         }
-
+        public IActionResult Index()
+        {
+            return RedirectToAction("Index", "Agenda");
+        }
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
