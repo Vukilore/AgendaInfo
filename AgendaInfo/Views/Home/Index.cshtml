@@ -2,12 +2,11 @@
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="stylesheet" href="~/css/site.css" />
 <header>
     <img src="~/image/banniere.svg"  style="max-width:100%;" />
 </header>
 
 <div class="text-center">
-    <a asp-action="Create" asp-controller="Customers" style="text-decoration:none; color:black;">S'inscrire<img src="~/image/add.png"  style="width:32px; height:32px;" /></a>
-    <a asp-action="Login" asp-controller="Home" style="text-decoration:none; color:black;">Se connnecter<img src="~/image/connexion.svg" style="width:32px; height:32px; "/></a>
+    <a asp-action="Create" asp-controller="Customers" class="myButton" style="text-decoration:none; color:black;">S'inscrire<img src="~/image/add.png"  style="width:32px; height:32px;margin-left:20px; " /></a>
+    <a asp-action="Login" asp-controller="Home" class="myButton">Se connnecter<img src="~/image/connexion.svg" style="width:32px; height:32px; margin-left:20px; "/></a>
 </div>
