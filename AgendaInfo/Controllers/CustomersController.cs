@@ -22,22 +22,26 @@ namespace AgendaInfo.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail")))
             {
                 // 1. Création de l'utilisateur temporaire
                 User tmpUser = new User(HttpContext.Session.GetString("userEmail"));
                 tmpUser.LoadUserByEmail(userDAL);
-                
+
                 // 2. Si c'est l'admin on le renvoit vers la liste des utilisateurs
-                if (IsAdmin(tmpUser.Email)) return View("ListCustomers", await _context.User.ToListAsync() as IEnumerable<User>);
+                if (IsAdmin(tmpUser.Email))
+                {
+                    Agenda.Models.POCO.Agenda.GetInstance().Update(userDAL);
+                    return View("ListCustomers", Agenda.Models.POCO.Agenda.GetInstance().ListCustomers);
+                }
 
                 // 3. Viewbag pour afficher son prénom sur l'index du client
                 else
                 {
                     ViewBag.FirstName = tmpUser.FirstName;
-                    return View(); 
+                    return View();
                 }
             }
             return RedirectToAction("Index", "Home");            
@@ -50,7 +54,8 @@ namespace AgendaInfo.Controllers
 
             // 2. Sinon on charge le client depuis la bdd
             Customer customer;
-            customer = (Customer)userDAL.Get((int)id);
+            Agenda.Models.POCO.Agenda.GetInstance().Update(userDAL);
+            customer = Agenda.Models.POCO.Agenda.GetInstance().GetCustomer((int)id);
 
             //3. Si le client (id) n'existe pas dans la bdd on retourne non trouvé (404)
             if (customer == null) return NotFound();
@@ -75,7 +80,8 @@ namespace AgendaInfo.Controllers
             {
                 if (!customer.Exist(userDAL))
                 { // Si il n'a pas trouvé l'email dans la BDD, on en crée un
-                    customer.Register(userDAL);   // On enregistre le client
+                    Agenda.Models.POCO.Agenda.GetInstance().AddCustomer(customer, userDAL);
+                    
                     if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) HttpContext.Session.SetString("userEmail", customer.Email);  // On ajoute l'email  de l'utilisateur dans la session
                     return RedirectToAction(nameof(Index));
                 }
@@ -95,7 +101,8 @@ namespace AgendaInfo.Controllers
 
             // 2. Sinon on charge le client depuis la bdd
             Customer customer;
-            customer = (Customer)userDAL.Get((int)id);
+            Agenda.Models.POCO.Agenda.GetInstance().Update(userDAL);
+            customer = Agenda.Models.POCO.Agenda.GetInstance().GetCustomer((int)id);
 
             //3. Si le client (id) n'existe pas dans la bdd on retourne non trouvé (404)
             if (customer == null) return NotFound();
@@ -113,7 +120,6 @@ namespace AgendaInfo.Controllers
         {
             if (id != customer.ID) return NotFound();
             if (ModelState.IsValid)  {
-
                 try { customer.Update(userDAL); }
                 catch (DbUpdateConcurrencyException)
                 {

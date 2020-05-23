@@ -52,8 +52,6 @@ namespace Agenda.Models.POCO
         [NotMapped]
         public string ConfirmPassword { get; set; }
 
-
-
         /***************************Constructeur*******************************/
         public User() { }
         public User(string _email) => Email = _email;
@@ -64,9 +62,6 @@ namespace Agenda.Models.POCO
          * LoadUser: Charge l'utilisateur depuis la BDD
          *=========================================*/
         public User LoadUserByEmail(IUserDAL userDAL) => userDAL.Get(Email);
-
-        public Task<List<User>> ToListAsync(IUserDAL userDAL) => userDAL.ToListAsync();
-
 
         /*=========================================
          * ToString: Redéfinition du ToString

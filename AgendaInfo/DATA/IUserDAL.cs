@@ -15,7 +15,7 @@ namespace AgendaInfo.DATA
         public bool Exist(User user);
         public void Update(User user);
         public void Add(User user);
-        public Task<List<User>> ToListAsync();
+        public List<Customer> GetAllCustomers();
         public User GetAdmin();
     }
 }

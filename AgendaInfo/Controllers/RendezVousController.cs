@@ -34,7 +34,7 @@ namespace AgendaInfo.Controllers
             currentUser = currentUser.LoadUserByEmail(userDAL);
             if (currentUser is Admin)
             {
-                Agenda.Models.POCO.Agenda.GetInstance().UpdateRDV(rdvDAL);
+                Agenda.Models.POCO.Agenda.GetInstance().Update(rdvDAL);
                 return View(Agenda.Models.POCO.Agenda.GetInstance().ListRendezVous);
             }
             else
@@ -129,7 +129,7 @@ namespace AgendaInfo.Controllers
             if (id == null)  return NotFound();
 
             // 2. On charge la liste des RDV de l'agenda 
-            Agenda.Models.POCO.Agenda.GetInstance().UpdateRDV(rdvDAL);
+            Agenda.Models.POCO.Agenda.GetInstance().Update(rdvDAL);
             RendezVous tmpRDV = new RendezVous();
 
             // 3. Si il a trouvé le rendez-vous depuis l'ID
@@ -161,7 +161,7 @@ namespace AgendaInfo.Controllers
             if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) Redirect("../Customer/Index");
            
             // 2. On charge la liste des RDV de l'agenda 
-            Agenda.Models.POCO.Agenda.GetInstance().UpdateRDV(rdvDAL);
+            Agenda.Models.POCO.Agenda.GetInstance().Update(rdvDAL);
             RendezVous tmpRDV = new RendezVous();
 
             // 3. Si il a trouvé le rendez-vous depuis l'ID

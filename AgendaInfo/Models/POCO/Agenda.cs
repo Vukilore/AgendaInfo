@@ -13,6 +13,7 @@ namespace Agenda.Models.POCO
         public virtual List<DayOff> ListDaysOff { get; set; }                   // Liste des jours de congés du technicien
         public virtual List<RendezVous> ListRendezVous { get; set; }            // Liste des rendez-vous programmés
         public virtual List<Evaluation> ListEvaluations { get; set; }           // Liste des évaluations 
+        public virtual List<Customer>   ListCustomers { get; set; }             // Liste des clients
 
         private static Agenda instance = null;
 
@@ -37,7 +38,7 @@ namespace Agenda.Models.POCO
         public List<RendezVous> ThisWeekRDV(DateTime MondayOfWeek, IRendezVousDAL rdvDAL)
         {
             //1. On récupère tous les rdv
-            Agenda.GetInstance().UpdateRDV(rdvDAL);
+            Agenda.GetInstance().Update(rdvDAL);
 
             // 2. On crée la liste de retour
             List<RendezVous> RdvThisWeek = new List<RendezVous>();
@@ -50,13 +51,22 @@ namespace Agenda.Models.POCO
             return RdvThisWeek;
         }
 
+
+        /*=========================================
+         * GetCustomer: Retourne un client depuis la liste des clients
+         *=========================================*/
+        public Customer GetCustomer(int id)
+        {
+            return ListCustomers.Find(c => c.ID == id);
+        }
+
         /*=========================================
          * ThisWeekDayOff: Retourne une liste de congés pour la semaine indiqué
          *=========================================*/
         public List<DayOff> ThisWeekDayOff(DateTime MondayOfWeek, IDayOffDAL dayOffDAL)
         {
             //1. On récupère tous les congés
-            Agenda.GetInstance().UpdateDayOff(dayOffDAL);
+            Agenda.GetInstance().Update(dayOffDAL);
 
             // 2. On crée la liste de retour
             List<DayOff> daysOffThisWeek = new List<DayOff>();
@@ -70,14 +80,19 @@ namespace Agenda.Models.POCO
         }
 
         /*=========================================
-         * UpdateDayOff: Met à jour la liste des RDV
+         * Update: Met à jour la liste des clients
          *=========================================*/
-        public void UpdateDayOff(IDayOffDAL dayOffDAL) => ListDaysOff = dayOffDAL.GetAll();
+        public void Update(IUserDAL userDAL) => ListCustomers = (Customer)userDAL.GetAllCustomers();
 
         /*=========================================
-         * UpdateRDV: Met à jour la liste des RDV
+         * Update: Met à jour la liste des RDV
          *=========================================*/
-        public void UpdateRDV(IRendezVousDAL rdvDAL) => ListRendezVous = rdvDAL.GetAll();
+        public void Update(IDayOffDAL dayOffDAL) => ListDaysOff = dayOffDAL.GetAll();
+
+        /*=========================================
+         * Update: Met à jour la liste des RDV
+         *=========================================*/
+        public void Update(IRendezVousDAL rdvDAL) => ListRendezVous = rdvDAL.GetAll();
 
         /*=========================================
          * AddDayOff: Ajoute un congé à la Liste
@@ -88,10 +103,19 @@ namespace Agenda.Models.POCO
             dayOffDAL.Add(dayoff);
         }
 
+        /*=========================================
+         * AddCustomer: Ajoute un utilisateur à la liste et l'enregistre
+         *=========================================*/
+        public void AddCustomer(Customer customer, IUserDAL userDAL)
+        {
+            ListCustomers.Add(customer);
+            customer.Register(userDAL);
+        }
+
         public bool FreeOfRendezVous(DateTime startDate, DateTime endDateTime, IRendezVousDAL rdvDAL)
         {
             // 1. Mise à jour de la liste de rendez-vous
-            UpdateRDV(rdvDAL);
+            Update(rdvDAL);
             //2. Pour chaque rendez vous dans la liste
             foreach (RendezVous rdv in ListRendezVous)
                 // 2.1 Si le rendez vous est le même jour qu'un rdv de la liste
@@ -105,7 +129,7 @@ namespace Agenda.Models.POCO
         public bool FreeOfDayOff(DateTime beginDate, DateTime endDateTime, IDayOffDAL dayOffDAL)
         {
             // 1. Mise à jour de la liste de congés
-            UpdateDayOff(dayOffDAL);
+            Update(dayOffDAL);
             //2. Pour chaque congés dans la liste
             foreach (DayOff dayOff in ListDaysOff)
                 // 2.1 Si le congé est le même jour qu'un rdv de la liste

@@ -24,7 +24,6 @@ namespace AgendaInfo.DATA
             bdd.User.Add(user);
             bdd.SaveChanges();
         }
-        public Task<List<User>> ToListAsync() => bdd.User.ToListAsync();
         public void Update(User user)
         {
             bdd.User.Update(user);
@@ -42,6 +41,7 @@ namespace AgendaInfo.DATA
         public User Get(string email) => bdd.User.Where(p => p.Email == email).SingleOrDefault();
 
         public List<User> GetAll() => bdd.User.ToList();
+        public List<Customer> GetAllCustomers() => bdd.User.Where(c => c is Customer).ToList().Cast < List << Customer >>;
         public User GetAdmin() => bdd.User.Where(p => p is Admin).SingleOrDefault();
     }
 }
