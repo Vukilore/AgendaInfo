@@ -69,7 +69,7 @@ namespace AgendaInfo.Controllers
             {
                 return NotFound();
             }
-            Agenda.Models.POCO.Agenda.GetInstance().UpdateDayOff(dayOffDAL);
+            Agenda.Models.POCO.Agenda.GetInstance().Update(dayOffDAL);
             DayOff tmpDayOff = new DayOff();
             tmpDayOff= Agenda.Models.POCO.Agenda.GetInstance().ListDaysOff.Find(d => d.ID == id);
             if (tmpDayOff == null)
@@ -85,7 +85,7 @@ namespace AgendaInfo.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) Redirect("../Customer/Index");
-            Agenda.Models.POCO.Agenda.GetInstance().UpdateDayOff(dayOffDAL);
+            Agenda.Models.POCO.Agenda.GetInstance().Update(dayOffDAL);
             DayOff tmpDayOff = new DayOff();
             tmpDayOff = Agenda.Models.POCO.Agenda.GetInstance().ListDaysOff.Find(d => d.ID == id);
             Agenda.Models.POCO.Agenda.GetInstance().DeleteDayOff(tmpDayOff, dayOffDAL);
