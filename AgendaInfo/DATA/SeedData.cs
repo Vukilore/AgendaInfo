@@ -27,9 +27,9 @@ namespace AgendaInfo.DATA
                     // Création de l'administrateur
                     context.User.Add(new Admin
                     {
-                        Name = "Dubois",
+                        Name = "Partou",
                         FirstName = "Rémy",
-                        Email = "remydubois@condorcet.be",
+                        Email = "remypartou@condorcet.be",
                         Password = "123456",
                         Address = "Rue de l'ecole",
                         Birthday = new DateTime(1994, 21, 04),
@@ -119,7 +119,7 @@ namespace AgendaInfo.DATA
                     {
                         Customer = c4,
                         Service = s3,
-                        Comment = "",
+                        Comment = "Aucune",
                         BeginDate = new DateTime(2020, 29, 05, 16, 0, 0),
                     });
                     context.RendezVous.Add(new RendezVous
@@ -173,12 +173,12 @@ namespace AgendaInfo.DATA
                     context.DayOff.Add(new DayOff
                     {
                         StartDate = new DateTime(2020, 28, 05, 8, 0, 0),
-                        Reason = "",
+                        Reason = "Aucune",
                     });
                     context.DayOff.Add(new DayOff
                     {
                         StartDate = new DateTime(2020, 28, 05, 9, 0, 0),
-                        Reason = "",
+                        Reason = "Aucune",
                     });
                 }
 
