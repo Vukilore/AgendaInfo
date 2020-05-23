@@ -17,6 +17,11 @@ namespace AgendaInfo.DATA
         private static Service s1;
         private static Service s2;
         private static Service s3;
+        private static RendezVous rdv1;
+        private static RendezVous rdv2;
+        private static RendezVous rdv3;
+        private static RendezVous rdv4;
+
 
         public static void Initialize(IServiceProvider serviceProvider)
         {
@@ -108,34 +113,38 @@ namespace AgendaInfo.DATA
                 // Création de rendez-vous
                 if (!context.RendezVous.Any())
                 {
-                    context.RendezVous.Add(new RendezVous
+                    rdv1 = new RendezVous
                     {
                         Customer = c1,
                         Service = s2,
                         Comment = "Gros chien à l'entrée",
                         BeginDate = new DateTime(2020, 28, 05, 10, 0, 0),
-                    });
-                    context.RendezVous.Add(new RendezVous
+                    };
+                    context.RendezVous.Add(rdv1);
+                    rdv2 = new RendezVous
                     {
                         Customer = c4,
                         Service = s3,
                         Comment = "Aucune",
                         BeginDate = new DateTime(2020, 29, 05, 16, 0, 0),
-                    });
-                    context.RendezVous.Add(new RendezVous
+                    };
+                    context.RendezVous.Add(rdv2);
+                    rdv3 = new RendezVous
                     {
                         Customer = c2,
                         Service = s1,
                         Comment = "La maison se trouve dans le fond de l'allée",
                         BeginDate = new DateTime(2020, 05, 06, 13, 0, 0),
-                    });
-                    context.RendezVous.Add(new RendezVous
+                    };
+                    context.RendezVous.Add(rdv3);
+                    rdv4 = new RendezVous
                     {
                         Customer = c3,
                         Service = s2,
                         Comment = "Chien dangereux",
                         BeginDate = new DateTime(2020, 11, 06, 9, 0, 0),
-                    });
+                    };
+                    context.RendezVous.Add(rdv4);
                 }
 
                 // Création des évaluations
@@ -145,16 +154,19 @@ namespace AgendaInfo.DATA
                     {
                         Rate = 4,
                         Comment = "Super, rapide et efficace",
+                        RendezVous = rdv1,
                     });
                     context.Evaluation.Add(new Evaluation
                     {
                         Rate = 3,
                         Comment = "Est arrivé en retard mais a été efficace",
-                    });
+                        RendezVous = rdv2,
+                    }) ;
                     context.Evaluation.Add(new Evaluation
                     {
                         Rate = 5,
                         Comment = "Rien à redire, très professionel",
+                        RendezVous = rdv3,
                     });
                 }
                 // Création des jours de congé 
