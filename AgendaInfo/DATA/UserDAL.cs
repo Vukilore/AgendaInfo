@@ -42,6 +42,6 @@ namespace AgendaInfo.DATA
 
         public List<User> GetAll() => bdd.User.ToList();
         public List<Customer> GetAllCustomers() => bdd.User.Where(c => c is Customer).OfType<Customer>().ToList();
-        public User GetAdmin() => bdd.User.Where(p => p is Admin).SingleOrDefault();                          /*/
+        public User GetAdmin() => bdd.User.Where(p => p is Admin).SingleOrDefault();                          
     }
 }
