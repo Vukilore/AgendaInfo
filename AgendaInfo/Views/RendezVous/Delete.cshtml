@@ -37,7 +37,7 @@
                 <form asp-action="Delete">
                     <input type="hidden" asp-for="ID" />
                     <input type="submit" value="Supprimer" class="btn btn-danger" disabled="disabled" alt="Il est trop tard pour annuler le rendez-vous !"/> |
-                    <a asp-action="Index" asp-controller="Agenda">Retour au calendrier</a>
+                    <a asp-action="Index" asp-controller="Agenda" class="myButton">Retour au calendrier</a>
                 </form>
             }
             else
@@ -45,7 +45,7 @@
                 <form asp-action="Delete">
                     <input type="hidden" asp-for="ID" />
                     <input type="submit" value="Supprimer" class="btn btn-danger" /> 
-                    <a asp-action="Index" asp-controller="Agenda">Retour au calendrier</a>
+                    <a asp-action="Index" asp-controller="Agenda" class="myButton">Retour au calendrier</a>
                 </form>
             }
         </div>

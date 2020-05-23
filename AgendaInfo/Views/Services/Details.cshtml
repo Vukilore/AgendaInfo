@@ -40,9 +40,9 @@
 <div>
     @if (ViewBag.IsAdmin == true)
     {
-        <a asp-action="Delete" asp-route-id="@Model.ID">Supprimer</a>
+        <a asp-action="Delete" asp-route-id="@Model.ID" class="myButton">Supprimer</a>
     }
-    <a asp-action="Index">Retour à la liste</a>
+    <a asp-action="Index" class="myButton">Retour à la liste</a>
 </div>
 </body>
 </html>
