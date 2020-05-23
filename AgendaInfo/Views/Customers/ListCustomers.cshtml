@@ -14,7 +14,7 @@
 
 <body>
     <h4>Liste des utilisateurs</h4>
-    <a asp-action="Create" class="myButton">Créer un nouvel utilisateur</a>
+    <a asp-action="Create" class="myButton"><img src="~/image/add1.svg" style="width:32px; height:32px;" />Créer un nouvel utilisateur</a>
     <table class="table">
         <thead>
             <tr>
@@ -62,8 +62,8 @@
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.ID">Editer</a> |
-                        <a asp-action="Details" asp-route-id="@item.ID">Détails</a> |
+                        <a asp-action="Edit" asp-route-id="@item.ID" class="myButton1">Editer</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID" class="myButton1">Détails</a> |
                     </td>
                 </tr>
             }

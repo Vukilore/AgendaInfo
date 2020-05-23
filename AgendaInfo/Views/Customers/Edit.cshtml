@@ -1,5 +1,6 @@
 ﻿@model Agenda.Models.POCO.Customer
 
+
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -12,7 +13,7 @@
     <title>Edit</title>
 </head>
 <body>
-
+@ViewBag.Message 
 <h4>Customer</h4>
 <hr />
 <div class="row">
@@ -67,7 +68,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="myButton">Retour à la liste</a>
 </div>
 
 @section Scripts {

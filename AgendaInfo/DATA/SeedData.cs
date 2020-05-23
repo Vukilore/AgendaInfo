@@ -38,7 +38,7 @@ namespace AgendaInfo.DATA
                         Password = "123456",
                         Address = "Rue de l'ecole",
                         Birthday = new DateTime(1994, 21, 04),
-                        PhoneNumber = 6546546
+                        PhoneNumber = 0495124784
                     });
 
                     // Création des utilisateurs
@@ -50,6 +50,7 @@ namespace AgendaInfo.DATA
                         Password = "1234",
                         Address = "Rue de la montagne",
                         Birthday = new DateTime(1902, 03, 07),
+                        PhoneNumber = 0495124786
                     };
                     context.User.Add(c1);
                     c2 = new Customer
@@ -60,6 +61,7 @@ namespace AgendaInfo.DATA
                         Password = "5678",
                         Address = "Chemin du milieu",
                         Birthday = new DateTime(1902, 03, 07),
+                        PhoneNumber = 0495124787
                     };
                     context.User.Add(c2);
                     c3 = new Customer
@@ -70,6 +72,7 @@ namespace AgendaInfo.DATA
                         Password = "5678",
                         Address = "Rue de l'automne",
                         Birthday = new DateTime(1902, 03, 07),
+                        PhoneNumber = 0495124789
                     };
                     context.User.Add(c3);
                     c4 = new Customer
@@ -80,6 +83,7 @@ namespace AgendaInfo.DATA
                         Password = "1234",
                         Address = "Rue du berger",
                         Birthday = new DateTime(1902, 03, 07),
+                        PhoneNumber = 0495124781
                     };
                     context.User.Add(c4);
                 }
