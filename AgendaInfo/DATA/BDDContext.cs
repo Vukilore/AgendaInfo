@@ -13,7 +13,7 @@ namespace AgendaInfo.DATA
         {
 
         }
-
+                                                                                                                                         
         // Création des tables.
         public DbSet<User>                      User { get; set; }
         public DbSet<Admin>                     Admin { get; set; }

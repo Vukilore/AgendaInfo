@@ -57,6 +57,7 @@ namespace Agenda.Models.POCO
         public User() { }
         public User(string _email) => Email = _email;
 
+
         /***************************METHODES*******************************/
 
         /*=========================================

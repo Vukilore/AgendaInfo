@@ -25,7 +25,7 @@ namespace Agenda.Models.POCO
         public Evaluation() { }
         public Evaluation (float _rate, string _comment)
 	    {
-            Rate = _rate;
+            Rate = _rate;                                                                         
             Comment =_comment;
 	    }
 

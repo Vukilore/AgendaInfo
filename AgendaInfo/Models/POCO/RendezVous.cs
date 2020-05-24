@@ -36,7 +36,7 @@ namespace Agenda.Models.POCO
             Comment=   _comment;
             BeginDate= _beginDate;
 	    }
-
+                                                                  
         // Nous aide pour récuperer son ID depuis un formulaire
         public override string ToString()
         {

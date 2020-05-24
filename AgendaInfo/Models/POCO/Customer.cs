@@ -43,38 +43,11 @@ namespace Agenda.Models.POCO
             return userDAL.Exist(this);
         }
 
-        /*=========================================
-         * AddService: Ajoute une évaluation à la Liste
-         *=========================================*/
-        public void AddEvaluation(Evaluation evaluation, IUserDAL userDAL)
-        {
-            ListEvaluation.Add(evaluation);
-            userDAL.Update(this);
-        }
+
 
         /*=========================================
-         * DeleteService: Supprime une évaluation  à la Liste
+         * EditEvaluation: modifie une évaluation dans la liste
          *=========================================*/
-        public void DeleteEvaluation(Evaluation evaluation, IUserDAL userDAL, IEvalDAL evalDAL)
-        {
-            ListEvaluation.Remove(evaluation);
-            userDAL.Update(this);
-            evalDAL.Delete(evaluation);
-        }
-
-        public void AddRendezVous(RendezVous rendezvous, IUserDAL userDAL)
-        {
-            ListRendezVous.Add(rendezvous);
-            userDAL.Update(this);
-        }
-
-        public void DeleteRendezVous(RendezVous rendezvous, IUserDAL userDAL, IRendezVousDAL rdvDAL)
-        {
-            ListRendezVous.Remove(rendezvous);
-            userDAL.Update(this);
-            rdvDAL.Delete(rendezvous);
-        }
-                                                                      
         public void EditEvaluation(Evaluation evaluation, IUserDAL userDAL)
         {
             int index = ListEvaluation.FindIndex(m => m.ID == evaluation.ID);
@@ -86,5 +59,47 @@ namespace Agenda.Models.POCO
             else throw new Exception("Impossible d'editer cette evaluation, elle n'existe pas");
             userDAL.Update(this);
         }
+
+        /*=========================================
+         * AddEvaluation: Ajoute une évaluation à la Liste
+         *=========================================*/
+        public void AddEvaluation(Evaluation evaluation, IUserDAL userDAL)
+        {
+            ListEvaluation.Add(evaluation);
+            userDAL.Update(this);
+        }
+
+        /*=========================================
+         * DeleteEvaluation: Supprime une évaluation  à la Liste
+         *=========================================*/
+        public void DeleteEvaluation(Evaluation evaluation, IUserDAL userDAL, IEvalDAL evalDAL)
+        {
+            ListEvaluation.Remove(evaluation);
+            userDAL.Update(this);
+            evalDAL.Delete(evaluation);
+        }
+
+
+
+        /*=========================================
+         * AddRendezVous: Ajouter un rendez-vous  à la Liste 
+         *=========================================*/
+        public void AddRendezVous(RendezVous rendezvous, IUserDAL userDAL)
+        {
+            ListRendezVous.Add(rendezvous);
+            userDAL.Update(this);
+        }
+
+        /*=========================================
+         * DeleteRendezVous: Supprime un rendez-vous  à la Liste
+         *=========================================*/
+        public void DeleteRendezVous(RendezVous rendezvous, IUserDAL userDAL, IRendezVousDAL rdvDAL)
+        {
+            ListRendezVous.Remove(rendezvous);
+            userDAL.Update(this);
+            rdvDAL.Delete(rendezvous);
+        }
+
+        
     }
 }
