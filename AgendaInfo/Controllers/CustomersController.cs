@@ -14,11 +14,8 @@ namespace AgendaInfo.Controllers
     public class CustomersController : Controller
     {
         private readonly IUserDAL userDAL;
-        
-        public CustomersController(IUserDAL _userDAL)
-        {
-            userDAL = _userDAL;
-        }
+
+        public CustomersController(IUserDAL _userDAL) => userDAL = _userDAL;
 
         public IActionResult Index()
         {

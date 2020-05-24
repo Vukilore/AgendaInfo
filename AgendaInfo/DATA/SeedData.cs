@@ -26,10 +26,12 @@ namespace AgendaInfo.DATA
             using (var context = new BDDContext(serviceProvider.GetRequiredService<DbContextOptions<BDDContext>>()))
             {
                 List<Service> lst_service = new List<Service>();
+                List<Evaluation> lst_eval = new List<Evaluation>();
                 List<RendezVous> lst_rendezvous1 = new List<RendezVous>();
                 List<RendezVous> lst_rendezvous2 = new List<RendezVous>();         
                 List<RendezVous> lst_rendezvous3 = new List<RendezVous>();
                 List<RendezVous> lst_rendezvous4 = new List<RendezVous>();
+
                 // Création des services
                 Service s1 = new Service
                 {
@@ -81,6 +83,16 @@ namespace AgendaInfo.DATA
                     BeginDate = new DateTime(2020, 06, 11, 9, 0, 0)
                 };
                 lst_rendezvous3.Add(rdv4);
+
+                // Création des évaluations
+                Evaluation e1 = new Evaluation
+                {
+                    Rate = 3,
+                    Comment = "Est arrivé en retard mais a été efficace",
+                    RendezVous = rdv2
+                };
+                lst_eval.Add(e1);
+
                 if (!context.User.Where(e => e is Admin).Any())
                 {
                     // Création de l'administrateur
@@ -139,12 +151,13 @@ namespace AgendaInfo.DATA
                         Password = "1234",
                         Address = "Rue du berger",
                         Birthday = new DateTime(1902, 03, 07),
-                        ListRendezVous = lst_rendezvous4
+                        ListRendezVous = lst_rendezvous4,
+                        ListEvaluation = lst_eval
                     };
                     context.User.Add(c4);
                 }
 
-                // Création des évaluations
+                /* Création des évaluations
                 if (!context.Evaluation.Any())
                 {
                     context.Evaluation.Add(new Evaluation
@@ -152,9 +165,9 @@ namespace AgendaInfo.DATA
                         Rate = 3,
                         Comment = "Est arrivé en retard mais a été efficace",
                         RendezVous = rdv2
-                    });
+                    });                                
                 }
-
+                  */
                 // Création des jours de congé 
                 if (!context.DayOff.Any())
                 {
