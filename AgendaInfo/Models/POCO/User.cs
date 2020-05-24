@@ -33,6 +33,7 @@ namespace Agenda.Models.POCO
         [Required(ErrorMessage = "Veuillez entrer votre numéro de téléphone.")]
         [Display(Name = "Numero de téléphone : ")]
         [DataType(DataType.PhoneNumber)]
+        //[RegularExpression("(0|\\+32|0032)[1-9][0-9]{8}",ErrorMessage ="Veuillez entrer un numéro de mobile valide")] // regex pour numéro de gsm    
         public int PhoneNumber { get; set; }        // Numéro de téléphone de l'utilisateur
 
         [Required(ErrorMessage = "Veuillez entrer votre email.")]

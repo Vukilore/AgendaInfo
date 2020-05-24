@@ -31,7 +31,7 @@ namespace Agenda.Models.POCO
          * Register: Enregister le client dans la BDD
          *=========================================*/
         public void Register(IUserDAL userDAL)
-        {
+        {                                                                      
             userDAL.Add(this);
         }
 
@@ -46,18 +46,45 @@ namespace Agenda.Models.POCO
         /*=========================================
          * AddService: Ajoute une évaluation à la Liste
          *=========================================*/
-        public void AddEvaluation(Evaluation evaluation)
+        public void AddEvaluation(Evaluation evaluation, IUserDAL userDAL)
         {
-            ListEvaluation.Add(evaluation);              
+            ListEvaluation.Add(evaluation);
+            userDAL.Update(this);
         }
 
         /*=========================================
          * DeleteService: Supprime une évaluation  à la Liste
          *=========================================*/
-        public void DeleteEvaluation(Evaluation evaluation)
+        public void DeleteEvaluation(Evaluation evaluation, IUserDAL userDAL, IEvalDAL evalDAL)
         {
             ListEvaluation.Remove(evaluation);
-            
+            userDAL.Update(this);
+            evalDAL.Delete(evaluation);
+        }
+
+        public void AddRendezVous(RendezVous rendezvous, IUserDAL userDAL)
+        {
+            ListRendezVous.Add(rendezvous);
+            userDAL.Update(this);
+        }
+
+        public void DeleteRendezVous(RendezVous rendezvous, IUserDAL userDAL, IRendezVousDAL rdvDAL)
+        {
+            ListRendezVous.Remove(rendezvous);
+            userDAL.Update(this);
+            rdvDAL.Delete(rendezvous);
+        }
+                                                                      
+        public void EditEvaluation(Evaluation evaluation, IUserDAL userDAL)
+        {
+            int index = ListEvaluation.FindIndex(m => m.ID == evaluation.ID);
+            if (index >= 0)
+            {
+                ListEvaluation[index].Rate = evaluation.Rate;
+                ListEvaluation[index].Comment = evaluation.Comment;
+            }
+            else throw new Exception("Impossible d'editer cette evaluation, elle n'existe pas");
+            userDAL.Update(this);
         }
     }
 }

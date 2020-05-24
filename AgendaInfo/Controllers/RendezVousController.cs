@@ -113,7 +113,7 @@ namespace AgendaInfo.Controllers
                         {
                             if (rendezVous.Comment == null) rendezVous.Comment = "Aucune";
                             // On sauvegarde le rendez-vous
-                            Agenda.Models.POCO.Agenda.GetInstance().AddRendezVous(rendezVous, rdvDAL);
+                            Agenda.Models.POCO.Agenda.GetInstance().AddRendezVous(rendezVous, userDAL);
                             ViewBag.rendezvous = rendezVous;
                             return View("Succeed");
                         } else return View("ErrorRDV");
@@ -166,9 +166,9 @@ namespace AgendaInfo.Controllers
 
             // 3. Si il a trouvé le rendez-vous depuis l'ID
             tmpRDV = Agenda.Models.POCO.Agenda.GetInstance().ListRendezVous.Find(r => r.ID == id);
-
+            if (tmpRDV.BeginDate <= DateTime.Now.Date) return View("ErrorDeleting");
             // 4. On supprime le RDV
-            Agenda.Models.POCO.Agenda.GetInstance().DeleteRendezVous(tmpRDV, rdvDAL);
+            Agenda.Models.POCO.Agenda.GetInstance().DeleteRendezVous(tmpRDV, userDAL, rdvDAL);
             return RedirectToAction("Index", "Agenda");
         }
 

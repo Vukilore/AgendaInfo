@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgendaInfo.DATA;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -27,11 +28,10 @@ namespace Agenda.Models.POCO
             Rate = _rate;
             Comment =_comment;
 	    }
+
+
         /***************************METHODES*******************************/
-        public void  FaireEvaluation(){ 
-            
-            
-        }
-        
+
+
     }
 }

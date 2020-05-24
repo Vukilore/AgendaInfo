@@ -32,10 +32,16 @@ namespace Agenda.Models.POCO
         public RendezVous (Customer _customer, Service _service, string _comment, DateTime _beginDate)
 	    {
             Customer = _customer;
-            Service = _service;
-            Comment= _comment;
+            Service =  _service;
+            Comment=   _comment;
             BeginDate= _beginDate;
 	    }
+
+        // Nous aide pour récuperer son ID depuis un formulaire
+        public override string ToString()
+        {
+            return $"{ID}";
+        }
     }
     
 }

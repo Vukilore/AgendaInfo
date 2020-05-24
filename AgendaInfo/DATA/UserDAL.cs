@@ -1,5 +1,6 @@
 ﻿using Agenda.Models.POCO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,10 @@ namespace AgendaInfo.DATA
             bdd.User.Add(user);
             bdd.SaveChanges();
         }
+
         public void Update(User user)
         {
-            bdd.User.Update(user);
+            bdd.Update(user);
             bdd.SaveChanges();
         }
 
@@ -37,9 +39,7 @@ namespace AgendaInfo.DATA
         }
 
         public User Get(int id) => bdd.User.Where(p => p.ID == id).SingleOrDefault();
-
         public User Get(string email) => bdd.User.Where(p => p.Email == email).SingleOrDefault();
-
         public List<User> GetAll() => bdd.User.ToList();
         public List<Customer> GetAllCustomers() => bdd.User.Where(c => c is Customer).OfType<Customer>().ToList();
         public User GetAdmin() => bdd.User.Where(p => p is Admin).SingleOrDefault();                          
