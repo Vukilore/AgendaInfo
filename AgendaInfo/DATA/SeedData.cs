@@ -27,6 +27,32 @@ namespace AgendaInfo.DATA
         {
             using (var context = new BDDContext(serviceProvider.GetRequiredService<DbContextOptions<BDDContext>>()))
             {
+                // Création des services
+                if (!context.Service.Any())
+                {
+                    s1 = new Service
+                    {
+                        Name = "Formatage",
+                        Price = 30,
+                        Duration = 2,
+                    };
+                    context.Service.Add(s1);
+                    s2 = new Service
+                    {
+                        Name = "Configurer Réseau",
+                        Price = 50,
+                        Duration = 3,
+                    };
+                    context.Service.Add(s2);
+                    s3 = new Service
+                    {
+                        Name = "Dévirussage",
+                        Price = 25,
+                        Duration = 1,
+                    };
+                    context.Service.Add(s3);
+                }
+
                 if (!context.User.Any())
                 {
                     // Création de l'administrateur
@@ -38,7 +64,8 @@ namespace AgendaInfo.DATA
                         Password = "123456",
                         Address = "Rue de l'ecole",
                         Birthday = new DateTime(1994, 21, 04),
-                        PhoneNumber = 6546546
+                        PhoneNumber = 6546546,
+                        ListServices = { s1, s2, s3 }                       
                     });
 
                     // Création des utilisateurs
@@ -82,32 +109,6 @@ namespace AgendaInfo.DATA
                         Birthday = new DateTime(1902, 03, 07),
                     };
                     context.User.Add(c4);
-                }
-
-                // Création des services
-                if (!context.Service.Any())
-                {
-                    s1 = new Service
-                    {
-                        Name = "Formatage",
-                        Price = 30,
-                        Duration = 2,
-                    };
-                    context.Service.Add(s1);
-                    s2 = new Service
-                    {
-                        Name = "Configurer Réseau",
-                        Price = 50,
-                        Duration = 3,
-                    };
-                    context.Service.Add(s2);
-                    s3 = new Service
-                    {
-                        Name = "Dévirussage",
-                        Price = 25,
-                        Duration = 1,
-                    };
-                    context.Service.Add(s3);
                 }
 
                 // Création de rendez-vous
