@@ -14,20 +14,20 @@ namespace AgendaInfo.DATA
         private static Customer c2;
         private static Customer c3;
         private static Customer c4;
-        private static RendezVous rdv1;
+        private static RendezVous rdv1;                                                                                                                       
         private static RendezVous rdv2;
         private static RendezVous rdv3;
         private static RendezVous rdv4;
         
 
-
+                                                                                                                        
         public static void Initialize(IServiceProvider serviceProvider)
         {
             using (var context = new BDDContext(serviceProvider.GetRequiredService<DbContextOptions<BDDContext>>()))
             {
                 List<Service> lst_service = new List<Service>();
                 List<RendezVous> lst_rendezvous1 = new List<RendezVous>();
-                List<RendezVous> lst_rendezvous2 = new List<RendezVous>();
+                List<RendezVous> lst_rendezvous2 = new List<RendezVous>();         
                 List<RendezVous> lst_rendezvous3 = new List<RendezVous>();
                 List<RendezVous> lst_rendezvous4 = new List<RendezVous>();
                 // Création des services
