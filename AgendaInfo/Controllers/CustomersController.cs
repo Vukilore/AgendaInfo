@@ -112,16 +112,7 @@ namespace AgendaInfo.Controllers
                     ViewBag.IsAdmin = true;
             return View(customer);
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("ID,Name,FirstName,Birthday,Address,PhoneNumber,Email,Password")] Customer customer)
-        {
-            if (id != customer.ID) return NotFound();
-            if (ModelState.IsValid) customer.Update(userDAL);
-            
-            return View(customer);
-        }       
+   
         /*=========================================
         * IsAdmin: Retourne true si l'email fourni est celui de l'admin
         *=========================================*/
