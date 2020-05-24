@@ -1,0 +1,19 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Succeed</title>
+</head>
+<body>
+    @{ var evaluation = @ViewData["Evaluation"] as Agenda.Models.POCO.Evaluation;}
+    Ici l'objet viewdata : @evaluation;  <br />
+    Le commentaire @evaluation.Comment;
+
+</body>
+</html>

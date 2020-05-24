@@ -32,8 +32,8 @@ namespace Agenda.Models.POCO
         public RendezVous (Customer _customer, Service _service, string _comment, DateTime _beginDate)
 	    {
             Customer = _customer;
-            Service = _service;
-            Comment= _comment;
+            Service =  _service;
+            Comment=   _comment;
             BeginDate= _beginDate;
 	    }
     }

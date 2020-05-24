@@ -28,10 +28,7 @@ namespace Agenda.Models.POCO
             Comment =_comment;
 	    }
         /***************************METHODES*******************************/
-        public void  FaireEvaluation(){ 
-            
-            
-        }
+        
         
     }
 }
