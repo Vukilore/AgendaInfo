@@ -153,6 +153,18 @@ namespace AgendaInfo.Controllers
             return View(tmpRDV);
         }
 
+        public IActionResult Details(int? id)
+        {
+            if (id == null) return NotFound();
+
+            RendezVous rdv;
+            Agenda.Models.POCO.Agenda.GetInstance().Update(rdvDAL);
+            rdv = Agenda.Models.POCO.Agenda.GetInstance().GetRendezVous((int)id);
+
+            if (rdv == null) return NotFound();
+            return View(rdv);
+        }
+
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

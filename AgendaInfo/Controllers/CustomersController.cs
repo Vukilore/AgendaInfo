@@ -121,9 +121,7 @@ namespace AgendaInfo.Controllers
             if (ModelState.IsValid) customer.Update(userDAL);
             
             return View(customer);
-        }
-
-
+        }       
         /*=========================================
         * IsAdmin: Retourne true si l'email fourni est celui de l'admin
         *=========================================*/

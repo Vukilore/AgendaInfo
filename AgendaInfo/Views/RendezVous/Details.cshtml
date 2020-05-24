@@ -1,0 +1,45 @@
+﻿@model Agenda.Models.POCO.RendezVous
+
+@{
+    Layout = Layout = "~/Views/Shared/_Layout.cshtml"; ;
+}
+
+<!DOCTYPE html>
+                                                                             
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Détails</title>
+</head>
+<body>
+
+<div>
+    <h4>RendezVous</h4>
+    <hr />
+    <dl class="row">
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BeginDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BeginDate)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer.Name)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer.FirstName)
+        </dd>
+        <dd class="col-sm-10">                 
+            @Html.DisplayFor(model => model.Customer.Address)
+        </dd>
+    </dl>                                   
+</div>
+<div>                  
+    <a asp-action="Delete" asp-route-id="@Model.ID">Annuler Rendez-vous</a> |
+    <a asp-action="Index" asp-controller="Agenda">Retour à l'agenda</a>
+</div>
+</body>
+</html>
