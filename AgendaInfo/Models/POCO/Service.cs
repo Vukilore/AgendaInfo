@@ -34,18 +34,12 @@ namespace Agenda.Models.POCO
         /*=========================================
         * LoadServiceByID: Charge un service depuis la BDD
         *=========================================*/
-        public Service LoadServiceByID(IServicesDAL serviceDAL)
-        {
-           return serviceDAL.Get(this.ID);
-        }
+        public Service LoadServiceByID(IServicesDAL serviceDAL) => serviceDAL.Get(this.ID);
 
         /*=========================================
          * ToString: Redéfinition du ToString
          *=========================================*/
-        public override string ToString()
-        {
-            return $"Le service {Name} au prix de {Price} € a pour durée {Duration} heures. | {ID}";
-        }
+        public override string ToString() => $"Le service {Name} au prix de {Price} € a pour durée {Duration} heures. | {ID}";
 
     }
 }

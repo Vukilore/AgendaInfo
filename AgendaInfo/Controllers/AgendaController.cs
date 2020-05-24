@@ -25,21 +25,21 @@ namespace AgendaInfo.Controllers
         public ActionResult Index(int Week = 0)
         {
             // 1. On défini la semaine à gérer depuis 'aujourd'hui + les semaines à regarder' 
-            DateTime WeekToShow = DateTime.Now.AddDays(7 * Week);
+            DateTime WeekToShow = DateTime.Now.AddDays((7 * Week)-1);
 
             //2. On trouve le lundi de la semaine à gérer
-            DateTime MondayOfWeek = WeekToShow.AddDays(-(int)WeekToShow.DayOfWeek);
+            DateTime MondayOfWeek = WeekToShow.AddDays(-(int)WeekToShow.DayOfWeek + (int)DayOfWeek.Monday);
             ViewBag.MondayOfWeek = MondayOfWeek;
 
             //3. On crée une liste des RDV de la semaine à gérer
             List<RendezVous> RdvThisWeek = Agenda.Models.POCO.Agenda.GetInstance().ThisWeekRDV(MondayOfWeek, rdvDAL);
-
+                                                                       
             //4. On crée une liste des congés de la semaine à gérer
             ViewBag.DaysOffThisWeek = Agenda.Models.POCO.Agenda.GetInstance().ThisWeekDayOff(MondayOfWeek, dayOffDAL);
 
             //5. On défini la semaine courrante et le numéro de la semaine dans l'année
             ViewBag.CurrentWeek = Week;
-            ViewBag.WeekNumber = GetWeekNumber(MondayOfWeek);
+            ViewBag.WeekNumber = GetWeekNumber(MondayOfWeek);     
 
             //6. On défini si l'utilisateur est l'admin ou non et on le stock dans une Viewbag
             ViewBag.IsAdmin = IsAdmin(HttpContext.Session.GetString("userEmail"));

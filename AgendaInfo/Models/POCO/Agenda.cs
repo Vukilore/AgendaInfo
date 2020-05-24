@@ -92,6 +92,13 @@ namespace Agenda.Models.POCO
             return -1;
         }
 
+        public List<Evaluation> LastEvaluations()
+        {
+            List<Evaluation> lastEval = ListEvaluations;
+            lastEval.Reverse();
+            return lastEval.Take(5).ToList();
+        }
+
         /*=========================================
          * GetCustomer: Charge un client depuis la liste grâce à son email
          *=========================================*/

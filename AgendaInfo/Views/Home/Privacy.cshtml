@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<Agenda.Models.POCO.Evaluation>
+@{
     ViewData["Title"] = "Privacy Policy";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -6,7 +7,43 @@
 
 <p>
     Bienvenue sur mon site Ré-partout !<br />
-    Je me nomme Rémy et je répare tous vos problèmes informatique partout en Belgique.<br />
+    Je me nomme Rémy Partou et je répare tous vos problèmes informatique partout en Belgique !<br />
     Pour n’importe quel problème, Rémy est là pour vous aider !<br />
     Alors n’attendez-plus et prenez rendez-vous<br />
 </p>
+<p>
+    Toujours pas convaincu ? Regardez ce que disent ces utilisateurs de moi :
+
+</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Rate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Comment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RendezVous.Service.Name)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RendezVous.Service.Name)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+<p>Mon taux de confiance sur 5 en moyenne est de @ViewBag.Average/5</p>

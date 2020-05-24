@@ -153,9 +153,12 @@ namespace AgendaInfo.Controllers
 
             if (evaluation == null) return NotFound();
 
+            Agenda.Models.POCO.Agenda.GetInstance().Update(userDAL);
             Customer tmpCustomer = Agenda.Models.POCO.Agenda.GetInstance().GetCustomer(HttpContext.Session.GetString("userEmail"));
 
-            if (evaluation.RendezVous.Customer != tmpCustomer) return NotFound();
+            Evaluation tmpEval = tmpCustomer.ListEvaluation.Find(e => e.ID == evaluation.ID);
+            
+            if (tmpEval == null) throw new Exception("EUH"); // NotFound();
 
             return View(evaluation);
         }

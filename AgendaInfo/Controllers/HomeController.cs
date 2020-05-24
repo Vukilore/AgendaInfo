@@ -10,6 +10,7 @@ using AgendaInfo.Models;
 using Agenda.Models.POCO;
 using Microsoft.AspNetCore.Http;
 using AgendaInfo.DATA;
+using System.Reflection.Metadata;
 
 namespace AgendaInfo.Controllers
 {
@@ -17,9 +18,11 @@ namespace AgendaInfo.Controllers
     {
         private readonly IUserDAL userDAL;
         private readonly ILogger<HomeController> _logger;
-        public HomeController(ILogger<HomeController> logger, IUserDAL _userDAL)
+        private readonly IEvalDAL evalDAL;
+        public HomeController(ILogger<HomeController> logger, IUserDAL _userDAL, IEvalDAL _evalDAL)
         {
             userDAL = _userDAL;
+            evalDAL = _evalDAL;
             _logger = logger;
         }
 
@@ -80,12 +83,15 @@ namespace AgendaInfo.Controllers
             HttpContext.Session.Clear(); // On nettoie toutes les variables de session
             return Redirect("Index"); // On redirige au point de départ (connexion/inscription)
         }
-        public IActionResult Privacy()
+        public IActionResult Privacy()                                  
         {
-            /*
-             * TODO: Count des evalutations !
-             * */
-            return View();
+            Agenda.Models.POCO.Agenda.GetInstance().Update(evalDAL);
+            List<Evaluation> tmpEval = Agenda.Models.POCO.Agenda.GetInstance().ListEvaluations;
+            float tmpAverage = 0.0f;
+            foreach (Evaluation eval in tmpEval)
+                tmpAverage += eval.Rate;
+            ViewBag.Average = (tmpAverage / Agenda.Models.POCO.Agenda.GetInstance().ListEvaluations.Count());
+            return View(Agenda.Models.POCO.Agenda.GetInstance().LastEvaluations());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
