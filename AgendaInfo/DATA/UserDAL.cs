@@ -1,5 +1,6 @@
 ﻿using Agenda.Models.POCO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,11 +25,10 @@ namespace AgendaInfo.DATA
             bdd.User.Add(user);
             bdd.SaveChanges();
         }
+
         public void Update(User user)
         {
-           // bdd.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            bdd.Attach(user).State = EntityState.Modified;
-           // bdd.User.Update(user);
+            bdd.Update(user);
             bdd.SaveChanges();
         }
 

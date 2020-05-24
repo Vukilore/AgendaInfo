@@ -139,3 +139,10 @@ table {
         opacity: 1;
     }
 
+.greentd {
+    background-color: #6bd66e;
+}
+
+.greytd {
+    background-color: #bcccbc;
+}

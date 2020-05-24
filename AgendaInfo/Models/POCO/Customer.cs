@@ -55,10 +55,31 @@ namespace Agenda.Models.POCO
         /*=========================================
          * DeleteService: Supprime une évaluation  à la Liste
          *=========================================*/
-        public void DeleteEvaluation(Evaluation evaluation)
+        public void DeleteEvaluation(Evaluation evaluation, IUserDAL userDAL, IEvalDAL evalDAL)
         {
             ListEvaluation.Remove(evaluation);
-            
+            userDAL.Update(this);
+            evalDAL.Delete(evaluation);
+        }
+
+        public void AddRendezVous(RendezVous rendezvous, IUserDAL userDAL)
+        {
+            ListRendezVous.Add(rendezvous);
+            userDAL.Update(this);
+        }
+
+        public void DeleteRendezVous(RendezVous rendezvous, IUserDAL userDAL, IRendezVousDAL rdvDAL)
+        {
+            ListRendezVous.Remove(rendezvous);
+            userDAL.Update(this);
+            rdvDAL.Delete(rendezvous);
+        }
+
+        public void EditEvaluation(Evaluation evaluation, IUserDAL userDAL)
+        {
+            int indexEval = ListEvaluation.FindIndex(e => e.ID == evaluation.ID);
+            ListEvaluation[indexEval] = evaluation;
+            userDAL.Update(this);
         }
     }
 }

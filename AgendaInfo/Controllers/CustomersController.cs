@@ -119,7 +119,7 @@ namespace AgendaInfo.Controllers
         {
             if (id != customer.ID) return NotFound();
             if (ModelState.IsValid) customer.Update(userDAL);
-            else ViewBag.Message = "Erreur de validation";
+            
             return View(customer);
         }
 

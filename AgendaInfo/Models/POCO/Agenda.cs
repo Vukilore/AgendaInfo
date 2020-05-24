@@ -79,7 +79,21 @@ namespace Agenda.Models.POCO
         }
 
         /*=========================================
-         * LoadCustomer: Charge un client depuis la liste grâce à son email
+         * RendezVousRated: Retourne l'ID de l'evaluation en fonction du RDV
+         *=========================================*/
+        public int RendezVousRated(RendezVous tmpRDV, IEvalDAL evalDAL)
+        {
+            Update(evalDAL);
+            foreach(Evaluation eval in ListEvaluations)
+            {
+                if (eval.RendezVous == tmpRDV)
+                    return eval.ID;
+            }
+            return -1;
+        }
+
+        /*=========================================
+         * GetCustomer: Charge un client depuis la liste grâce à son email
          *=========================================*/
         public RendezVous GetRendezVous(int id) => ListRendezVous.Find(r => r.ID == id);
 
@@ -120,6 +134,13 @@ namespace Agenda.Models.POCO
         {
             ListDaysOff.Add(dayoff);
             dayOffDAL.Add(dayoff);
+        }
+
+        public void EditEvaluation(Evaluation evaluation, IUserDAL userDAL)
+        {
+            int indexEval = ListEvaluations.FindIndex(e => e.ID == evaluation.ID);
+            ListEvaluations[indexEval] = evaluation;
+            evaluation.RendezVous.Customer.EditEvaluation(evaluation, userDAL);
         }
 
         /*=========================================
@@ -171,25 +192,25 @@ namespace Agenda.Models.POCO
         /*=========================================
          * AddRendezVous: Ajoute un rdv à la Liste
          *=========================================*/
-        public void AddRendezVous(RendezVous rendezvous, IRendezVousDAL rdvDAl)
+        public void AddRendezVous(RendezVous rendezvous, IUserDAL userDAL)
         {
             ListRendezVous.Add(rendezvous);
-            rdvDAl.Add(rendezvous);
+            rendezvous.Customer.AddRendezVous(rendezvous, userDAL);
         }
 
         /*=========================================
          * DeleteRendezVous: Supprime un rdv à la Liste
          *=========================================*/
-        public void DeleteRendezVous(RendezVous rendezvous, IRendezVousDAL rdvDAL)
+        public void DeleteRendezVous(RendezVous rendezvous, IUserDAL userDAL, IRendezVousDAL rdvDAL)
         {
             ListRendezVous.Remove(rendezvous);
-            rdvDAL.Delete(rendezvous);
+            rendezvous.Customer.DeleteRendezVous(rendezvous, userDAL, rdvDAL);
         }
 
         /*=========================================
          * AddEvaluation: Ajoute une évaluation à la Liste
          *=========================================*/
-        public void AddEvaluation(Evaluation evaluation, IUserDAL userDAL)
+        public void AddEvaluation(Evaluation evaluation, IUserDAL userDAL /*IEvalDAL evalDAL*/)
         {
             ListEvaluations.Add(evaluation);
             evaluation.RendezVous.Customer.AddEvaluation(evaluation, userDAL);
@@ -199,9 +220,10 @@ namespace Agenda.Models.POCO
         /*=========================================
          * DeleteEvaluation: Supprime une évaluation  à la Liste
          *=========================================*/
-        public void DeleteEvaluation(Evaluation evaluation)
+        public void DeleteEvaluation(Evaluation evaluation, IUserDAL userDAL, IEvalDAL evalDAL)
         {
             ListEvaluations.Remove(evaluation);
+            evaluation.RendezVous.Customer.DeleteEvaluation(evaluation, userDAL, evalDAL);
         }
     }
 }

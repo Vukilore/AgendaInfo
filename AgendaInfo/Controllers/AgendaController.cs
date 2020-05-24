@@ -28,7 +28,7 @@ namespace AgendaInfo.Controllers
             DateTime WeekToShow = DateTime.Now.AddDays(7 * Week);
 
             //2. On trouve le lundi de la semaine à gérer
-            DateTime MondayOfWeek = WeekToShow.AddDays(-(int)WeekToShow.DayOfWeek + (int)DayOfWeek.Monday);
+            DateTime MondayOfWeek = WeekToShow.AddDays(-(int)WeekToShow.DayOfWeek);
             ViewBag.MondayOfWeek = MondayOfWeek;
 
             //3. On crée une liste des RDV de la semaine à gérer
