@@ -67,6 +67,7 @@
                                                     <td rowspan="@item.Service.Duration" class="calrender calendar-td-blue" tooltip="Remarque du client: @item.Comment">
                                                         @item.Customer.Name @item.Customer.FirstName @item.Service.Name
                                                         @Html.ActionLink("Annuler le rendez-vous", "Delete", "RendezVous", new { id = item.ID }, null)
+                                                        @Html.ActionLink("Détails du rendez-vous", "Details", "RendezVous", new { id = item.ID }, null)
                                                     </td>
                                                 }
                                             }
@@ -79,15 +80,17 @@
                                                     if (DateTime.Compare(DateTime.Now, MondayWeek) == 0)
                                                     {
                                                         <td rowspan="@item.Service.Duration" class="calrender calendar-td-blue" tooltip="Remarque du client: @item.Comment">Service commandé : @item.Service.Name</td>
+                                                        @Html.ActionLink("Détails du rendez-vous", "Details", "RendezVous", new { id = item.ID }, null)
                                                     }
                                                     else
                                                     {
                                                         <td rowspan="@item.Service.Duration" class="calrender calendar-td-blue" tooltip="Remarque du client: @item.Comment">
                                                             Service commandé : @item.Service.Name
                                                             @Html.ActionLink("Annuler le rendez-vous", "Delete", "RendezVous", new { id = item.ID }, null)
+                                                            @Html.ActionLink("Détails du rendez-vous", "Details", "RendezVous", new { id = item.ID }, null)
                                                         </td>
                                                     }
-                                                }                                             
+                                                }
                                                 else
                                                 {
                                                     <td rowspan="@item.Service.Duration" class="calendar-td-red"></td>

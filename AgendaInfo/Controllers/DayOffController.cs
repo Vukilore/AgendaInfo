@@ -26,22 +26,6 @@ namespace AgendaInfo.Controllers
         {
             return RedirectToAction("Index", "Agenda");
         }
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var dayOff = await _context.DayOff
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (dayOff == null)
-            {
-                return NotFound();
-            }
-
-            return View(dayOff);
-        }
 
         public IActionResult Create(DateTime time)
         {
@@ -52,14 +36,14 @@ namespace AgendaInfo.Controllers
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]                                                    
         public IActionResult Create([Bind("ID,StartDate, Reason")] DayOff dayOff)
         {
             if (ModelState.IsValid)
             {
                 if (dayOff.Reason == null) dayOff.Reason = "Aucune";
                 Agenda.Models.POCO.Agenda.GetInstance().AddDayOff(dayOff, dayOffDAL);
-                return RedirectToAction("Details",dayOff.ID);
+                return RedirectToAction("Index","Agenda");        
             }
             return View(dayOff);
         }
