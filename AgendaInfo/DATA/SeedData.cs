@@ -14,71 +14,74 @@ namespace AgendaInfo.DATA
         private static Customer c2;
         private static Customer c3;
         private static Customer c4;
-        private static Service s1;
-        private static Service s2;
-        private static Service s3;
         private static RendezVous rdv1;
         private static RendezVous rdv2;
         private static RendezVous rdv3;
         private static RendezVous rdv4;
+        
 
 
         public static void Initialize(IServiceProvider serviceProvider)
         {
             using (var context = new BDDContext(serviceProvider.GetRequiredService<DbContextOptions<BDDContext>>()))
             {
+                List<Service> lst_service = new List<Service>();
+                List<RendezVous> lst_rendezvous1 = new List<RendezVous>();
+                List<RendezVous> lst_rendezvous2 = new List<RendezVous>();
+                List<RendezVous> lst_rendezvous3 = new List<RendezVous>();
+                List<RendezVous> lst_rendezvous4 = new List<RendezVous>();
                 // Création des services
-                    s1 = new Service
-                    {
-                        Name = "Formatage",
-                        Price = 30,
-                        Duration = 2,
-                    };
-                    
-                    s2 = new Service
-                    {
-                        Name = "Configurer Réseau",
-                        Price = 50,
-                        Duration = 3,
-                    };
-                    
-                    s3 = new Service
-                    {
-                        Name = "Dévirussage",
-                        Price = 25,
-                        Duration = 1,
-                    };
-
+                Service s1 = new Service
+                {
+                    Name = "Formatage",
+                    Price = 30.0,
+                    Duration = 2
+                };
+                lst_service.Add(s1);
+                Service s2 = new Service
+                {
+                    Name = "Configurer Réseau",
+                    Price = 50.0,
+                    Duration = 3
+                };
+                lst_service.Add(s2);
+                Service s3 = new Service
+                {
+                    Name = "Dévirussage",
+                    Price = 25.0,
+                    Duration = 1
+                };
+                lst_service.Add(s3);
                 // Création de rendez-vous
-                    rdv1 = new RendezVous
-                    {
-                        Service = s2,
-                        Comment = "Gros chien à l'entrée",
-                        BeginDate = new DateTime(2020, 28, 05, 10, 0, 0),
-                    };
-                    
-                    rdv2 = new RendezVous
-                    {
-                        Service = s3,
-                        Comment = "Aucune",
-                        BeginDate = new DateTime(2020, 29, 05, 16, 0, 0),
-                    };
-                    
-                    rdv3 = new RendezVous
-                    {
-                        Service = s1,
-                        Comment = "La maison se trouve dans le fond de l'allée",
-                        BeginDate = new DateTime(2020, 05, 06, 13, 0, 0),
-                    };
-                    
-                    rdv4 = new RendezVous
-                    {
-                        Service = s2,
-                        Comment = "Chien dangereux",
-                        BeginDate = new DateTime(2020, 11, 06, 9, 0, 0),
-                    };
-
-                if (!context.User.Any())
+                rdv1 = new RendezVous
+                {
+                    Service = s2,
+                    Comment = "Gros chien à l'entrée",
+                    BeginDate = new DateTime(2020, 05, 28, 10, 0, 0)
+                };
+                lst_rendezvous1.Add(rdv1);
+                rdv2 = new RendezVous
+                {
+                    Service = s3,
+                    Comment = "Aucune",
+                    BeginDate = new DateTime(2020, 05, 21, 16, 0, 0)
+                };
+                lst_rendezvous4.Add(rdv2);
+                rdv3 = new RendezVous
+                {
+                    Service = s1,
+                    Comment = "La maison se trouve dans le fond de l'allée",
+                    BeginDate = new DateTime(2020, 06, 05, 13, 0, 0)
+                };
+                lst_rendezvous2.Add(rdv3);
+                rdv4 = new RendezVous
+                {
+                    Service = s2,
+                    Comment = "Chien dangereux",
+                    BeginDate = new DateTime(2020, 06, 11, 9, 0, 0)
+                };
+                lst_rendezvous3.Add(rdv4);
+                if (!context.User.Where(e => e is Admin).Any())
                 {
                     // Création de l'administrateur
                     context.User.Add(new Admin
@@ -88,21 +91,24 @@ namespace AgendaInfo.DATA
                         Email = "remypartou@condorcet.be",
                         Password = "123456",
                         Address = "Rue de l'ecole",
-                        Birthday = new DateTime(1994, 21, 04),
+                        Birthday = DateTime.Now,
                         PhoneNumber = 6546546,
-                        ListServices = { s1, s2, s3 }                       
-                    });
+                        ListServices = lst_service,
 
-                    // Création des utilisateurs
+                    });
+                }
+                if (!context.User.Where(e=>e is Customer).Any())
+                {
+                    //Création des utilisateurs
                     c1 = new Customer
                     {
                         Name = "Masset",
                         FirstName = "Laurent",
-                        Email = "lmasser@condorcet.be",
+                        Email = "lmasset@condorcet.be",
                         Password = "1234",
                         Address = "Rue de la montagne",
                         Birthday = new DateTime(1902, 03, 07),
-                        ListRendezVous = {rdv1}
+                        ListRendezVous = lst_rendezvous1
                     };
                     context.User.Add(c1);
                     c2 = new Customer
@@ -113,7 +119,7 @@ namespace AgendaInfo.DATA
                         Password = "5678",
                         Address = "Chemin du milieu",
                         Birthday = new DateTime(1902, 03, 07),
-                        ListRendezVous = { rdv3 }
+                        ListRendezVous = lst_rendezvous2
                     };
                     context.User.Add(c2);
                     c3 = new Customer
@@ -124,7 +130,7 @@ namespace AgendaInfo.DATA
                         Password = "5678",
                         Address = "Rue de l'automne",
                         Birthday = new DateTime(1902, 03, 07),
-                        ListRendezVous = { rdv4 }
+                        ListRendezVous = lst_rendezvous3
                     };
                     context.User.Add(c3);
                     c4 = new Customer
@@ -135,7 +141,7 @@ namespace AgendaInfo.DATA
                         Password = "1234",
                         Address = "Rue du berger",
                         Birthday = new DateTime(1902, 03, 07),
-                        ListRendezVous = { rdv2 }
+                        ListRendezVous = lst_rendezvous4
                     };
                     context.User.Add(c4);
                 }
@@ -145,45 +151,34 @@ namespace AgendaInfo.DATA
                 {
                     context.Evaluation.Add(new Evaluation
                     {
-                        Rate = 4,
-                        Comment = "Super, rapide et efficace",
-                        RendezVous = rdv1,
-                    });
-                    context.Evaluation.Add(new Evaluation
-                    {
                         Rate = 3,
                         Comment = "Est arrivé en retard mais a été efficace",
-                        RendezVous = rdv2,
-                    }) ;
-                    context.Evaluation.Add(new Evaluation
-                    {
-                        Rate = 5,
-                        Comment = "Rien à redire, très professionel",
-                        RendezVous = rdv3,
+                        RendezVous = rdv2
                     });
                 }
+
                 // Création des jours de congé 
                 if (!context.DayOff.Any())
                 {
                     context.DayOff.Add(new DayOff
                     {
-                        StartDate = new DateTime(2020, 11, 06, 12, 0, 0),
-                        Reason = "Personnel",
+                        StartDate = new DateTime(2020, 06, 11, 12, 0, 0),
+                        Reason = "Personnel"
                     });
                     context.DayOff.Add(new DayOff
                     {
-                        StartDate = new DateTime(2020, 11, 06, 13, 0, 0),
-                        Reason = "Personnel",
+                        StartDate = new DateTime(2020, 06, 11, 13, 0, 0),
+                        Reason = "Personnel"
                     });
                     context.DayOff.Add(new DayOff
                     {
-                        StartDate = new DateTime(2020, 28, 05, 8, 0, 0),
-                        Reason = "Aucune",
+                        StartDate = new DateTime(2020, 05, 28, 8, 0, 0),
+                        Reason = "Aucune"
                     });
                     context.DayOff.Add(new DayOff
                     {
-                        StartDate = new DateTime(2020, 28, 05, 9, 0, 0),
-                        Reason = "Aucune",
+                        StartDate = new DateTime(2020, 05, 28, 9, 0, 0),
+                        Reason = "Aucune"
                     });
                 }
 
