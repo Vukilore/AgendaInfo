@@ -32,6 +32,7 @@ namespace AgendaInfo.Controllers
             //1. On récupère l'utilisateur courant
             User currentUser = new User(HttpContext.Session.GetString("userEmail"));
             currentUser = currentUser.LoadUserByEmail(userDAL);
+            ViewBag.User = currentUser;
             if (currentUser is Admin)
             {
                 Agenda.Models.POCO.Agenda.GetInstance().Update(rdvDAL);
