@@ -28,30 +28,26 @@ namespace AgendaInfo.DATA
             using (var context = new BDDContext(serviceProvider.GetRequiredService<DbContextOptions<BDDContext>>()))
             {
                 // Création des services
-                if (!context.Service.Any())
-                {
                     s1 = new Service
                     {
                         Name = "Formatage",
                         Price = 30,
                         Duration = 2,
                     };
-                    context.Service.Add(s1);
+                    
                     s2 = new Service
                     {
                         Name = "Configurer Réseau",
                         Price = 50,
                         Duration = 3,
                     };
-                    context.Service.Add(s2);
+                    
                     s3 = new Service
                     {
                         Name = "Dévirussage",
                         Price = 25,
                         Duration = 1,
                     };
-                    context.Service.Add(s3);
-                }
 
                 if (!context.User.Any())
                 {
