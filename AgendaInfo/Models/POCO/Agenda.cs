@@ -138,11 +138,17 @@ namespace Agenda.Models.POCO
 
         public void EditEvaluation(Evaluation evaluation, IUserDAL userDAL)
         {
-            int indexEval = ListEvaluations.FindIndex(e => e.ID == evaluation.ID);
-            ListEvaluations[indexEval] = evaluation;
-            evaluation.RendezVous.Customer.EditEvaluation(evaluation, userDAL);
+            int index = ListEvaluations.FindIndex(m => m.ID == evaluation.ID);
+            if (index >= 0)
+            {
+                ListEvaluations[index].Rate = evaluation.Rate;
+                ListEvaluations[index].Comment = evaluation.Comment;
+                ListEvaluations[index].RendezVous.Customer.EditEvaluation(evaluation, userDAL);
+            }
+            else throw new Exception("Impossible d'editer cette evaluation, elle n'existe pas");
+            
         }
-
+      
         /*=========================================
          * AddCustomer: Ajoute un utilisateur à la liste et l'enregistre
          *=========================================*/

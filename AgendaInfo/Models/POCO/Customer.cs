@@ -74,11 +74,16 @@ namespace Agenda.Models.POCO
             userDAL.Update(this);
             rdvDAL.Delete(rendezvous);
         }
-
+                                                                      
         public void EditEvaluation(Evaluation evaluation, IUserDAL userDAL)
         {
-            int indexEval = ListEvaluation.FindIndex(e => e.ID == evaluation.ID);
-            ListEvaluation[indexEval] = evaluation;
+            int index = ListEvaluation.FindIndex(m => m.ID == evaluation.ID);
+            if (index >= 0)
+            {
+                ListEvaluation[index].Rate = evaluation.Rate;
+                ListEvaluation[index].Comment = evaluation.Comment;
+            }
+            else throw new Exception("Impossible d'editer cette evaluation, elle n'existe pas");
             userDAL.Update(this);
         }
     }

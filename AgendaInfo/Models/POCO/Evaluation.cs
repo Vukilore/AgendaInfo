@@ -29,10 +29,7 @@ namespace Agenda.Models.POCO
             Comment =_comment;
 	    }
 
-        public void Add(IEvalDAL evalDAL)
-        {
-            evalDAL.Add(this);
-        }
+
         /***************************METHODES*******************************/
 
 

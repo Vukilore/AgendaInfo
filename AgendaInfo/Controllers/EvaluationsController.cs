@@ -133,9 +133,10 @@ namespace AgendaInfo.Controllers
       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([Bind("Rate,Comment")] Evaluation evaluation)
+        public IActionResult Edit([Bind("ID, Rate,Comment")] Evaluation evaluation)
         {
             Agenda.Models.POCO.Agenda.GetInstance().Update(evalDAL);
+            var e = evaluation;
             Agenda.Models.POCO.Agenda.GetInstance().EditEvaluation(evaluation, userDAL);
             return View("Succeed");
         }
