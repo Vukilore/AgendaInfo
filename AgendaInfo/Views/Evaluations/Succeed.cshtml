@@ -12,7 +12,7 @@
 </head>
 <body>
     @{ var evaluation = @ViewData["Evaluation"] as Agenda.Models.POCO.Evaluation;}
-    Ici l'objet viewdata : @evaluation;  <br />
+    Ici l'objet viewdata customer : @evaluation.RendezVous.Customer.FirstName;  <br />
     Le commentaire @evaluation.Comment;
 
 </body>

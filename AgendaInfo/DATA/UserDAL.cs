@@ -26,7 +26,9 @@ namespace AgendaInfo.DATA
         }
         public void Update(User user)
         {
-            bdd.User.Update(user);
+           // bdd.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            bdd.Attach(user).State = EntityState.Modified;
+           // bdd.User.Update(user);
             bdd.SaveChanges();
         }
 
@@ -37,9 +39,7 @@ namespace AgendaInfo.DATA
         }
 
         public User Get(int id) => bdd.User.Where(p => p.ID == id).SingleOrDefault();
-
         public User Get(string email) => bdd.User.Where(p => p.Email == email).SingleOrDefault();
-
         public List<User> GetAll() => bdd.User.ToList();
         public List<Customer> GetAllCustomers() => bdd.User.Where(c => c is Customer).OfType<Customer>().ToList();
         public User GetAdmin() => bdd.User.Where(p => p is Admin).SingleOrDefault();                          

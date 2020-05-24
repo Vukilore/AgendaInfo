@@ -31,7 +31,7 @@ namespace Agenda.Models.POCO
          * Register: Enregister le client dans la BDD
          *=========================================*/
         public void Register(IUserDAL userDAL)
-        {
+        {                                                                      
             userDAL.Add(this);
         }
 
@@ -46,9 +46,10 @@ namespace Agenda.Models.POCO
         /*=========================================
          * AddService: Ajoute une évaluation à la Liste
          *=========================================*/
-        public void AddEvaluation(Evaluation evaluation)
+        public void AddEvaluation(Evaluation evaluation, IUserDAL userDAL)
         {
-            ListEvaluation.Add(evaluation);              
+            ListEvaluation.Add(evaluation);
+            userDAL.Update(this);
         }
 
         /*=========================================

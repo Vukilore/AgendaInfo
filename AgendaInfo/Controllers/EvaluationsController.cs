@@ -15,11 +15,13 @@ namespace AgendaInfo.Controllers
     {
         private readonly IUserDAL userDAL;
         private readonly IEvalDAL evalDAL;
+        private readonly IRendezVousDAL rdvDAL;
 
-        public EvaluationsController(IUserDAL _userDAL, IEvalDAL _evalDAL)
+        public EvaluationsController(IUserDAL _userDAL, IEvalDAL _evalDAL, IRendezVousDAL _rdvDAL)
         {
             userDAL = _userDAL;
             evalDAL = _evalDAL;
+            rdvDAL = _rdvDAL;
         }
 
         public IActionResult Index()
@@ -33,7 +35,9 @@ namespace AgendaInfo.Controllers
 
         public IActionResult ListEvaluations()
         {
-            return View();
+            Agenda.Models.POCO.Agenda.GetInstance().Update(userDAL);
+            Customer tmpCustomer = Agenda.Models.POCO.Agenda.GetInstance().GetCustomer(HttpContext.Session.GetString("userEmail"));
+            return View(tmpCustomer.ListEvaluation);
         }
 
         public IActionResult Details(int? id)
@@ -48,7 +52,7 @@ namespace AgendaInfo.Controllers
             return View(evaluation);
         }
 
-        public IActionResult Create(int idRendezVous)
+        public IActionResult Create(int? id)
         {
             // 1. Si l'utilisateur est connecté 
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail")))
@@ -57,19 +61,20 @@ namespace AgendaInfo.Controllers
                 if (IsAdmin(HttpContext.Session.GetString("userEmail"))) return View("Cheat");
                 else
                 {
-                    // 1.2 Création de l'utilisateur temporaire
-                    User currentUser = new User(HttpContext.Session.GetString("userEmail"));
-                    currentUser.LoadUserByEmail(userDAL);
-                    Customer tmpCustomer = (Customer)currentUser;
+                    // 1.2 Chargement du client
+                    Agenda.Models.POCO.Agenda.GetInstance().Update(userDAL);
+                    Customer tmpCustomer = Agenda.Models.POCO.Agenda.GetInstance().GetCustomer(HttpContext.Session.GetString("userEmail"));        
 
                     // 1.3 Création du rendez-vous temportaire
-                    RendezVous tmpRDV = tmpCustomer.ListRendezVous.Find(r => r.ID == idRendezVous);
+                    RendezVous tmpRDV = tmpCustomer.ListRendezVous.Find(r => r.ID == (int)id);
                     
                     // 1.4 Si l'utilisateur n'a pas l'ID dans sa liste, ce n'est pas son rdv ou il n'existe pas
                     if(tmpRDV == null)   return NotFound();
 
                     // 1.5 On insert le rendez-vous dans le ViewData
                     ViewData["RendezVous"] = tmpRDV;
+                                                                        
+                    return View();  
      
                 }
             }
@@ -80,12 +85,25 @@ namespace AgendaInfo.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("ID,Rate,Comment, RendezVous")] Evaluation evaluation)
         {
-            if (ModelState.IsValid)
-            {
-                ViewData["Evaluation"] = evaluation;
-                View("Succeed");
-            }
-            return View(evaluation);
+            //1. HACK: Comme pour la prise de rdv on utilise l'ID du rdv depuis le form avec le request.form
+            //TODO: trouver comment faire fonctionner le bind sur l'objet
+            int rendezVousID = Convert.ToInt32(Request.Form["RendezVous"]);
+           
+            // 2. On met à jour la liste de l'agenda pour récupérer le rdv depuis l'ID 
+            Agenda.Models.POCO.Agenda.GetInstance().Update(rdvDAL);
+            evaluation.RendezVous = Agenda.Models.POCO.Agenda.GetInstance().GetRendezVous(rendezVousID);
+
+            // 3. On ajoute l'utilisateur courant
+            Agenda.Models.POCO.Agenda.GetInstance().Update(userDAL);
+            Customer tmpCustomer = Agenda.Models.POCO.Agenda.GetInstance().GetCustomer(HttpContext.Session.GetString("userEmail"));
+
+            // 4. On sauvegarde l'evaluation
+            Agenda.Models.POCO.Agenda.GetInstance().Update(evalDAL);
+            Agenda.Models.POCO.Agenda.GetInstance().AddEvaluation(evaluation, userDAL);
+
+            ViewData["Evaluation"] = evaluation;
+            return View("Succeed");
+          //  return View(evaluation);
         }
 
         public IActionResult Edit(int? id)

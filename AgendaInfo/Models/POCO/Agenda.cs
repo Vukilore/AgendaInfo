@@ -1,4 +1,5 @@
 ﻿using AgendaInfo.DATA;
+using Microsoft.CodeAnalysis.FlowAnalysis;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,8 +29,6 @@ namespace Agenda.Models.POCO
                 instance =  new Agenda();
             return instance;
         }
-
-        
 
         /***************************METHODES*******************************/
 
@@ -61,14 +60,6 @@ namespace Agenda.Models.POCO
         }
 
         /*=========================================
-         * GetCustomer: Retourne un client depuis la liste des clients
-         *=========================================*/
-        public Customer GetCustomer(int id)
-        {
-            return ListCustomers.Find(c => c.ID == id);
-        }
-
-        /*=========================================
          * ThisWeekDayOff: Retourne une liste de congés pour la semaine indiqué
          *=========================================*/
         public List<DayOff> ThisWeekDayOff(DateTime MondayOfWeek, IDayOffDAL dayOffDAL)
@@ -87,7 +78,21 @@ namespace Agenda.Models.POCO
             return daysOffThisWeek;
         }
 
-        
+        /*=========================================
+         * LoadCustomer: Charge un client depuis la liste grâce à son email
+         *=========================================*/
+        public RendezVous GetRendezVous(int id) => ListRendezVous.Find(r => r.ID == id);
+
+        /*=========================================
+         * GetCustomer: Charge un client depuis la liste grâce à son email
+         *=========================================*/
+        public Customer GetCustomer(string email) => ListCustomers.Find(c => c.Email == email);
+
+        /*=========================================
+         * GetCustomer: Retourne un client depuis la liste des clients
+         *=========================================*/
+        public Customer GetCustomer(int id) => ListCustomers.Find(c => c.ID == id);
+
         /*=========================================
          * Update: Met à jour la liste des clients
          *=========================================*/
@@ -123,7 +128,7 @@ namespace Agenda.Models.POCO
         public void AddCustomer(Customer customer, IUserDAL userDAL)
         {
             ListCustomers.Add(customer);
-            customer.Register(userDAL);
+            customer.Register(userDAL);     
         }
 
         public bool FreeOfRendezVous(DateTime startDate, DateTime endDateTime, IRendezVousDAL rdvDAL)
@@ -184,9 +189,10 @@ namespace Agenda.Models.POCO
         /*=========================================
          * AddEvaluation: Ajoute une évaluation à la Liste
          *=========================================*/
-        public void AddEvaluation(Evaluation evaluation)
+        public void AddEvaluation(Evaluation evaluation, IUserDAL userDAL)
         {
             ListEvaluations.Add(evaluation);
+            evaluation.RendezVous.Customer.AddEvaluation(evaluation, userDAL);
 
         }
 

@@ -12,9 +12,6 @@
     <title>Index</title>
 </head>
 <body>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -37,9 +34,9 @@
                 @Html.DisplayFor(modelItem => item.Comment)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ID">Editer</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Détails</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Supprimer</a>
             </td>
         </tr>
 }

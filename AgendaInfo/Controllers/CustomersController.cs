@@ -78,6 +78,7 @@ namespace AgendaInfo.Controllers
             {
                 if (!customer.Exist(userDAL))
                 { // Si il n'a pas trouvé l'email dans la BDD, on en crée un
+                    Agenda.Models.POCO.Agenda.GetInstance().Update(userDAL);
                     Agenda.Models.POCO.Agenda.GetInstance().AddCustomer(customer, userDAL);
                     
                     if (!IsAdmin(HttpContext.Session.GetString("userEmail"))) HttpContext.Session.SetString("userEmail", customer.Email);  // On ajoute l'email  de l'utilisateur dans la session
