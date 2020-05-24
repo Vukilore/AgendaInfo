@@ -38,7 +38,7 @@ namespace AgendaInfo.Controllers
             ViewBag.DaysOffThisWeek = Agenda.Models.POCO.Agenda.GetInstance().ThisWeekDayOff(MondayOfWeek, dayOffDAL);
 
             //5. On défini la semaine courrante et le numéro de la semaine dans l'année
-            ViewBag.CurrentWeek = Week;
+            ViewBag.CurrentWeek = Week;                                             
             ViewBag.WeekNumber = GetWeekNumber(MondayOfWeek);     
 
             //6. On défini si l'utilisateur est l'admin ou non et on le stock dans une Viewbag

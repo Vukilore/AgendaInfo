@@ -91,9 +91,8 @@ namespace AgendaInfo.Controllers
                 }             
             }
             return View(customer);
-        }
-
-        public IActionResult Edit(int? id)
+        }                                                           
+        public IActionResult Edit(int? id) 
         {
             // 1. Si l'ID fourni est null on retourne non trouvé (404)
             if (id == null) return NotFound();
