@@ -49,6 +49,35 @@ namespace AgendaInfo.DATA
                         Duration = 1,
                     };
 
+                // Création de rendez-vous
+                    rdv1 = new RendezVous
+                    {
+                        Service = s2,
+                        Comment = "Gros chien à l'entrée",
+                        BeginDate = new DateTime(2020, 28, 05, 10, 0, 0),
+                    };
+                    
+                    rdv2 = new RendezVous
+                    {
+                        Service = s3,
+                        Comment = "Aucune",
+                        BeginDate = new DateTime(2020, 29, 05, 16, 0, 0),
+                    };
+                    
+                    rdv3 = new RendezVous
+                    {
+                        Service = s1,
+                        Comment = "La maison se trouve dans le fond de l'allée",
+                        BeginDate = new DateTime(2020, 05, 06, 13, 0, 0),
+                    };
+                    
+                    rdv4 = new RendezVous
+                    {
+                        Service = s2,
+                        Comment = "Chien dangereux",
+                        BeginDate = new DateTime(2020, 11, 06, 9, 0, 0),
+                    };
+
                 if (!context.User.Any())
                 {
                     // Création de l'administrateur
@@ -73,6 +102,7 @@ namespace AgendaInfo.DATA
                         Password = "1234",
                         Address = "Rue de la montagne",
                         Birthday = new DateTime(1902, 03, 07),
+                        ListRendezVous = {rdv1}
                     };
                     context.User.Add(c1);
                     c2 = new Customer
@@ -83,6 +113,7 @@ namespace AgendaInfo.DATA
                         Password = "5678",
                         Address = "Chemin du milieu",
                         Birthday = new DateTime(1902, 03, 07),
+                        ListRendezVous = { rdv3 }
                     };
                     context.User.Add(c2);
                     c3 = new Customer
@@ -93,6 +124,7 @@ namespace AgendaInfo.DATA
                         Password = "5678",
                         Address = "Rue de l'automne",
                         Birthday = new DateTime(1902, 03, 07),
+                        ListRendezVous = { rdv4 }
                     };
                     context.User.Add(c3);
                     c4 = new Customer
@@ -103,45 +135,9 @@ namespace AgendaInfo.DATA
                         Password = "1234",
                         Address = "Rue du berger",
                         Birthday = new DateTime(1902, 03, 07),
+                        ListRendezVous = { rdv2 }
                     };
                     context.User.Add(c4);
-                }
-
-                // Création de rendez-vous
-                if (!context.RendezVous.Any())
-                {
-                    rdv1 = new RendezVous
-                    {
-                        Customer = c1,
-                        Service = s2,
-                        Comment = "Gros chien à l'entrée",
-                        BeginDate = new DateTime(2020, 28, 05, 10, 0, 0),
-                    };
-                    context.RendezVous.Add(rdv1);
-                    rdv2 = new RendezVous
-                    {
-                        Customer = c4,
-                        Service = s3,
-                        Comment = "Aucune",
-                        BeginDate = new DateTime(2020, 29, 05, 16, 0, 0),
-                    };
-                    context.RendezVous.Add(rdv2);
-                    rdv3 = new RendezVous
-                    {
-                        Customer = c2,
-                        Service = s1,
-                        Comment = "La maison se trouve dans le fond de l'allée",
-                        BeginDate = new DateTime(2020, 05, 06, 13, 0, 0),
-                    };
-                    context.RendezVous.Add(rdv3);
-                    rdv4 = new RendezVous
-                    {
-                        Customer = c3,
-                        Service = s2,
-                        Comment = "Chien dangereux",
-                        BeginDate = new DateTime(2020, 11, 06, 9, 0, 0),
-                    };
-                    context.RendezVous.Add(rdv4);
                 }
 
                 // Création des évaluations
