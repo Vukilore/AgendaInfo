@@ -18,7 +18,7 @@ namespace AgendaInfo.DATA
         private static RendezVous rdv2;
         private static RendezVous rdv3;
         private static RendezVous rdv4;
-
+        
 
 
         public static void Initialize(IServiceProvider serviceProvider)
@@ -96,10 +96,8 @@ namespace AgendaInfo.DATA
                         ListServices = lst_service,
 
                     });
-                }
-                if (!context.User.Where(e => e is Customer).Any())
-                {
-                    //Création des utilisateurs
+
+                    // Création des utilisateurs
                     c1 = new Customer
                     {
                         Name = "Masset",
