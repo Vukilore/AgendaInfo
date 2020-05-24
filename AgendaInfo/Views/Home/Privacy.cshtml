@@ -3,6 +3,9 @@
     ViewData["Title"] = "Privacy Policy";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<header>
+    <img src="~/image/banniere.svg" style="max-width:100%;" />
+</header>
 <h1>@ViewData["Title"]</h1>
 
 <p>
@@ -19,13 +22,13 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Rate)
+                    @Html.DisplayNameFor(model => model.Rate)<img src="~/image/eval.png" style="width:32px; height:32px; margin-left:25px;" />
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Comment)
+                    @Html.DisplayNameFor(model => model.Comment)<img src="~/image/comment.svg" style="width:32px; height:32px; margin-left:25px;" />
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.RendezVous.Service.Name)
+                    @Html.DisplayNameFor(model => model.RendezVous.Service.Name)<img src="~/image/service.png" style="width:32px; height:32px; margin-left:25px;" />
                 </th>
             </tr>
         </thead>
