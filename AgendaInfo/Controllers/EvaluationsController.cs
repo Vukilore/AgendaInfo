@@ -27,7 +27,10 @@ namespace AgendaInfo.Controllers
         public IActionResult Index()
         {
             if (IsAdmin(HttpContext.Session.GetString("userEmail")))
-                ViewBag.IsAdmin = true;
+                ViewBag.IsAdmin = true;                                                 
+
+            Agenda.Models.POCO.Agenda.GetInstance().Update(userDAL);
+            ViewBag.User = Agenda.Models.POCO.Agenda.GetInstance().GetCustomer(HttpContext.Session.GetString("userEmail"));
 
             Agenda.Models.POCO.Agenda.GetInstance().Update(evalDAL);
             return View(Agenda.Models.POCO.Agenda.GetInstance().ListEvaluations);
@@ -40,7 +43,7 @@ namespace AgendaInfo.Controllers
             return View(tmpCustomer.ListEvaluation);
         }
 
-        public IActionResult Details(int? id)
+        public IActionResult Details(int? id)       
         {
             if (id == null) return NotFound();
 
@@ -49,7 +52,7 @@ namespace AgendaInfo.Controllers
             evaluation = Agenda.Models.POCO.Agenda.GetInstance().GetEvaluation((int)id);
 
             if (evaluation == null)return NotFound();
-            return View(evaluation);
+            return View(evaluation);     
         }
 
         public IActionResult Create(int? id)
@@ -107,13 +110,13 @@ namespace AgendaInfo.Controllers
             // 4. On sauvegarde l'evaluation
             Agenda.Models.POCO.Agenda.GetInstance().Update(evalDAL);
             Agenda.Models.POCO.Agenda.GetInstance().AddEvaluation(evaluation, userDAL);
-
+                                                    
             ViewData["Evaluation"] = evaluation;
-            return View("Succeed");
+            return View("Details", evaluation);
         }
 
         public IActionResult Edit(int? id)
-        {
+        {                                  
             if (id == null)
                 return NotFound();
 
@@ -127,20 +130,20 @@ namespace AgendaInfo.Controllers
             Customer tmpCustomer = Agenda.Models.POCO.Agenda.GetInstance().GetCustomer(HttpContext.Session.GetString("userEmail"));
 
             if (evaluation.RendezVous.Customer != tmpCustomer) return NotFound();
-
+            
             return View(evaluation);
-        }
+        }                    
       
-        [HttpPost]
+        [HttpPost]                                    
         [ValidateAntiForgeryToken]
         public IActionResult Edit([Bind("ID, Rate,Comment")] Evaluation evaluation)
         {
             Agenda.Models.POCO.Agenda.GetInstance().Update(evalDAL);
             var e = evaluation;
             Agenda.Models.POCO.Agenda.GetInstance().EditEvaluation(evaluation, userDAL);
-            return View("Succeed");
+            return View("Details", evaluation); 
         }
-        
+                                             
         public IActionResult Delete(int? id)
         {
             if (id == null) return NotFound();

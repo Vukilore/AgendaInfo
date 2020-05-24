@@ -24,26 +24,45 @@
                 <th>
                     @Html.DisplayNameFor(model => model.BeginDate)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Service.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Service.Duration)
+                </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Comment)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BeginDate)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.ID" class="myButton1">Edit</a> 
-                            <a asp-action="Delete" asp-route-id="@item.ID" class="myButton1">Delete</a>
-                            @if (item.BeginDate <= DateTime.Now) { <a asp-action="Create" asp-controller="Evaluations" asp-route-id="@item.ID" class="myButton1">Evaluation du rendez-vous</a> }
-                        </td>
-                    </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BeginDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Service.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Service.Duration)
+                    </td>
+                    <td>
+
+                        @if (item.BeginDate <= DateTime.Now)
+                        {
+                            if (item.Customer == ViewBag.User)
+                            {<a asp-action="Create" asp-controller="Evaluations" asp-route-id="@item.ID">Evaluation du rendez-vous</a>}
+                        }
+                        else
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.ID">Annuler</a>
+                        }
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

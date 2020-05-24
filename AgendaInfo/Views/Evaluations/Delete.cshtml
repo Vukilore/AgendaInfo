@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<h3>êtes vous certain de vouloir supprimer cela ?</h3>
+<h3>Êtes vous certain de supprimer cet évaluation?</h3>
 <div>
     <h4>Evaluation</h4>
     <hr />
@@ -31,11 +31,11 @@
             @Html.DisplayFor(model => model.Comment)
         </dd>
     </dl>
-    
+                                                           
     <form asp-action="Delete">
         <input type="hidden" asp-for="ID" />
-        <input type="submit" value="Supprimer" class="myButton1" /> |
-        <a asp-action="Index" class="myButton">Retour à la liste</a>
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="ListEvaluations">Retour à la liste</a>
     </form>
 </div>
 </body>
