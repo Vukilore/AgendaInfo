@@ -54,7 +54,7 @@ namespace AgendaInfo.Controllers
             currentUser = currentUser.LoadUserByEmail(userDAL);
 
             //2. On Stock la date de rendez vous
-            ViewBag.ReservedDate = time;
+            ViewBag.ReservedDate = time.ToString();
 
             //2. On récupère les utilisateurs
             List<User> listUser = new List<User>();

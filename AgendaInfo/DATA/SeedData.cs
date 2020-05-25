@@ -104,7 +104,7 @@ namespace AgendaInfo.DATA
                         Password = "123456",
                         Address = "Rue de l'ecole",
                         Birthday = DateTime.Now,
-                        PhoneNumber = 6546546,
+                        PhoneNumber = 0496546546,
                         ListServices = lst_service,
 
                     });
@@ -118,6 +118,7 @@ namespace AgendaInfo.DATA
                         Password = "1234",
                         Address = "Rue de la montagne",
                         Birthday = new DateTime(1902, 03, 07),
+                        PhoneNumber = 0498563254,
                         ListRendezVous = lst_rendezvous1
                     };
                     context.User.Add(c1);
@@ -128,6 +129,7 @@ namespace AgendaInfo.DATA
                         Email = "bcopin@condorcet.be",
                         Password = "5678",
                         Address = "Chemin du milieu",
+                        PhoneNumber = 0495628495,
                         Birthday = new DateTime(1902, 03, 07),
                         ListRendezVous = lst_rendezvous2
                     };
@@ -139,6 +141,7 @@ namespace AgendaInfo.DATA
                         Email = "avdv@condorcet.be",
                         Password = "5678",
                         Address = "Rue de l'automne",
+                        PhoneNumber = 0469851269,
                         Birthday = new DateTime(1902, 03, 07),
                         ListRendezVous = lst_rendezvous3
                     };
@@ -150,6 +153,7 @@ namespace AgendaInfo.DATA
                         Email = "dclini@condorcet.be",
                         Password = "1234",
                         Address = "Rue du berger",
+                        PhoneNumber = 04986532,
                         Birthday = new DateTime(1902, 03, 07),
                         ListRendezVous = lst_rendezvous4,
                         ListEvaluation = lst_eval
