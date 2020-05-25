@@ -89,25 +89,6 @@ namespace AgendaInfo.Controllers
             }
             return View(customer);
         }                                                           
-        public IActionResult Edit(int? id) 
-        {
-            // 1. Si l'ID fourni est null on retourne non trouvé (404)
-            if (id == null) return NotFound();
-
-            // 2. Sinon on charge le client depuis la bdd
-            Customer customer;
-            Agenda.Models.POCO.Agenda.GetInstance().Update(userDAL);
-            customer = Agenda.Models.POCO.Agenda.GetInstance().GetCustomer((int)id);
-
-            //3. Si le client (id) n'existe pas dans la bdd on retourne non trouvé (404)
-            if (customer == null) return NotFound();
-            //4. On check si l'utilisateur est admin pour ne pas lui proposer d'editer le mdp
-            ViewBag.IsAdmin = false;
-            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("userEmail")))
-                if (IsAdmin(HttpContext.Session.GetString("userEmail")))
-                    ViewBag.IsAdmin = true;
-            return View(customer);
-        }
    
         /*=========================================
         * IsAdmin: Retourne true si l'email fourni est celui de l'admin
