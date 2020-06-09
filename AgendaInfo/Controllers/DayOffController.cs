@@ -34,7 +34,6 @@ namespace AgendaInfo.Controllers
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]                                                    
         public IActionResult Create([Bind("ID,StartDate, Reason")] DayOff dayOff)

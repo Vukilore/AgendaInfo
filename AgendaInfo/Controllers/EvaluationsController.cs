@@ -26,21 +26,21 @@ namespace AgendaInfo.Controllers
 
         public IActionResult Index()
         {
-            if (IsAdmin(HttpContext.Session.GetString("userEmail")))
-                ViewBag.IsAdmin = true;                                                 
+            if (IsAdmin(HttpContext.Session.GetString("userEmail")))// verifie si l'utilisateur courant est admin
+                ViewBag.IsAdmin = true;  //si admin , on passe a true                                               
 
-            Agenda.Models.POCO.Agenda.GetInstance().Update(userDAL);
-            ViewBag.User = Agenda.Models.POCO.Agenda.GetInstance().GetCustomer(HttpContext.Session.GetString("userEmail"));
+            Agenda.Models.POCO.Agenda.GetInstance().Update(userDAL); //mise à jour des utilisateurs de l'agenda
+            ViewBag.User = Agenda.Models.POCO.Agenda.GetInstance().GetCustomer(HttpContext.Session.GetString("userEmail"));// on recupère l'utilisateur en fonction de son email
 
-            Agenda.Models.POCO.Agenda.GetInstance().Update(evalDAL);
-            return View(Agenda.Models.POCO.Agenda.GetInstance().ListEvaluations);
+            Agenda.Models.POCO.Agenda.GetInstance().Update(evalDAL);// mise à jour des évalution de la classe agenda
+            return View(Agenda.Models.POCO.Agenda.GetInstance().ListEvaluations);//montre toute la liste d'évaluation
         }
 
         public IActionResult ListEvaluations()
         {
-            Agenda.Models.POCO.Agenda.GetInstance().Update(userDAL);
-            Customer tmpCustomer = Agenda.Models.POCO.Agenda.GetInstance().GetCustomer(HttpContext.Session.GetString("userEmail"));
-            return View(tmpCustomer.ListEvaluation);
+            Agenda.Models.POCO.Agenda.GetInstance().Update(userDAL); //met à jour la liste d'évlation dans la classe agenda
+            Customer tmpCustomer = Agenda.Models.POCO.Agenda.GetInstance().GetCustomer(HttpContext.Session.GetString("userEmail"));//telecharge l'utilisateur courant
+            return View(tmpCustomer.ListEvaluation);//retourne la liste des évalution des utilisateurs
         }
 
         public IActionResult Details(int? id)       
@@ -48,10 +48,10 @@ namespace AgendaInfo.Controllers
             if (id == null) return NotFound();
 
             Evaluation evaluation;
-            Agenda.Models.POCO.Agenda.GetInstance().Update(evalDAL);
-            evaluation = Agenda.Models.POCO.Agenda.GetInstance().GetEvaluation((int)id);
+            Agenda.Models.POCO.Agenda.GetInstance().Update(evalDAL);//mise à jour la liste d'évaluation dans la classe agenda
+            evaluation = Agenda.Models.POCO.Agenda.GetInstance().GetEvaluation((int)id);//obtien ces évaluation selon l'id
 
-            if (evaluation == null)return NotFound();
+            if (evaluation == null)return NotFound();//si =nul, pas trouvé d'id
             return View(evaluation);     
         }
 
